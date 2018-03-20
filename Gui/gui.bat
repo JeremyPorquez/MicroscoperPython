@@ -1,0 +1,1 @@
+pyuic5 spectrometer_gui.ui -o ..spectrometer_gui.py

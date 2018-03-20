@@ -1,0 +1,747 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="15c4e7d9-b31c-4432-aa3a-0bb75332dca6" name="Default" comment="" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="Microscoper_app.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Microscoper_app.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1377">
+              <caret line="94" column="23" lean-forward="false" selection-start-line="94" selection-start-column="23" selection-end-line="94" selection-end-column="23" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Zaber.py" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/Zaber.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="717">
+              <caret line="219" column="32" lean-forward="true" selection-start-line="219" selection-start-column="32" selection-end-line="219" selection-end-column="32" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Microscoper.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Microscoper.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="7973">
+              <caret line="478" column="5" lean-forward="false" selection-start-line="478" selection-start-column="5" selection-end-line="478" selection-end-column="5" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AnalogIn.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Devices/AnalogIn.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="2397">
+              <caret line="150" column="17" lean-forward="false" selection-start-line="150" selection-start-column="17" selection-end-line="150" selection-end-column="17" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="AnalogDigitalOut.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Devices/AnalogDigitalOut.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1071">
+              <caret line="63" column="0" lean-forward="false" selection-start-line="63" selection-start-column="0" selection-end-line="63" selection-end-column="0" />
+              <folding>
+                <element signature="e#0#13#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Sync.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Devices/Sync.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1683">
+              <caret line="99" column="62" lean-forward="false" selection-start-line="99" selection-start-column="62" selection-end-line="99" selection-end-column="62" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="CMath.pyx" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Math/Cython/CMath.pyx">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="850">
+              <caret line="50" column="0" lean-forward="false" selection-start-line="50" selection-start-column="0" selection-end-line="52" selection-end-column="16" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Microscoper_app.ini" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Microscoper_app.ini">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="425">
+              <caret line="25" column="21" lean-forward="false" selection-start-line="25" selection-start-column="21" selection-end-line="25" selection-end-column="21" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="StellarN.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/StellarN.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="306">
+              <caret line="18" column="0" lean-forward="false" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Connections.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Network/Connections.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1241">
+              <caret line="76" column="0" lean-forward="false" selection-start-line="76" selection-start-column="0" selection-end-line="76" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>closed</find>
+      <find>.close()</find>
+      <find>except :</find>
+      <find>%s close</find>
+      <find>calibrate</find>
+      <find>self.device</find>
+      <find>SNSet_</find>
+      <find>self.ao =</find>
+      <find>generateRasterScan</find>
+      <find>time.time</find>
+      <find>Arithmetic</find>
+      <find>self.samples_written</find>
+      <find>s</find>
+      <find>self.samples_to_write_per</find>
+      <find>spectrometerScan</find>
+      <find>timeout</find>
+      <find>save</find>
+      <find>openpyxl</find>
+      <find>self.dataFrames</find>
+      <find>__save</find>
+      <find>self.ai</find>
+      <find>verbose</find>
+      <find>self.verbose</find>
+      <find>self.ai.</find>
+      <find>self.image</find>
+      <find>self.imageData</find>
+      <find>update</find>
+      <find>print(</find>
+      <find>print(self.</find>
+      <find>setupUi</find>
+    </findStrings>
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="I:/../microscoperPython/Microscoper_app.py" />
+        <option value="$PROJECT_DIR$/python/objects.py" />
+        <option value="$PROJECT_DIR$/../Python Notebooks/The-CARS-Microscoper/Notes/Calculating Laser power.ipynb" />
+        <option value="$PROJECT_DIR$/backup/rawImageWidget.py" />
+        <option value="$PROJECT_DIR$/Python/objects.py" />
+        <option value="$PROJECT_DIR$/backup/test MatplotlibselectPlots.py" />
+        <option value="D:/Downloads/estrella-master/estrella-master/python_controller/estrella_python_controller.py" />
+        <option value="$PROJECT_DIR$/Math/caverage.pyx" />
+        <option value="$PROJECT_DIR$/Math/cython/test.pyx" />
+        <option value="$PROJECT_DIR$/Math/cython/setup.py" />
+        <option value="$PROJECT_DIR$/Math/cython/caverage.pyx" />
+        <option value="$PROJECT_DIR$/Math/Cython/test.py" />
+        <option value="$PROJECT_DIR$/Math/Cython/__init__.py" />
+        <option value="$PROJECT_DIR$/Network/clientObject.py" />
+        <option value="$PROJECT_DIR$/Zaber.py" />
+        <option value="$PROJECT_DIR$/Math/gaussianFunction.py" />
+        <option value="$PROJECT_DIR$/Math/__init__.py" />
+        <option value="$PROJECT_DIR$/Devices/Stage/__init__.py" />
+        <option value="$PROJECT_DIR$/Gui/Microscoper_gui.py" />
+        <option value="$PROJECT_DIR$/ServerScripts/script.py" />
+        <option value="$PROJECT_DIR$/ServerScripts/Script.py" />
+        <option value="$PROJECT_DIR$/ServerScripts/stage_spectrometer_discreet.py" />
+        <option value="$PROJECT_DIR$/Devices/Stage/zstepper.py" />
+        <option value="$PROJECT_DIR$/Microscoper/ZStage.py" />
+        <option value="$PROJECT_DIR$/Microscoper/get_number_of_channels.py" />
+        <option value="$PROJECT_DIR$/Microscoper/__init__.py" />
+        <option value="$PROJECT_DIR$/Microscoper.py" />
+        <option value="$PROJECT_DIR$/Devices/Display.py" />
+        <option value="C:/Python36-32/Lib/multiprocessing/connection.py" />
+        <option value="$PROJECT_DIR$/Server.py" />
+        <option value="$PROJECT_DIR$/Network/Connections.py" />
+        <option value="$PROJECT_DIR$/Math/Cython/setup.py" />
+        <option value="$PROJECT_DIR$/StellarN.py" />
+        <option value="$PROJECT_DIR$/Microscoper_app.ini" />
+        <option value="$PROJECT_DIR$/Devices/AnalogDigitalOut.py" />
+        <option value="$PROJECT_DIR$/Devices/Sync.py" />
+        <option value="$PROJECT_DIR$/Math/Cython/CMath.pyx" />
+        <option value="$PROJECT_DIR$/Devices/AnalogIn.py" />
+        <option value="$PROJECT_DIR$/Microscoper_app.py" />
+      </list>
+    </option>
+  </component>
+  <component name="ProjectFrameBounds">
+    <option name="x" value="-8" />
+    <option name="y" value="-8" />
+    <option name="width" value="1936" />
+    <option name="height" value="1056" />
+  </component>
+  <component name="ProjectView">
+    <navigator currentView="ProjectPane" proportions="" version="1">
+      <flattenPackages />
+      <showMembers />
+      <showModules />
+      <showLibraryContents />
+      <hideEmptyPackages />
+      <abbreviatePackageNames />
+      <autoscrollToSource />
+      <autoscrollFromSource />
+      <sortByType />
+      <manualOrder />
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="ProjectPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="microscoperPython" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="microscoperPython" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="Scratches" />
+      <pane id="Scope" />
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+  </component>
+  <component name="PyDebuggerOptionsProvider">
+    <option name="mySaveCallSignatures" value="true" />
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="Python.Zaber">
+    <configuration default="false" name="Microscoper_app" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="microscoperPython" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Microscoper_app.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="Server" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="microscoperPython" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Server.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="AnalogIn" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Devices" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="microscoperPython" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Devices/AnalogIn.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="Sync" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Devices" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="microscoperPython" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Devices/Sync.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <method />
+    </configuration>
+    <configuration default="false" name="Zaber" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="microscoperPython" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Zaber.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <method />
+    </configuration>
+    <configuration default="true" type="PythonConfigurationType" factoryName="Python">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="microscoperPython" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <method />
+    </configuration>
+    <configuration default="true" type="Tox" factoryName="Tox">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="microscoperPython" />
+      <method />
+    </configuration>
+    <configuration default="true" type="tests" factoryName="Doctests">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="microscoperPython" />
+      <option name="SCRIPT_NAME" value="" />
+      <option name="CLASS_NAME" value="" />
+      <option name="METHOD_NAME" value="" />
+      <option name="FOLDER_NAME" value="" />
+      <option name="TEST_TYPE" value="TEST_SCRIPT" />
+      <option name="PATTERN" value="" />
+      <option name="USE_PATTERN" value="false" />
+      <method />
+    </configuration>
+    <configuration default="true" type="tests" factoryName="Unittests">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="microscoperPython" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;.&quot;" />
+      <option name="_new_targetType" value="&quot;PATH&quot;" />
+      <method />
+    </configuration>
+    <list size="5">
+      <item index="0" class="java.lang.String" itemvalue="Python.Microscoper_app" />
+      <item index="1" class="java.lang.String" itemvalue="Python.Server" />
+      <item index="2" class="java.lang.String" itemvalue="Python.AnalogIn" />
+      <item index="3" class="java.lang.String" itemvalue="Python.Sync" />
+      <item index="4" class="java.lang.String" itemvalue="Python.Zaber" />
+    </list>
+    <recent_temporary>
+      <list size="5">
+        <item index="0" class="java.lang.String" itemvalue="Python.Zaber" />
+        <item index="1" class="java.lang.String" itemvalue="Python.Microscoper_app" />
+        <item index="2" class="java.lang.String" itemvalue="Python.AnalogIn" />
+        <item index="3" class="java.lang.String" itemvalue="Python.Sync" />
+        <item index="4" class="java.lang.String" itemvalue="Python.Server" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="ShelveChangesManager" show_recycled="false">
+    <option name="remove_strategy" value="false" />
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="15c4e7d9-b31c-4432-aa3a-0bb75332dca6" name="Default" comment="" />
+      <created>1496807431121</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1496807431121</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="TestHistory">
+    <history-entry file="Unittests_for_AnalogIn_testx - 2017.07.14 at 00h 20m 40s.xml">
+      <configuration name="Unittests for AnalogIn.testx" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_in_test_MatplotlibselectPlots_py - 2017.06.26 at 13h 42m 56s.xml">
+      <configuration name="Unittests in test MatplotlibselectPlots.py" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_in_test_MatplotlibselectPlots_py - 2017.06.26 at 13h 44m 36s.xml">
+      <configuration name="Unittests in test MatplotlibselectPlots.py" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_in_test_MatplotlibselectPlots_py - 2017.06.26 at 13h 45m 58s.xml">
+      <configuration name="Unittests in test MatplotlibselectPlots.py" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_in_test_MatplotlibselectPlots_py - 2017.06.26 at 13h 47m 32s.xml">
+      <configuration name="Unittests in test MatplotlibselectPlots.py" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_in_test_MatplotlibselectPlots_py - 2017.06.26 at 13h 48m 09s.xml">
+      <configuration name="Unittests in test MatplotlibselectPlots.py" configurationId="tests" />
+    </history-entry>
+    <history-entry file="Unittests_in_test_py - 2017.07.05 at 11h 03m 53s.xml">
+      <configuration name="Unittests in test.py" configurationId="tests" />
+    </history-entry>
+  </component>
+  <component name="TodoView">
+    <todo-panel id="selected-file">
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <editor active="true" />
+    <layout>
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18123667" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.45341614" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32453415" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2799378" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.18508998" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3431677" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.42857143" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.17071198" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+    </layout>
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/Devices/AnalogDigitalOut.py</url>
+          <line>59</line>
+          <option name="timeStamp" value="319" />
+        </line-breakpoint>
+      </breakpoints>
+      <breakpoints-dialog>
+        <breakpoints-dialog />
+      </breakpoints-dialog>
+      <option name="time" value="323" />
+    </breakpoint-manager>
+    <watches-manager />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/Math/Cython/test.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="3" column="0" lean-forward="true" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Connections.py" />
+    <entry file="file://$PROJECT_DIR$/Network/clientObject.py" />
+    <entry file="file://$PROJECT_DIR$/Math/Cython/__init__.py" />
+    <entry file="file://$PROJECT_DIR$/Math/gaussianFunction.py" />
+    <entry file="file://$PROJECT_DIR$/Math/Arithmetic.py" />
+    <entry file="file://$PROJECT_DIR$/Devices/Stage/__init__.py" />
+    <entry file="file://$PROJECT_DIR$/Devices/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Python36-64/Lib/multiprocessing/connection.py" />
+    <entry file="file://$PROJECT_DIR$/Gui/Server_gui.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="286">
+          <caret line="92" column="8" lean-forward="false" selection-start-line="92" selection-start-column="8" selection-end-line="92" selection-end-column="52" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ServerScripts/Script.py" />
+    <entry file="file://$PROJECT_DIR$/ServerScripts/stage_spectrometer_discreet.py" />
+    <entry file="file://C:/Python36-32/Lib/genericpath.py" />
+    <entry file="file://$PROJECT_DIR$/Devices/Stage/zstepper.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="261">
+          <caret line="85" column="30" lean-forward="false" selection-start-line="85" selection-start-column="30" selection-end-line="85" selection-end-column="30" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/_pydevd_bundle/pydevd_vars.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="269">
+          <caret line="360" column="36" lean-forward="false" selection-start-line="360" selection-start-column="36" selection-end-line="360" selection-end-column="36" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/_pydevd_bundle/pydevd_exec2.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="0" lean-forward="false" selection-start-line="2" selection-start-column="0" selection-end-line="2" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Python36-32/Lib/site-packages/pandas/core/frame.py" />
+    <entry file="file://C:/Python36-32/Lib/site-packages/pandas/io/excel.py" />
+    <entry file="file://C:/Python36-32/Lib/site-packages/xlwt/Workbook.py" />
+    <entry file="file://C:/Python36-32/Lib/site-packages/matplotlib/path.py" />
+    <entry file="file://C:/Python36-32/Lib/codecs.py" />
+    <entry file="file://$PROJECT_DIR$/Network/__init__.py" />
+    <entry file="file://C:/Python36-32/Lib/site-packages/pyqtgraph/canvas/CanvasItem.py" />
+    <entry file="file://$PROJECT_DIR$/Microscoper/ZStage.py" />
+    <entry file="file://$USER_HOME$/Documents/microscoperPython July 10/Microscoper.py" />
+    <entry file="file://$PROJECT_DIR$/Gui/Microscoper_gui.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="146">
+          <caret line="185" column="60" lean-forward="false" selection-start-line="185" selection-start-column="41" selection-end-line="185" selection-end-column="60" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Python36-32/Lib/site-packages/pyqtgraph/canvas/Canvas.py" />
+    <entry file="file://$PROJECT_DIR$/Microscoper/get_number_of_channels.py" />
+    <entry file="file://$PROJECT_DIR$/Microscoper/__init__.py" />
+    <entry file="file://C:/Python36-32/Lib/threading.py" />
+    <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/_pydev_imps/_pydev_execfile.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="17" column="0" lean-forward="false" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$USER_HOME$/Documents/microscoperPython July 10/Server.py" />
+    <entry file="file://C:/Python36-32/Lib/multiprocessing/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-76">
+          <caret line="8" column="26" lean-forward="true" selection-start-line="8" selection-start-column="26" selection-end-line="8" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Math/__init__.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="20" column="25" lean-forward="false" selection-start-line="20" selection-start-column="24" selection-end-line="20" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Devices/Display.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="12087">
+          <caret line="718" column="0" lean-forward="false" selection-start-line="718" selection-start-column="0" selection-end-line="718" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Python36-32/Lib/site-packages/PyDAQmx/DAQmxFunctions.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="374">
+          <caret line="28" column="0" lean-forward="false" selection-start-line="28" selection-start-column="0" selection-end-line="28" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Python36-32/Lib/multiprocessing/connection.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="196">
+          <caret line="135" column="0" lean-forward="false" selection-start-line="135" selection-start-column="0" selection-end-line="135" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Server.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1428">
+          <caret line="92" column="0" lean-forward="false" selection-start-line="92" selection-start-column="0" selection-end-line="92" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Network/Connections.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1241">
+          <caret line="76" column="0" lean-forward="false" selection-start-line="76" selection-start-column="0" selection-end-line="76" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Math/Cython/setup.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="7" column="1" lean-forward="true" selection-start-line="7" selection-start-column="1" selection-end-line="7" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://D:/Google Drive/MicroscoperData/2016-09-29/Python 2016-09-29.ipynb" />
+    <entry file="file://$PROJECT_DIR$/StellarN.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="18" column="0" lean-forward="false" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Microscoper_app.ini">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="425">
+          <caret line="25" column="21" lean-forward="false" selection-start-line="25" selection-start-column="21" selection-end-line="25" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Microscoper.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="7973">
+          <caret line="478" column="5" lean-forward="false" selection-start-line="478" selection-start-column="5" selection-end-line="478" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/Python36-64/Lib/site-packages/PyDAQmx/DAQmxFunctions.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="24" column="0" lean-forward="false" selection-start-line="24" selection-start-column="0" selection-end-line="24" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Devices/AnalogDigitalOut.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1071">
+          <caret line="63" column="0" lean-forward="false" selection-start-line="63" selection-start-column="0" selection-end-line="63" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#13#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Math/Cython/CMath.pyx">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="850">
+          <caret line="50" column="0" lean-forward="false" selection-start-line="50" selection-start-column="0" selection-end-line="52" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Devices/AnalogIn.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2397">
+          <caret line="150" column="17" lean-forward="false" selection-start-line="150" selection-start-column="17" selection-end-line="150" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Devices/Sync.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1683">
+          <caret line="99" column="62" lean-forward="false" selection-start-line="99" selection-start-column="62" selection-end-line="99" selection-end-column="62" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Microscoper_app.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1377">
+          <caret line="94" column="23" lean-forward="false" selection-start-line="94" selection-start-column="23" selection-end-line="94" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Zaber.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="717">
+          <caret line="219" column="32" lean-forward="true" selection-start-line="219" selection-start-column="32" selection-end-line="219" selection-end-column="32" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+  </component>
+</project>

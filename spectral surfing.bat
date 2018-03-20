@@ -1,0 +1,1 @@
+start C:\Python36-64\Pythonw.exe SpectralSurfingGenerator.py

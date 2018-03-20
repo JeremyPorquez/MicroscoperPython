@@ -1,0 +1,1 @@
+start C:\Python36-32\Pythonw.exe StellarN.py

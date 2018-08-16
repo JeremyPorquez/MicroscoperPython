@@ -244,7 +244,6 @@ class Display2D(pg.GraphicsWindow):
         self.signal.update.connect(self.display)
 
     def display(self):
-        print('displaying')
         for i in range(0, self.imageData.__len__()):
             # Update display
             self.img_handle[i].display(self.imageData[i].T, levels=[self.imageMinimums[i],self.imageMaximums[i]])

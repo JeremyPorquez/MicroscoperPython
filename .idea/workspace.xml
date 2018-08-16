@@ -9,36 +9,73 @@
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="SpectralSurfingGenerator.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/SpectralSurfingGenerator.py">
+      <file leaf-file-name="StellarN.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/StellarN.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="649">
-              <caret line="282" column="38" lean-forward="true" selection-start-line="282" selection-start-column="38" selection-end-line="282" selection-end-column="38" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="StageCalibrationGenerator.py" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/StageCalibrationGenerator.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="292">
-              <caret line="252" column="37" lean-forward="false" selection-start-line="252" selection-start-column="37" selection-end-line="252" selection-end-column="37" />
+            <state relative-caret-position="15079">
+              <caret line="929" column="12" lean-forward="false" selection-start-line="929" selection-start-column="12" selection-end-line="929" selection-end-column="12" />
               <folding>
-                <element signature="e#0#42#0" expanded="true" />
+                <element signature="e#67#86#0" expanded="true" />
+                <marker date="1525280040000" expanded="true" signature="35086:35125" ph="..." />
+                <marker date="1525280040000" expanded="true" signature="35086:35640" ph="..." />
+                <marker date="1525280040000" expanded="true" signature="35086:43346" ph="..." />
+                <marker date="1525280040000" expanded="true" signature="35277:35640" ph="..." />
+                <marker date="1525280040000" expanded="true" signature="35359:35534" ph="..." />
+                <marker date="1525280040000" expanded="true" signature="35671:35919" ph="..." />
+                <marker date="1525280040000" expanded="true" signature="35954:36484" ph="..." />
+                <marker date="1525280040000" expanded="true" signature="36189:36312" ph="..." />
+                <marker date="1525280040000" expanded="true" signature="36515:36946" ph="..." />
+                <marker date="1525280040000" expanded="true" signature="36561:36877" ph="..." />
+                <marker date="1525280040000" expanded="true" signature="36973:37008" ph="..." />
+                <marker date="1525280040000" expanded="true" signature="37035:37083" ph="..." />
+                <marker date="1525280040000" expanded="true" signature="37109:37156" ph="..." />
+                <marker date="1525280040000" expanded="true" signature="37181:37372" ph="..." />
+                <marker date="1525280040000" expanded="true" signature="37398:39670" ph="..." />
+                <marker date="1525280040000" expanded="true" signature="37476:38421" ph="..." />
+                <marker date="1525280040000" expanded="true" signature="38446:39561" ph="..." />
+                <marker date="1525280040000" expanded="true" signature="39616:39670" ph="..." />
+                <marker date="1525280040000" expanded="true" signature="39695:40735" ph="..." />
+                <marker date="1525280040000" expanded="true" signature="40774:40868" ph="..." />
+                <marker date="1525280040000" expanded="true" signature="40890:41066" ph="..." />
+                <marker date="1525280040000" expanded="true" signature="41091:41359" ph="..." />
+                <marker date="1525280040000" expanded="true" signature="41398:41575" ph="..." />
+                <marker date="1525280040000" expanded="true" signature="41614:42006" ph="..." />
+                <marker date="1525280040000" expanded="true" signature="41719:41922" ph="..." />
+                <marker date="1525280040000" expanded="true" signature="42038:42310" ph="..." />
+                <marker date="1525280040000" expanded="true" signature="42123:42310" ph="..." />
+                <marker date="1525280040000" expanded="true" signature="42349:43346" ph="..." />
+                <marker date="1525280040000" expanded="true" signature="42416:42485" ph="..." />
+                <marker date="1525280040000" expanded="true" signature="42664:43088" ph="..." />
+                <marker date="1525280040000" expanded="true" signature="42677:42871" ph="..." />
+                <marker date="1525280040000" expanded="true" signature="43013:43088" ph="..." />
+                <marker date="1525280040000" expanded="true" signature="43097:43283" ph="..." />
+                <marker date="1525280040000" expanded="true" signature="43394:43844" ph="..." />
+                <marker date="1525280040000" expanded="true" signature="43429:43517" ph="..." />
+                <marker date="1525280040000" expanded="true" signature="43542:43605" ph="..." />
+                <marker date="1525280040000" expanded="true" signature="43639:43729" ph="..." />
+                <marker date="1525280040000" expanded="true" signature="43766:43844" ph="..." />
+                <marker date="1525280040000" expanded="true" signature="43875:45484" ph="..." />
+                <marker date="1525280040000" expanded="true" signature="44007:44089" ph="..." />
+                <marker date="1525280040000" expanded="true" signature="44110:44359" ph="..." />
+                <marker date="1525280040000" expanded="true" signature="44406:44796" ph="..." />
+                <marker date="1525280040000" expanded="true" signature="44498:44675" ph="..." />
+                <marker date="1525280040000" expanded="true" signature="44820:45484" ph="..." />
+                <marker date="1525280040000" expanded="true" signature="44857:45012" ph="..." />
+                <marker date="1525280040000" expanded="true" signature="45027:45484" ph="..." />
+                <marker date="1525280040000" expanded="true" signature="45089:45484" ph="..." />
+                <marker date="1525280040000" expanded="true" signature="45487:47894" ph="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="StellarN.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/StellarN.py">
+      <file leaf-file-name="Spectrometer_gui.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Gui/Spectrometer_gui.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="18700">
-              <caret line="1115" column="26" lean-forward="false" selection-start-line="1115" selection-start-column="26" selection-end-line="1115" selection-end-column="26" />
+            <state relative-caret-position="3519">
+              <caret line="207" column="8" lean-forward="false" selection-start-line="207" selection-start-column="8" selection-end-line="207" selection-end-column="92" />
               <folding />
             </state>
           </provider>
@@ -54,11 +91,23 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Microscoper_app.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Microscoper_app.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Microscoper_app.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="8670">
-              <caret line="524" column="30" lean-forward="false" selection-start-line="524" selection-start-column="30" selection-end-line="524" selection-end-column="30" />
+            <state relative-caret-position="319">
+              <caret line="183" column="66" lean-forward="true" selection-start-line="183" selection-start-column="66" selection-end-line="183" selection-end-column="66" />
+              <folding>
+                <element signature="e#0#14#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Microscoper.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/Microscoper.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="346">
+              <caret line="459" column="0" lean-forward="true" selection-start-line="459" selection-start-column="0" selection-end-line="459" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -67,8 +116,8 @@
       <file leaf-file-name="Display.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Devices/Display.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="267">
-              <caret line="188" column="0" lean-forward="false" selection-start-line="188" selection-start-column="0" selection-end-line="188" selection-end-column="0" />
+            <state relative-caret-position="4250">
+              <caret line="257" column="28" lean-forward="false" selection-start-line="257" selection-start-column="28" selection-end-line="257" selection-end-column="28" />
               <folding />
             </state>
           </provider>
@@ -77,18 +126,8 @@
       <file leaf-file-name="AnalogIn.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Devices/AnalogIn.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="5491">
-              <caret line="334" column="40" lean-forward="false" selection-start-line="334" selection-start-column="40" selection-end-line="334" selection-end-column="40" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CMath.pyx" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Math/Cython/CMath.pyx">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="765">
-              <caret line="45" column="29" lean-forward="false" selection-start-line="45" selection-start-column="29" selection-end-line="45" selection-end-column="29" />
+            <state relative-caret-position="3400">
+              <caret line="211" column="19" lean-forward="false" selection-start-line="211" selection-start-column="19" selection-end-line="211" selection-end-column="19" />
               <folding />
             </state>
           </provider>
@@ -105,29 +144,9 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>image</find>
-      <find>frames</find>
-      <find>self.scanstoaverage</find>
-      <find>self.framesToAv</find>
-      <find>nmean</find>
-      <find>acquireSoftStart</find>
-      <find>spectrometerScan</find>
-      <find>self.xAxis</find>
-      <find>xAxis</find>
-      <find>plot</find>
-      <find>Display</find>
-      <find>ai.intensi</find>
-      <find>fps</find>
-      <find>def update</find>
-      <find>print(</find>
-      <find>set</find>
-      <find>valueChanged</find>
-      <find>signal.update</find>
-      <find>self.signal.update</find>
       <find>self.display</find>
       <find>def display</find>
       <find>self.display.signal</find>
-      <find>connect</find>
       <find>self.display.up</find>
       <find>self.signal.u</find>
       <find>self.signal</find>
@@ -135,7 +154,30 @@
       <find>valuechange</find>
       <find>focus</find>
       <find>deleteDataPoint</find>
+      <find>calibration</find>
+      <find>getCalibrationFiles</find>
+      <find>if self.calibrate</find>
+      <find>self.calibration[i]</find>
+      <find>self.background</find>
+      <find>print(</find>
+      <find>print</find>
+      <find>contour</find>
+      <find>self.scanTypeWidget</find>
+      <find>def loa</find>
+      <find>scanstatus</find>
+      <find>connect</find>
+      <find>label</find>
+      <find>self.saveCon</find>
+      <find>Ui_</find>
+      <find>start_auto</find>
+      <find>self.spectrometer</find>
+      <find>.format</find>
+      <find>start_autosave</find>
+      <find>resolution</find>
     </findStrings>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
@@ -163,7 +205,6 @@
         <option value="$PROJECT_DIR$/ServerScripts/ZaberStellarNetScan0.5deg.py" />
         <option value="$PROJECT_DIR$/Network/Reponse.py" />
         <option value="$PROJECT_DIR$/Devices/Sync.py" />
-        <option value="$PROJECT_DIR$/Gui/Spectrometer_gui.py" />
         <option value="$PROJECT_DIR$/SSCalibExtract.py" />
         <option value="C:/Python36-32/Lib/multiprocessing/connection.py" />
         <option value="$PROJECT_DIR$/microscoper.bat" />
@@ -173,7 +214,6 @@
         <option value="$PROJECT_DIR$/Math/__init__.py" />
         <option value="$PROJECT_DIR$/Network/Response.py" />
         <option value="$PROJECT_DIR$/ServerScripts/Script.py" />
-        <option value="$PROJECT_DIR$/Microscoper.py" />
         <option value="$PROJECT_DIR$/ServerScripts/ZaberStageSync.py" />
         <option value="$PROJECT_DIR$/Devices/Stage/PyAPT.py" />
         <option value="$PROJECT_DIR$/Network/Connections.py" />
@@ -185,18 +225,20 @@
         <option value="$PROJECT_DIR$/Server.py" />
         <option value="$PROJECT_DIR$/Devices/TiffWriter.py" />
         <option value="$PROJECT_DIR$/Math/Cython/CMath.pyx" />
-        <option value="$PROJECT_DIR$/StellarN.py" />
         <option value="$PROJECT_DIR$/Devices/AnalogIn.py" />
-        <option value="$PROJECT_DIR$/Microscoper_app.py" />
+        <option value="$PROJECT_DIR$/StageCalibrationGenerator.py" />
         <option value="$PROJECT_DIR$/Devices/Display.py" />
         <option value="$PROJECT_DIR$/SpectralSurfingGenerator.py" />
-        <option value="$PROJECT_DIR$/StageCalibrationGenerator.py" />
+        <option value="$PROJECT_DIR$/Microscoper.py" />
+        <option value="$PROJECT_DIR$/Gui/Spectrometer_gui.py" />
+        <option value="$PROJECT_DIR$/StellarN.py" />
+        <option value="$PROJECT_DIR$/Microscoper_app.py" />
       </list>
     </option>
   </component>
-  <component name="ProjectFrameBounds">
-    <option name="x" value="-8" />
-    <option name="y" value="-8" />
+  <component name="ProjectFrameBounds" extendedState="6">
+    <option name="x" value="450" />
+    <option name="y" value="322" />
     <option name="width" value="1616" />
     <option name="height" value="876" />
   </component>
@@ -219,8 +261,9 @@
       </profile-state>
     </entry>
   </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
-    <navigator currentView="ProjectPane" proportions="" version="1">
+    <navigator proportions="" version="1">
       <flattenPackages />
       <showMembers />
       <showModules />
@@ -233,42 +276,11 @@
       <manualOrder />
       <foldersAlwaysOnTop value="true" />
     </navigator>
-    <panes>
-      <pane id="Scratches" />
-      <pane id="ProjectPane">
-        <subPane>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="microscoperPython" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="microscoperPython" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="microscoperPython" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="microscoperPython" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Devices" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
-      <pane id="Scope" />
-    </panes>
+    <panes />
   </component>
   <component name="PropertiesComponent">
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="I:/My Drive/PythonApps/CRASHyperspectralAnalysis" />
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$2/Languages" value="Python" />
   </component>
   <component name="PyConsoleOptionsProvider">
@@ -299,80 +311,8 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.StageCalibrationGenerator">
-    <configuration default="false" name="Microscoper_app" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="microscoperPython" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Microscoper_app.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <method />
-    </configuration>
-    <configuration default="false" name="AnalogIn" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Devices" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="microscoperPython" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Devices/AnalogIn.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <method />
-    </configuration>
-    <configuration default="false" name="TiffWriter" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/Devices" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="microscoperPython" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Devices/TiffWriter.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <method />
-    </configuration>
-    <configuration default="false" name="StageCalibrationGenerator" type="PythonConfigurationType" factoryName="Python" temporary="true">
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <module name="microscoperPython" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/StageCalibrationGenerator.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <method />
-    </configuration>
-    <configuration default="false" name="HSA" type="PythonConfigurationType" factoryName="Python" temporary="true">
+  <component name="RunManager" selected="Python.Microscoper_app">
+    <configuration name="HSA" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -388,7 +328,74 @@
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
-      <method />
+    </configuration>
+    <configuration name="Microscoper_app" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="microscoperPython" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/Microscoper_app.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+    </configuration>
+    <configuration name="SpectralSurfingGenerator" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="microscoperPython" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/SpectralSurfingGenerator.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+    </configuration>
+    <configuration name="StageCalibrationGenerator" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="microscoperPython" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/StageCalibrationGenerator.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+    </configuration>
+    <configuration name="StellarN" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="microscoperPython" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/StellarN.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
     </configuration>
     <configuration default="true" type="PythonConfigurationType" factoryName="Python">
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -456,18 +463,18 @@
     </configuration>
     <list size="5">
       <item index="0" class="java.lang.String" itemvalue="Python.Microscoper_app" />
-      <item index="1" class="java.lang.String" itemvalue="Python.AnalogIn" />
-      <item index="2" class="java.lang.String" itemvalue="Python.TiffWriter" />
-      <item index="3" class="java.lang.String" itemvalue="Python.StageCalibrationGenerator" />
-      <item index="4" class="java.lang.String" itemvalue="Python.HSA" />
+      <item index="1" class="java.lang.String" itemvalue="Python.StageCalibrationGenerator" />
+      <item index="2" class="java.lang.String" itemvalue="Python.HSA" />
+      <item index="3" class="java.lang.String" itemvalue="Python.StellarN" />
+      <item index="4" class="java.lang.String" itemvalue="Python.SpectralSurfingGenerator" />
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python.StageCalibrationGenerator" />
-        <item index="1" class="java.lang.String" itemvalue="Python.HSA" />
-        <item index="2" class="java.lang.String" itemvalue="Python.Microscoper_app" />
-        <item index="3" class="java.lang.String" itemvalue="Python.TiffWriter" />
-        <item index="4" class="java.lang.String" itemvalue="Python.AnalogIn" />
+        <item index="0" class="java.lang.String" itemvalue="Python.Microscoper_app" />
+        <item index="1" class="java.lang.String" itemvalue="Python.StellarN" />
+        <item index="2" class="java.lang.String" itemvalue="Python.SpectralSurfingGenerator" />
+        <item index="3" class="java.lang.String" itemvalue="Python.StageCalibrationGenerator" />
+        <item index="4" class="java.lang.String" itemvalue="Python.HSA" />
       </list>
     </recent_temporary>
   </component>
@@ -475,7 +482,7 @@
     <option name="remove_strategy" value="false" />
   </component>
   <component name="StructureViewFactory">
-    <option name="ACTIVE_ACTIONS" value=",SHOW_INHERITED,SHOW_FIELDS" />
+    <option name="ACTIVE_ACTIONS" value=",SHOW_INHERITED,SHOW_FIELDS,ALPHA_COMPARATOR" />
   </component>
   <component name="SvnConfiguration">
     <configuration />
@@ -529,20 +536,19 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1616" height="876" extended-state="6" />
-    <editor active="true" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.12532134" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.18573265" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3091398" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.40381792" sideWeight="0.51615506" order="6" side_tool="true" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3499327" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2997312" sideWeight="0.49353796" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.13560411" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
+      <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24495289" sideWeight="0.49353796" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.090618335" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.49394348" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.26917902" sideWeight="0.4838449" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.45887446" sideWeight="0.4838449" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.015424165" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.10181237" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -563,11 +569,6 @@
           <line>8</line>
           <option name="timeStamp" value="845" />
         </line-breakpoint>
-        <line-breakpoint suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/StellarN.py</url>
-          <line>837</line>
-          <option name="timeStamp" value="913" />
-        </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/Zaber.py</url>
           <line>42</line>
@@ -584,25 +585,11 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="979" />
+      <option name="time" value="986" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/ServerScripts/stage_spectrometer_discreet.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="15" column="45" lean-forward="true" selection-start-line="15" selection-start-column="45" selection-end-line="15" selection-end-column="45" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Devices/__init__.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://C:/Python36-64/Lib/site-packages/tifffile/tifffile.py" />
     <entry file="file://C:/Python36-64/Lib/codecs.py" />
     <entry file="file://C:/Python36-64/Lib/pkgutil.py" />
@@ -697,20 +684,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Microscoper.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="5695">
-          <caret line="344" column="0" lean-forward="false" selection-start-line="344" selection-start-column="0" selection-end-line="344" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Server.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3026">
-          <caret line="189" column="0" lean-forward="false" selection-start-line="191" selection-start-column="0" selection-end-line="193" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Math/Cython/How to.txt">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="51">
@@ -739,18 +712,54 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/../CRASHyperspectralAnalysis/HSA.py" />
     <entry file="file://$PROJECT_DIR$/Math/Cython/CMath.pyx">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="765">
+        <state relative-caret-position="614">
           <caret line="45" column="29" lean-forward="false" selection-start-line="45" selection-start-column="29" selection-end-line="45" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Devices/Display.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4250">
+          <caret line="257" column="28" lean-forward="false" selection-start-line="257" selection-start-column="28" selection-end-line="257" selection-end-column="28" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/StellarN.py">
+    <entry file="file://$PROJECT_DIR$/SpectralSurfingGenerator.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="18700">
-          <caret line="1115" column="26" lean-forward="false" selection-start-line="1115" selection-start-column="26" selection-end-line="1115" selection-end-column="26" />
+        <state relative-caret-position="43">
+          <caret line="294" column="116" lean-forward="false" selection-start-line="294" selection-start-column="61" selection-end-line="294" selection-end-column="116" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/StageCalibrationGenerator.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="277" column="0" lean-forward="false" selection-start-line="277" selection-start-column="0" selection-end-line="277" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Gui/Microscoper_gui.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="140">
+          <caret line="12" column="0" lean-forward="false" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Server.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Devices/AnalogIn.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3400">
+          <caret line="211" column="19" lean-forward="false" selection-start-line="211" selection-start-column="19" selection-end-line="211" selection-end-column="19" />
           <folding />
         </state>
       </provider>
@@ -763,51 +772,86 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Devices/AnalogIn.py">
+    <entry file="file://$PROJECT_DIR$/Gui/Spectrometer_gui.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="5491">
-          <caret line="334" column="40" lean-forward="false" selection-start-line="334" selection-start-column="40" selection-end-line="334" selection-end-column="40" />
+        <state relative-caret-position="3519">
+          <caret line="207" column="8" lean-forward="false" selection-start-line="207" selection-start-column="8" selection-end-line="207" selection-end-column="92" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/StellarN.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15079">
+          <caret line="929" column="12" lean-forward="false" selection-start-line="929" selection-start-column="12" selection-end-line="929" selection-end-column="12" />
+          <folding>
+            <element signature="e#67#86#0" expanded="true" />
+            <marker date="1525280040000" expanded="true" signature="35086:35125" ph="..." />
+            <marker date="1525280040000" expanded="true" signature="35086:35640" ph="..." />
+            <marker date="1525280040000" expanded="true" signature="35086:43346" ph="..." />
+            <marker date="1525280040000" expanded="true" signature="35277:35640" ph="..." />
+            <marker date="1525280040000" expanded="true" signature="35359:35534" ph="..." />
+            <marker date="1525280040000" expanded="true" signature="35671:35919" ph="..." />
+            <marker date="1525280040000" expanded="true" signature="35954:36484" ph="..." />
+            <marker date="1525280040000" expanded="true" signature="36189:36312" ph="..." />
+            <marker date="1525280040000" expanded="true" signature="36515:36946" ph="..." />
+            <marker date="1525280040000" expanded="true" signature="36561:36877" ph="..." />
+            <marker date="1525280040000" expanded="true" signature="36973:37008" ph="..." />
+            <marker date="1525280040000" expanded="true" signature="37035:37083" ph="..." />
+            <marker date="1525280040000" expanded="true" signature="37109:37156" ph="..." />
+            <marker date="1525280040000" expanded="true" signature="37181:37372" ph="..." />
+            <marker date="1525280040000" expanded="true" signature="37398:39670" ph="..." />
+            <marker date="1525280040000" expanded="true" signature="37476:38421" ph="..." />
+            <marker date="1525280040000" expanded="true" signature="38446:39561" ph="..." />
+            <marker date="1525280040000" expanded="true" signature="39616:39670" ph="..." />
+            <marker date="1525280040000" expanded="true" signature="39695:40735" ph="..." />
+            <marker date="1525280040000" expanded="true" signature="40774:40868" ph="..." />
+            <marker date="1525280040000" expanded="true" signature="40890:41066" ph="..." />
+            <marker date="1525280040000" expanded="true" signature="41091:41359" ph="..." />
+            <marker date="1525280040000" expanded="true" signature="41398:41575" ph="..." />
+            <marker date="1525280040000" expanded="true" signature="41614:42006" ph="..." />
+            <marker date="1525280040000" expanded="true" signature="41719:41922" ph="..." />
+            <marker date="1525280040000" expanded="true" signature="42038:42310" ph="..." />
+            <marker date="1525280040000" expanded="true" signature="42123:42310" ph="..." />
+            <marker date="1525280040000" expanded="true" signature="42349:43346" ph="..." />
+            <marker date="1525280040000" expanded="true" signature="42416:42485" ph="..." />
+            <marker date="1525280040000" expanded="true" signature="42664:43088" ph="..." />
+            <marker date="1525280040000" expanded="true" signature="42677:42871" ph="..." />
+            <marker date="1525280040000" expanded="true" signature="43013:43088" ph="..." />
+            <marker date="1525280040000" expanded="true" signature="43097:43283" ph="..." />
+            <marker date="1525280040000" expanded="true" signature="43394:43844" ph="..." />
+            <marker date="1525280040000" expanded="true" signature="43429:43517" ph="..." />
+            <marker date="1525280040000" expanded="true" signature="43542:43605" ph="..." />
+            <marker date="1525280040000" expanded="true" signature="43639:43729" ph="..." />
+            <marker date="1525280040000" expanded="true" signature="43766:43844" ph="..." />
+            <marker date="1525280040000" expanded="true" signature="43875:45484" ph="..." />
+            <marker date="1525280040000" expanded="true" signature="44007:44089" ph="..." />
+            <marker date="1525280040000" expanded="true" signature="44110:44359" ph="..." />
+            <marker date="1525280040000" expanded="true" signature="44406:44796" ph="..." />
+            <marker date="1525280040000" expanded="true" signature="44498:44675" ph="..." />
+            <marker date="1525280040000" expanded="true" signature="44820:45484" ph="..." />
+            <marker date="1525280040000" expanded="true" signature="44857:45012" ph="..." />
+            <marker date="1525280040000" expanded="true" signature="45027:45484" ph="..." />
+            <marker date="1525280040000" expanded="true" signature="45089:45484" ph="..." />
+            <marker date="1525280040000" expanded="true" signature="45487:47894" ph="..." />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Microscoper.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="346">
+          <caret line="459" column="0" lean-forward="true" selection-start-line="459" selection-start-column="0" selection-end-line="459" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Microscoper_app.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="8670">
-          <caret line="524" column="30" lean-forward="false" selection-start-line="524" selection-start-column="30" selection-end-line="524" selection-end-column="30" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/../CRASHyperspectralAnalysis/HSA.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" column="15" lean-forward="true" selection-start-line="8" selection-start-column="15" selection-end-line="8" selection-end-column="15" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Devices/Display.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="267">
-          <caret line="188" column="0" lean-forward="false" selection-start-line="188" selection-start-column="0" selection-end-line="188" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/SpectralSurfingGenerator.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="649">
-          <caret line="282" column="38" lean-forward="true" selection-start-line="282" selection-start-column="38" selection-end-line="282" selection-end-column="38" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/StageCalibrationGenerator.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="292">
-          <caret line="252" column="37" lean-forward="false" selection-start-line="252" selection-start-column="37" selection-end-line="252" selection-end-column="37" />
+        <state relative-caret-position="319">
+          <caret line="183" column="66" lean-forward="true" selection-start-line="183" selection-start-column="66" selection-end-line="183" selection-end-column="66" />
           <folding>
-            <element signature="e#0#42#0" expanded="true" />
+            <element signature="e#0#14#0" expanded="true" />
           </folding>
         </state>
       </provider>

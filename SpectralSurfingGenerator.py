@@ -129,7 +129,8 @@ class MplCanvas(FigureCanvas):
 
         # self.mpl_connect('pick_event', onpick1)
         focused_widget = QtWidgets.QApplication.focusWidget()
-        focused_widget.clearFocus()
+        if focused_widget is not None:
+            focused_widget.clearFocus()
         self.mpl_connect('button_press_event',buttonPress)
 
 

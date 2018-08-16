@@ -19,7 +19,12 @@ if sys.maxsize > 2 ** 32:
 else :
     sixfourbit = False
 
-class Microscope(Ui_Microscoper2017,QtWidgets.QMainWindow,Microscoper.Microscope):#,PMT):
+class Microscope(Microscoper.Microscope):
+    connectionPort = None
+    inputChannels = None
+    rasterOffset = [0,0]
+
+
     class Signal(QtCore.QObject):
         scanDoneSignal = QtCore.pyqtSignal()
         scanSoftDoneSignal = QtCore.pyqtSignal()
@@ -38,13 +43,13 @@ class Microscope(Ui_Microscoper2017,QtWidgets.QMainWindow,Microscoper.Microscope
         self.signal = self.Signal()
 
         #Initiates inheritance
-        Ui_Microscoper2017.__init__(self)
-        QtWidgets.QMainWindow.__init__(self)
+        self.mainWindow = QtWidgets.QMainWindow()
+        self.ui = Ui_Microscoper2017()
+
         Microscoper.Microscope.__init__(self)
         self.connection = clientObject(parent=self)
         self.cwd = os.path.dirname(os.path.realpath(__file__))
         self.verbose = True
-        self.setWindowIcon((QtGui.QIcon('Gui/plopperPig.ico')))
 
         # Setup UI
         self.setupUi()
@@ -52,16 +57,14 @@ class Microscope(Ui_Microscoper2017,QtWidgets.QMainWindow,Microscoper.Microscope
         #Load ini file
         self.loadDefaults()
 
-        self.setWindowTitle("Microscoper 2017")
-        self.setEnabled(False)
+        self.mainWindow.setEnabled(False)
 
         self.detectors = Microscoper.MicroscopeDetector(widgets=self.pmtWidgets,model="3101")
         self.shutter = Microscoper.MicroscopeShutter(widgets=self.shutterWidgets)
 
         self.setupStage()
 
-
-        self.setEnabled(True)
+        self.mainWindow.setEnabled(True)
         self.setupScanList()
 
         self.imageLevels = None
@@ -71,13 +74,11 @@ class Microscope(Ui_Microscoper2017,QtWidgets.QMainWindow,Microscoper.Microscope
         self.numberOfInputChannels = Microscoper.get_number_of_channels(self.inputChannels)
         self.xyPointScanPosition = self.rasterOffset[0], self.rasterOffset[1]
 
-
         # Preloads analog input multiprocessing
         self.ai = Microscoper.Analog_input(parent=self,
                                            inputChannels = self.inputChannels,
                                            polarityWidgets = self.pmtPolarityWidgets)
         self.createDisplay()
-
         self.spectrometer = SpectrometerExtension(self)
 
         self.connection.autoConnect(self.connectionPort)
@@ -87,18 +88,20 @@ class Microscope(Ui_Microscoper2017,QtWidgets.QMainWindow,Microscoper.Microscope
         scanFilePath = os.path.join(self.cwd,"Microscoper_app_scanList.csv")
         self.scanList = pd.read_csv(scanFilePath)
         scanList = self.scanList['Scan Name'].values
-        self.scanTypeWidget.clear()
-        self.scanTypeWidget.addItems(scanList)
+        self.ui.scanTypeWidget.clear()
+        self.ui.scanTypeWidget.addItems(scanList)
 
     def setupUi(self):
-        super().setupUi(self)
+        self.ui.setupUi(self.mainWindow)
         self.setupWidgets()
         self.setupMenuActions()
-        self.show()
+        self.mainWindow.setWindowIcon((QtGui.QIcon('Gui/plopperPig.ico')))
+        self.mainWindow.setWindowTitle("Microscoper 2018")
+        self.mainWindow.show()
         screen = QtGui.QDesktopWidget().screenGeometry()
-        size = self.geometry()
-        self.move(0, screen.height() - size.height() - 100)
-        self.activateWindow()
+        size = self.mainWindow.geometry()
+        self.mainWindow.move(0, screen.height() - size.height() - 100)
+        self.mainWindow.activateWindow()
 
     def setupStage(self):
         self.LinearStage = Microscoper.LStage(serialNumber=94839332, widgets=self.linearStageWidgets,name='linear stage')
@@ -106,7 +109,7 @@ class Microscope(Ui_Microscoper2017,QtWidgets.QMainWindow,Microscoper.Microscope
         self.yStage = Microscoper.LStage(serialNumber=94839333, widgets=self.yStageWidgets,name='y stage')
         if sixfourbit : self.zStage = Microscoper.ZStage(widgets=self.zStageWidgets)
 
-        if self.CalibrationFilenameText.text() is not '':
+        if self.ui.CalibrationFilenameText.text() is not '':
             try : self.__displayCalibration()
             except : pass
 
@@ -114,89 +117,89 @@ class Microscope(Ui_Microscoper2017,QtWidgets.QMainWindow,Microscoper.Microscope
 
     def updateUi(self):
         self.setupButtonActions()
-        self.FilenameText.setText(self.saveFilename)
-        self.DirectoryText.setText(self.saveDirectory)
+        self.ui.FilenameText.setText(self.saveFilename)
+        self.ui.DirectoryText.setText(self.saveDirectory)
 
     def setupWidgets(self):
-        self.pmtWidgets = [self.PMTSlider0, self.PMTLabel0, self.PMTZero0, self.PMTPreset0,
-                      self.PMTSlider1, self.PMTLabel1, self.PMTZero1, self.PMTPreset1,
-                      self.PMTSlider2, self.PMTLabel2, self.PMTZero2, self.PMTPreset2,
-                      self.PMTSlider3, self.PMTLabel3, self.PMTZero3, self.PMTPreset3,
-                      self.PMTStatusText]
+        self.pmtWidgets = [self.ui.PMTSlider0, self.ui.PMTLabel0, self.ui.PMTZero0, self.ui.PMTPreset0,
+                      self.ui.PMTSlider1, self.ui.PMTLabel1, self.ui.PMTZero1, self.ui.PMTPreset1,
+                      self.ui.PMTSlider2, self.ui.PMTLabel2, self.ui.PMTZero2, self.ui.PMTPreset2,
+                      self.ui.PMTSlider3, self.ui.PMTLabel3, self.ui.PMTZero3, self.ui.PMTPreset3,
+                      self.ui.PMTStatusText]
 
-        self.pmtPolarityWidgets = [self.pmtInvert1, self.pmtInvert2, self.pmtInvert3, self.pmtInvert4]
-        self.shutterWidgets = [self.PumpShutterButton, self.StokesShutterButton]
-        self.linearStageWidgets = [self.LstagePresetWidget1, self.LstagePresetWidget2, self.LstagePresetWidget3,
-                                   self.LStageStart,self.LStageEnd,self.LStageMove,self.currentLStagePositionText]
-        self.xStageWidgets = [self.xStagePresetWidget1, self.currentXStagePositionText, self.deltaOffset]
-        self.yStageWidgets = [self.yStagePresetWidget1, self.currentYStagePositionText, self.deltaOffset]
-        self.zStageWidgets = [self.ZStageStart, self.ZStageEnd, self.ZStageMove, self.zStagePresetWidget1, self.currentZStagePositionText]
+        self.pmtPolarityWidgets = [self.ui.pmtInvert1, self.ui.pmtInvert2, self.ui.pmtInvert3, self.ui.pmtInvert4]
+        self.shutterWidgets = [self.ui.PumpShutterButton, self.ui.StokesShutterButton]
+        self.linearStageWidgets = [self.ui.LstagePresetWidget1, self.ui.LstagePresetWidget2, self.ui.LstagePresetWidget3,
+                                   self.ui.LStageStart,self.ui.LStageEnd,self.ui.LStageMove,self.ui.currentLStagePositionText]
+        self.xStageWidgets = [self.ui.xStagePresetWidget1, self.ui.currentXStagePositionText, self.ui.deltaOffset]
+        self.yStageWidgets = [self.ui.yStagePresetWidget1, self.ui.currentYStagePositionText, self.ui.deltaOffset]
+        self.zStageWidgets = [self.ui.ZStageStart, self.ui.ZStageEnd, self.ui.ZStageMove, self.ui.zStagePresetWidget1, self.ui.currentZStagePositionText]
 
     def setupMenuActions(self):
-        self.action_Quit.triggered.connect(self.fileQuit)
-        self.action_setImageLevels.triggered.connect(self.setImageLevels)
+        self.ui.action_Quit.triggered.connect(self.fileQuit)
+        self.ui.action_setImageLevels.triggered.connect(self.setImageLevels)
         # self.action_Spectrometer.triggered.connect(self.openSpectrometer)
-        self.action_Connect.triggered.connect(self.connection.startClientConnection)
+        self.ui.action_Connect.triggered.connect(self.connection.startClientConnection)
         # self.action_Rotation_Stage.triggered.connect(self.openRotationStage)
-        self.actionBring_all_to_front.triggered.connect(self.__maximizeWindows)
+        self.ui.actionBring_all_to_front.triggered.connect(self.__maximizeWindows)
 
     def setupButtonActions(self):
-        self.PMTPreset0.clicked.connect(lambda: self.detectors.setPMTsPresetActions[0](self.acquiring))
-        self.PMTPreset1.clicked.connect(lambda: self.detectors.setPMTsPresetActions[1](self.acquiring))
-        self.PMTPreset2.clicked.connect(lambda: self.detectors.setPMTsPresetActions[2](self.acquiring))
-        self.PMTPreset3.clicked.connect(lambda: self.detectors.setPMTsPresetActions[3](self.acquiring))
+        self.ui.PMTPreset0.clicked.connect(lambda: self.detectors.setPMTsPresetActions[0](self.acquiring))
+        self.ui.PMTPreset1.clicked.connect(lambda: self.detectors.setPMTsPresetActions[1](self.acquiring))
+        self.ui.PMTPreset2.clicked.connect(lambda: self.detectors.setPMTsPresetActions[2](self.acquiring))
+        self.ui.PMTPreset3.clicked.connect(lambda: self.detectors.setPMTsPresetActions[3](self.acquiring))
 
-        self.PMTZero0.clicked.connect(lambda : self.detectors.setPMTsZeroActions[0](self.acquiring))
-        self.PMTZero1.clicked.connect(lambda: self.detectors.setPMTsZeroActions[1](self.acquiring))
-        self.PMTZero2.clicked.connect(lambda: self.detectors.setPMTsZeroActions[2](self.acquiring))
-        self.PMTZero3.clicked.connect(lambda: self.detectors.setPMTsZeroActions[3](self.acquiring))
+        self.ui.PMTZero0.clicked.connect(lambda : self.detectors.setPMTsZeroActions[0](self.acquiring))
+        self.ui.PMTZero1.clicked.connect(lambda: self.detectors.setPMTsZeroActions[1](self.acquiring))
+        self.ui.PMTZero2.clicked.connect(lambda: self.detectors.setPMTsZeroActions[2](self.acquiring))
+        self.ui.PMTZero3.clicked.connect(lambda: self.detectors.setPMTsZeroActions[3](self.acquiring))
 
-        self.PMTSlider0.valueChanged.connect(lambda : self.detectors.setPMTsSliderActions[0](self.acquiring))
-        self.PMTSlider1.valueChanged.connect(lambda : self.detectors.setPMTsSliderActions[1](self.acquiring))
-        self.PMTSlider2.valueChanged.connect(lambda : self.detectors.setPMTsSliderActions[2](self.acquiring))
-        self.PMTSlider3.valueChanged.connect(lambda: self.detectors.setPMTsSliderActions[3](self.acquiring))
+        self.ui.PMTSlider0.valueChanged.connect(lambda : self.detectors.setPMTsSliderActions[0](self.acquiring))
+        self.ui.PMTSlider1.valueChanged.connect(lambda : self.detectors.setPMTsSliderActions[1](self.acquiring))
+        self.ui.PMTSlider2.valueChanged.connect(lambda : self.detectors.setPMTsSliderActions[2](self.acquiring))
+        self.ui.PMTSlider3.valueChanged.connect(lambda: self.detectors.setPMTsSliderActions[3](self.acquiring))
 
-        self.PumpShutterButton.clicked.connect(self.shutter.Set_PumpShutter) # from class Shutters
-        self.StokesShutterButton.clicked.connect(self.shutter.Set_StokesShutter)
-        self.AcquireButton.clicked.connect(self.acquireSet)
-        self.browseButton.clicked.connect(self.__getSaveFile)
-        self.browseCalibrationButton.clicked.connect(self.__getCalibrationFile)
-        self.DirectoryText.textChanged.connect(self.saveDefaults)
-        self.LstagePresetButton1.clicked.connect(self.LinearStage.movePresetFunction[1]) #from class LSTAGE
-        self.LstagePresetButton2.clicked.connect(self.LinearStage.movePresetFunction[2])
-        self.LstagePresetButton3.clicked.connect(self.LinearStage.movePresetFunction[3])
-        self.upButton.clicked.connect(lambda: self.yStage.MoveDir("Up", self.microcopeOffsetRadio.isChecked()))
-        self.upButton.clicked.connect(lambda: self.changeRasterOffset("Up",self.galvoOffsetRadio.isChecked()))
-        self.upButton.clicked.connect(self.acquireSoftRestart)
-        self.downButton.clicked.connect(lambda: self.yStage.MoveDir("Down",self.microcopeOffsetRadio.isChecked()))
-        self.downButton.clicked.connect(lambda: self.changeRasterOffset("Down", self.galvoOffsetRadio.isChecked()))
-        self.downButton.clicked.connect(self.acquireSoftRestart)
-        self.leftButton.clicked.connect(lambda: self.xStage.MoveDir("Left",self.microcopeOffsetRadio.isChecked()))
-        self.leftButton.clicked.connect(lambda: self.changeRasterOffset("Left", self.galvoOffsetRadio.isChecked()))
-        self.leftButton.clicked.connect(self.acquireSoftRestart)
-        self.rightButton.clicked.connect(lambda: self.xStage.MoveDir("Right",self.microcopeOffsetRadio.isChecked()))
-        self.rightButton.clicked.connect(lambda: self.changeRasterOffset("Right",self.galvoOffsetRadio.isChecked()))
-        self.rightButton.clicked.connect(self.acquireSoftRestart)
-        self.zoomWidget.valueChanged.connect(self.acquireSoftRestart)
-        self.zoomWidget.valueChanged.connect(self.saveDefaults)
-        self.dwellTime.valueChanged.connect(self.acquireSoftRestart)
-        self.dwellTime.valueChanged.connect(self.saveDefaults)
-        self.resolutionWidget.valueChanged.connect(self.acquireSoftRestart)
-        self.resolutionWidget.valueChanged.connect(self.saveDefaults)
-        self.fillFractionWidget.valueChanged.connect(self.acquireSoftRestart)
-        self.fillFractionWidget.valueChanged.connect(self.saveDefaults)
-        self.microcopeOffsetRadio.clicked.connect(self.changeDOffsetLabel)
-        self.galvoOffsetRadio.clicked.connect(self.changeDOffsetLabel)
-        self.stageReadRadioNormal.clicked.connect(self.changeStageRead)
-        self.stageReadRadioCalibrated.clicked.connect(self.changeStageRead)
-        self.xPresetButton1.clicked.connect(self.xStage.movePresetFunction[1])
-        self.yPresetButton1.clicked.connect(self.yStage.movePresetFunction[1])
-        if sixfourbit : self.zPresetButton1.clicked.connect(self.zStage.movePresetFunction[1])
-        self.scanTypeWidget.currentIndexChanged.connect(self.changeScanTypeWidget)
+        self.ui.PumpShutterButton.clicked.connect(self.shutter.Set_PumpShutter) # from class Shutters
+        self.ui.StokesShutterButton.clicked.connect(self.shutter.Set_StokesShutter)
+        self.ui.AcquireButton.clicked.connect(self.acquireSet)
+        self.ui.browseButton.clicked.connect(self.__getSaveFile)
+        self.ui.browseCalibrationButton.clicked.connect(self.__getCalibrationFile)
+        self.ui.DirectoryText.textChanged.connect(self.saveDefaults)
+        self.ui.LstagePresetButton1.clicked.connect(self.LinearStage.movePresetFunction[1]) #from class LSTAGE
+        self.ui.LstagePresetButton2.clicked.connect(self.LinearStage.movePresetFunction[2])
+        self.ui.LstagePresetButton3.clicked.connect(self.LinearStage.movePresetFunction[3])
+        self.ui.upButton.clicked.connect(lambda: self.yStage.MoveDir("Up", self.ui.microcopeOffsetRadio.isChecked()))
+        self.ui.upButton.clicked.connect(lambda: self.changeRasterOffset("Up",self.ui.galvoOffsetRadio.isChecked()))
+        self.ui.upButton.clicked.connect(self.acquireSoftRestart)
+        self.ui.downButton.clicked.connect(lambda: self.yStage.MoveDir("Down",self.ui.microcopeOffsetRadio.isChecked()))
+        self.ui.downButton.clicked.connect(lambda: self.changeRasterOffset("Down", self.ui.galvoOffsetRadio.isChecked()))
+        self.ui.downButton.clicked.connect(self.acquireSoftRestart)
+        self.ui.leftButton.clicked.connect(lambda: self.xStage.MoveDir("Left",self.ui.microcopeOffsetRadio.isChecked()))
+        self.ui.leftButton.clicked.connect(lambda: self.changeRasterOffset("Left", self.ui.galvoOffsetRadio.isChecked()))
+        self.ui.leftButton.clicked.connect(self.acquireSoftRestart)
+        self.ui.rightButton.clicked.connect(lambda: self.xStage.MoveDir("Right",self.ui.microcopeOffsetRadio.isChecked()))
+        self.ui.rightButton.clicked.connect(lambda: self.changeRasterOffset("Right",self.ui.galvoOffsetRadio.isChecked()))
+        self.ui.rightButton.clicked.connect(self.acquireSoftRestart)
+        self.ui.zoomWidget.valueChanged.connect(self.acquireSoftRestart)
+        self.ui.zoomWidget.valueChanged.connect(self.saveDefaults)
+        self.ui.dwellTime.valueChanged.connect(self.acquireSoftRestart)
+        self.ui.dwellTime.valueChanged.connect(self.saveDefaults)
+        self.ui.resolutionWidget.valueChanged.connect(self.acquireSoftRestart)
+        self.ui.resolutionWidget.valueChanged.connect(self.saveDefaults)
+        self.ui.fillFractionWidget.valueChanged.connect(self.acquireSoftRestart)
+        self.ui.fillFractionWidget.valueChanged.connect(self.saveDefaults)
+        self.ui.microcopeOffsetRadio.clicked.connect(self.changeDOffsetLabel)
+        self.ui.galvoOffsetRadio.clicked.connect(self.changeDOffsetLabel)
+        self.ui.stageReadRadioNormal.clicked.connect(self.changeStageRead)
+        self.ui.stageReadRadioCalibrated.clicked.connect(self.changeStageRead)
+        self.ui.xPresetButton1.clicked.connect(self.xStage.movePresetFunction[1])
+        self.ui.yPresetButton1.clicked.connect(self.yStage.movePresetFunction[1])
+        if sixfourbit : self.ui.zPresetButton1.clicked.connect(self.zStage.movePresetFunction[1])
+        self.ui.scanTypeWidget.currentIndexChanged.connect(self.changeScanTypeWidget)
 
     def getScanAttributes(self):
-        index = self.scanTypeWidget.currentIndex()
-        self.scanName = self.scanTypeWidget.currentText()
+        index = self.ui.scanTypeWidget.currentIndex()
+        self.scanName = self.ui.scanTypeWidget.currentText()
         self.scanStage = self.scanList.loc[index]['Stage']
         self.scanMove = self.scanList.loc[index]['Move Type']
         self.scanDetector = self.scanList.loc[index]['Detector Type']
@@ -204,8 +207,8 @@ class Microscope(Ui_Microscoper2017,QtWidgets.QMainWindow,Microscoper.Microscope
         self.scanUnits = self.scanList.loc[index]['Move Units']
 
     def changeDOffsetLabel(self):
-        if self.microcopeOffsetRadio.isChecked() : self.deltaOffsetLabel.setText("dOffset (mm)")
-        else : self.deltaOffsetLabel.setText("dOffset(V)")
+        if self.ui.microcopeOffsetRadio.isChecked() : self.ui.deltaOffsetLabel.setText("dOffset (mm)")
+        else : self.ui.deltaOffsetLabel.setText("dOffset(V)")
 
     def changeStageRead(self):
         pass
@@ -213,10 +216,10 @@ class Microscope(Ui_Microscoper2017,QtWidgets.QMainWindow,Microscoper.Microscope
 
 
     def changeScanTypeWidget(self):
-        index = self.scanTypeWidget.currentIndex()
+        index = self.ui.scanTypeWidget.currentIndex()
         incrementString = self.scanList.loc[index]['Move Units']
         try :
-            self.LStageMoveLabel.setText(incrementString)
+            self.ui.LStageMoveLabel.setText(incrementString)
             # self.LStageMoveLabel.setText(text[self.scanTypeWidget.currentText()])
         except :
             pass
@@ -256,13 +259,13 @@ class Microscope(Ui_Microscoper2017,QtWidgets.QMainWindow,Microscoper.Microscope
         direction = direction.lower()
         if execute:
             if ('up' in direction):
-                self.rasterOffset[1] += self.deltaOffset.value()
+                self.rasterOffset[1] += self.ui.deltaOffset.value()
             if ('right' in direction):
-                self.rasterOffset[0] += self.deltaOffset.value()
+                self.rasterOffset[0] += self.ui.deltaOffset.value()
             if ('down' in direction):
-                self.rasterOffset[1] -= self.deltaOffset.value()
+                self.rasterOffset[1] -= self.ui.deltaOffset.value()
             if ('left' in direction):
-                self.rasterOffset[0] -= self.deltaOffset.value()
+                self.rasterOffset[0] -= self.ui.deltaOffset.value()
             print(self.rasterOffset)
 
     def setImageLevels(self):
@@ -307,24 +310,24 @@ class Microscope(Ui_Microscoper2017,QtWidgets.QMainWindow,Microscoper.Microscope
             self.acquireStop()
 
     def acquire(self):
-        self.AcquireButton.setText("Stop Acquire")
+        self.ui.AcquireButton.setText("Stop Acquire")
         self.acquireInit()
         self.acquireStart()
 
     def acquireInit(self):
 
         ## Initialize defaults --------------------------------------
-        self.zoom = int(self.zoomWidget.value())
+        self.zoom = int(self.ui.zoomWidget.value())
         self.getxyScanPosition()
-        self.resolution = (int(self.resolutionWidget.value()), int(self.resolutionWidget.value()))
-        self.msline = self.dwellTime.value()
+        self.resolution = (int(self.ui.resolutionWidget.value()), int(self.ui.resolutionWidget.value()))
+        self.msline = self.ui.dwellTime.value()
         self.__calculate_fillFraction()
         self.getScanAttributes()
         if self.scanStage == "LinearStage":
             self.LinearStage.SetMoveType(self.scanMove)
         elif self.scanStage == "zStage":
             self.zStage.SetMoveType(self.scanMove)
-            self.zStage.zTolerance = self.ZStageMove.value()/10
+            self.zStage.zTolerance = self.ui.ZStageMove.value()/10
         #############################################################
 
         ## Initiatelize spectrometer --------------------------------
@@ -347,33 +350,33 @@ class Microscope(Ui_Microscoper2017,QtWidgets.QMainWindow,Microscoper.Microscope
 
 
         ## Generate save files --------------------------------------
-        self.metadata = {'Zoom' : self.zoomWidget.value(),
+        self.metadata = {'Zoom' : self.ui.zoomWidget.value(),
                          'Line dwell time' : self.msline,
                          'Pixel dwell time' : (1000*self.msline)/(self.resolution[0]*(1+self.ff)),
                          'Fill fraction' : self.ff,
                          'Resolution' : self.resolution,
-                         'Linear Scan speed' : self.LStageMove.value(),
+                         'Linear Scan speed' : self.ui.LStageMove.value(),
                          'Z-steps' : self.zStage.MoveDef.value(),
-                         'PMT0' : self.PMTSlider0.value(),
-                         'PMT1' : self.PMTSlider1.value(),
-                         'PMT2' : self.PMTSlider2.value(),
+                         'PMT0' : self.ui.PMTSlider0.value(),
+                         'PMT1' : self.ui.PMTSlider1.value(),
+                         'PMT2' : self.ui.PMTSlider2.value(),
                          'ImageLevelsMin' : self.imageMinimums,
                          'ImageLevelsMax' : self.imageMaximums,
-                         'xposition' : self.currentXStagePositionText.text(),
-                         'yposition' : self.currentYStagePositionText.text(),
-                         'zposition' : self.currentZStagePositionText.text(),
+                         'xposition' : self.ui.currentXStagePositionText.text(),
+                         'yposition' : self.ui.currentYStagePositionText.text(),
+                         'zposition' : self.ui.currentZStagePositionText.text(),
                          }
 
         self.saveFileIndex = time.strftime("%Y_%m_%d_%H%M%S", time.gmtime())
 
-        if self.saveCheckBox.isChecked():
-            if self.DirectoryText.text() == '':
+        if self.ui.saveCheckBox.isChecked():
+            if self.ui.DirectoryText.text() == '':
                 self.saveFilename = ''
             else :
-                if not os.path.exists(self.DirectoryText.text()):
-                    os.mkdir(self.DirectoryText.text())
+                if not os.path.exists(self.ui.DirectoryText.text()):
+                    os.mkdir(self.ui.DirectoryText.text())
 
-                self.saveFilename = os.path.join(self.DirectoryText.text(), self.FilenameText.text())
+                self.saveFilename = os.path.join(self.ui.DirectoryText.text(), self.ui.FilenameText.text())
                 self.saveFilename += "_{}".format(self.saveFileIndex)
                 if not os.path.exists(self.saveFilename):
                     os.mkdir(self.saveFilename)
@@ -421,14 +424,14 @@ class Microscope(Ui_Microscoper2017,QtWidgets.QMainWindow,Microscoper.Microscope
                          fill_fraction=self.ff,
                          hwbuffer=self.device_buffer,
                          verbose=self.verbose,
-                         save=self.saveCheckBox.isChecked(),
+                         save=self.ui.saveCheckBox.isChecked(),
                          saveFilename=self.saveFilename,
                          saveFileIndex=self.saveFileIndex,
                          xAxis=self.xAxis,
                          metadata=self.metadata,
                          waitForLastFrame=waitForLastFrame,
                          singleFrameScan=singleFrameScan,
-                         framesToAverage=self.scansToAverage.value(),
+                         framesToAverage=self.ui.scansToAverage.value(),
                          dataMaximums=self.imageMaximums,
                          dataMinimums=self.imageMinimums,
                          )
@@ -478,9 +481,9 @@ class Microscope(Ui_Microscoper2017,QtWidgets.QMainWindow,Microscoper.Microscope
 
     def acquireSoftStart(self):
         self.signal.scanStartSignal.emit()
-        self.zoom = int(self.zoomWidget.value())
-        self.resolution = (int(self.resolutionWidget.value()), int(self.resolutionWidget.value()))
-        self.msline = self.dwellTime.value()
+        self.zoom = int(self.ui.zoomWidget.value())
+        self.resolution = (int(self.ui.resolutionWidget.value()), int(self.ui.resolutionWidget.value()))
+        self.msline = self.ui.dwellTime.value()
         self.__calculate_fillFraction()
         # self.shutter.Microscope_shutter_open()
         time.sleep(0.1)
@@ -503,14 +506,14 @@ class Microscope(Ui_Microscoper2017,QtWidgets.QMainWindow,Microscoper.Microscope
                          fill_fraction=self.ff,
                          hwbuffer=self.device_buffer,
                          verbose=self.verbose,
-                         save=self.saveCheckBox.isChecked(),
+                         save=self.ui.saveCheckBox.isChecked(),
                          saveFilename=self.saveFilename,
                          saveFileIndex=self.saveFileIndex,
                          xAxis=self.xAxis,
                          metadata=self.metadata,
                          waitForLastFrame=waitForLastFrame,
                          singleFrameScan=singleFrameScan,
-                         framesToAverage=self.scansToAverage.value(),
+                         framesToAverage=self.ui.scansToAverage.value(),
                          dataMaximums=self.imageMaximums,
                          dataMinimums=self.imageMinimums,
                          )
@@ -564,7 +567,7 @@ class Microscope(Ui_Microscoper2017,QtWidgets.QMainWindow,Microscoper.Microscope
             self.scanStatusThreadInterrupt = True
             self.shutter.Microscope_shutter_close()
             self.detectors.setPMTsZero()
-            self.AcquireButton.setText("Acquire")
+            self.ui.AcquireButton.setText("Acquire")
             self.acquiring = False
         except Exception as e:
             print(e)
@@ -598,7 +601,7 @@ class Microscope(Ui_Microscoper2017,QtWidgets.QMainWindow,Microscoper.Microscope
             while (self.zStage.currentPosition < self.zStage.endScanPosition) and (not self.scanStatusThreadInterrupt):
                 if not self.ai.reading:
                     self.acquireSoftStop()
-                    targetPosition = self.ZStageStart.value() + self.stageMoveIndex*self.zStage.MoveDef.value()
+                    targetPosition = self.ui.ZStageStart.value() + self.stageMoveIndex*self.zStage.MoveDef.value()
                     self.stageMoveIndex += 1
                     self.zStage.MoveAbs(targetPosition)
                     while self.zStage.moving:
@@ -614,7 +617,7 @@ class Microscope(Ui_Microscoper2017,QtWidgets.QMainWindow,Microscoper.Microscope
         if self.scanMove == "None": stageDefault()
         if self.scanMove == "Continuous": stageContinuousUntilEnds()
         if self.scanMove == "Discrete":
-            self.stageStartPosition = self.LStageStart.value()
+            self.stageStartPosition = self.ui.LStageStart.value()
             self.stageMoveIndex = 1
             if self.scanStage == "LinearStage": stageDiscreteUntilEnds()
             if self.scanStage == "zStage": zDiscreteUntilEnds()
@@ -627,21 +630,21 @@ class Microscope(Ui_Microscoper2017,QtWidgets.QMainWindow,Microscoper.Microscope
 
     def spectrometerScan(self):
         self.spectrometer.scan()
-        if self.saveCheckBox.isChecked():
+        if self.ui.saveCheckBox.isChecked():
             if self.saveDirectory is not '':
-                fileName = os.path.join(self.DirectoryText.text(), self.saveFilename)
+                fileName = os.path.join(self.ui.DirectoryText.text(), self.saveFilename)
                 xAxis = self.xAxis
                 self.spectrometer.save(fileName=fileName, xAxis=xAxis)
         self.connection.askForResponse(receiver="spectrometer",sender="main",timeout=5)
 
     def closeEvent(self, event):
         self.fileQuit()
-        if self.isEnabled():
+        if self.mainWindow.isEnabled():
             event.accept()
         else : event.ignore()
 
     def fileQuit(self):
-       if self.isEnabled():
+       if self.mainWindow.isEnabled():
            print('Quit pressed')
            self.listening = False
            if self.acquiring:
@@ -660,7 +663,7 @@ class Microscope(Ui_Microscoper2017,QtWidgets.QMainWindow,Microscoper.Microscope
            self.ai.terminate()
            self.saveDefaults()
            self.connection.stopClientConnection()
-           self.close()
+           self.mainWindow.close()
 
     def loadDefaults(self):
 
@@ -719,24 +722,24 @@ class Microscope(Ui_Microscoper2017,QtWidgets.QMainWindow,Microscoper.Microscope
             self.outputChannels = config['Settings']['Output channels']
             self.detectorMax = int(config['Settings']['Detector max'])
             self.detectorMin = int(config['Settings']['Detector min'])
-            self.resolutionWidget.setValue(int(config['Settings']['Resolution']))
-            self.zoomWidget.setValue(int(config['Settings']['Zoom']))
-            self.dwellTime.setValue(float(config['Settings']['Dwell time']))
-            self.fillFractionWidget.setValue(float(config['Settings']['Fill fraction']))
-            self.LStageStart.setValue(float(config['Stage']["Start position"]))
-            self.LStageEnd.setValue(float(config['Stage']['End position']))
-            self.LStageMove.setValue(float(config['Stage']['Increments']))
-            self.ZStageStart.setValue(float(config['Stage']["Z Start position"]))
-            self.ZStageEnd.setValue(float(config['Stage']['Z End position']))
-            self.ZStageMove.setValue(float(config['Stage']['Z Increments']))
-            self.LstagePresetWidget1.setValue(float(config['Stage']['l preset1']))
-            self.LstagePresetWidget2.setValue(float(config['Stage']['l preset2']))
-            self.LstagePresetWidget3.setValue(float(config['Stage']['l preset3']))
-            self.xStagePresetWidget1.setValue(float(config['Stage']['x preset']))
-            self.yStagePresetWidget1.setValue(float(config['Stage']['y preset']))
-            self.zStagePresetWidget1.setValue(float(config['Stage']['z preset']))
-            self.CalibrationFilenameText.setText(config['Calibration']['Calibration File'])
-            self.scansToAverage.setValue(int(config['Scan']['Frames to average']))
+            self.ui.resolutionWidget.setValue(int(config['Settings']['Resolution']))
+            self.ui.zoomWidget.setValue(int(config['Settings']['Zoom']))
+            self.ui.dwellTime.setValue(float(config['Settings']['Dwell time']))
+            self.ui.fillFractionWidget.setValue(float(config['Settings']['Fill fraction']))
+            self.ui.LStageStart.setValue(float(config['Stage']["Start position"]))
+            self.ui.LStageEnd.setValue(float(config['Stage']['End position']))
+            self.ui.LStageMove.setValue(float(config['Stage']['Increments']))
+            self.ui.ZStageStart.setValue(float(config['Stage']["Z Start position"]))
+            self.ui.ZStageEnd.setValue(float(config['Stage']['Z End position']))
+            self.ui.ZStageMove.setValue(float(config['Stage']['Z Increments']))
+            self.ui.LstagePresetWidget1.setValue(float(config['Stage']['l preset1']))
+            self.ui.LstagePresetWidget2.setValue(float(config['Stage']['l preset2']))
+            self.ui.LstagePresetWidget3.setValue(float(config['Stage']['l preset3']))
+            self.ui.xStagePresetWidget1.setValue(float(config['Stage']['x preset']))
+            self.ui.yStagePresetWidget1.setValue(float(config['Stage']['y preset']))
+            self.ui.zStagePresetWidget1.setValue(float(config['Stage']['z preset']))
+            self.ui.CalibrationFilenameText.setText(config['Calibration']['Calibration File'])
+            self.ui.scansToAverage.setValue(int(config['Scan']['Frames to average']))
             self.imageMaximums = []
             self.imageMinimums = []
             for i in range(0,Microscoper.get_number_of_channels(self.inputChannels)):
@@ -762,8 +765,8 @@ class Microscope(Ui_Microscoper2017,QtWidgets.QMainWindow,Microscoper.Microscope
         config = configparser.ConfigParser()
 
         config['Files'] = {}
-        config['Files']['Default filename'] = self.FilenameText.text()
-        config['Files']['Default directory'] = self.DirectoryText.text()
+        config['Files']['Default filename'] = self.ui.FilenameText.text()
+        config['Files']['Default directory'] = self.ui.DirectoryText.text()
         config['Settings'] = {}
         config['Settings']['Device buffer'] = str(self.device_buffer)
         config['Settings']['Maximum scan amplitude'] = str(self.maxScanAmplitude)
@@ -771,27 +774,27 @@ class Microscope(Ui_Microscoper2017,QtWidgets.QMainWindow,Microscoper.Microscope
         config['Settings']['Output channels'] = self.outputChannels
         config['Settings']['Detector max'] = str(self.detectorMax)
         config['Settings']['Detector min'] = str(self.detectorMin)
-        config['Settings']['Resolution'] = str(int(self.resolutionWidget.value()))
-        config['Settings']['Zoom'] = str(int(self.zoomWidget.value()))
-        config['Settings']['Dwell time'] = str(self.dwellTime.value())
-        config['Settings']['Fill fraction'] = str(self.fillFractionWidget.value())
+        config['Settings']['Resolution'] = str(int(self.ui.resolutionWidget.value()))
+        config['Settings']['Zoom'] = str(int(self.ui.zoomWidget.value()))
+        config['Settings']['Dwell time'] = str(self.ui.dwellTime.value())
+        config['Settings']['Fill fraction'] = str(self.ui.fillFractionWidget.value())
         config['Stage'] = {}
-        config['Stage']["Start position"] = str(self.LStageStart.value())
-        config['Stage']['End position'] = str(self.LStageEnd.value())
-        config['Stage']['Increments'] = str(self.LStageMove.value())
-        config['Stage']["Z Start position"] = str(self.ZStageStart.value())
-        config['Stage']['Z End position'] = str(self.ZStageEnd.value())
-        config['Stage']['Z Increments'] = str(self.ZStageMove.value())
-        config['Stage']['l preset1'] = str(self.LstagePresetWidget1.value())
-        config['Stage']['l preset2'] = str(self.LstagePresetWidget2.value())
-        config['Stage']['l preset3'] = str(self.LstagePresetWidget3.value())
-        config['Stage']['x preset'] = str(self.xStagePresetWidget1.value())
-        config['Stage']['y preset'] = str(self.yStagePresetWidget1.value())
-        config['Stage']['z preset'] = str(self.zStagePresetWidget1.value())
+        config['Stage']["Start position"] = str(self.ui.LStageStart.value())
+        config['Stage']['End position'] = str(self.ui.LStageEnd.value())
+        config['Stage']['Increments'] = str(self.ui.LStageMove.value())
+        config['Stage']["Z Start position"] = str(self.ui.ZStageStart.value())
+        config['Stage']['Z End position'] = str(self.ui.ZStageEnd.value())
+        config['Stage']['Z Increments'] = str(self.ui.ZStageMove.value())
+        config['Stage']['l preset1'] = str(self.ui.LstagePresetWidget1.value())
+        config['Stage']['l preset2'] = str(self.ui.LstagePresetWidget2.value())
+        config['Stage']['l preset3'] = str(self.ui.LstagePresetWidget3.value())
+        config['Stage']['x preset'] = str(self.ui.xStagePresetWidget1.value())
+        config['Stage']['y preset'] = str(self.ui.yStagePresetWidget1.value())
+        config['Stage']['z preset'] = str(self.ui.zStagePresetWidget1.value())
         config['Calibration'] = {}
-        config['Calibration']['Calibration File'] = self.CalibrationFilenameText.text()
+        config['Calibration']['Calibration File'] = self.ui.CalibrationFilenameText.text()
         config['Scan'] = {}
-        config['Scan']['Frames to average'] = str(int(self.scansToAverage.value()))
+        config['Scan']['Frames to average'] = str(int(self.ui.scansToAverage.value()))
         for i in range(0, Microscoper.get_number_of_channels(self.inputChannels)):
             config['Scan']['Image Maximums %i' % i] = str(self.imageMaximums[i])
             config['Scan']['Image Minimums %i' % i] = str(self.imageMinimums[i])
@@ -806,7 +809,7 @@ class Microscope(Ui_Microscoper2017,QtWidgets.QMainWindow,Microscoper.Microscope
             config.write(configfile)
 
     def __calculate_fillFraction(self):
-        self.ff = self.fillFractionWidget.value()
+        self.ff = self.ui.fillFractionWidget.value()
         # if self.zoomWidget.value() < 4:
         #     self.ff = 1
         # else :
@@ -815,16 +818,16 @@ class Microscope(Ui_Microscoper2017,QtWidgets.QMainWindow,Microscoper.Microscope
 
     def __getSaveFile(self):
         self.saveDirectory = QtWidgets.QFileDialog.getExistingDirectory()
-        self.DirectoryText.setText(self.saveDirectory)
+        self.ui.DirectoryText.setText(self.saveDirectory)
 
     def __getCalibrationFile(self):
         self.calibrationFile = QtWidgets.QFileDialog.getOpenFileName()[0]
-        self.CalibrationFilenameText.setText(self.calibrationFile)
+        self.ui.CalibrationFilenameText.setText(self.calibrationFile)
         self.__displayCalibration()
 
     def __displayCalibration(self):
         self.displayingCalibration = False
-        self.calibrationFile = self.CalibrationFilenameText.text()
+        self.calibrationFile = self.ui.CalibrationFilenameText.text()
         try:
             calibrationFile = open(self.calibrationFile, "r")
             self.stageCalibrationFormulaString = calibrationFile.read()
@@ -832,8 +835,8 @@ class Microscope(Ui_Microscoper2017,QtWidgets.QMainWindow,Microscoper.Microscope
             def calculate():
                 while self.displayingCalibration:
                     wavenumber = eval(
-                        self.stageCalibrationFormulaString.replace("x", self.currentLStagePositionText.text()))
-                    self.WavenumberText.setText('%i cm-1' % wavenumber)
+                        self.stageCalibrationFormulaString.replace("x", self.ui.currentLStagePositionText.text()))
+                    self.ui.WavenumberText.setText('%i cm-1' % wavenumber)
                     time.sleep(0.1)
 
             self.displayingCalibration = True
@@ -846,12 +849,12 @@ class Microscope(Ui_Microscoper2017,QtWidgets.QMainWindow,Microscoper.Microscope
 
     def __returnCalibration(self):
         wavenumber = eval(
-            self.stageCalibrationFormulaString.replace("x", self.currentLStagePositionText.text()))
+            self.stageCalibrationFormulaString.replace("x", self.ui.currentLStagePositionText.text()))
         return wavenumber
 
     def __maximizeWindows(self):
         handles = []
-        handles.append(ctypes.windll.user32.FindWindowW(None, "Microscoper 2017"))
+        handles.append(ctypes.windll.user32.FindWindowW(None, "Microscoper 2018"))
         handles.append(ctypes.windll.user32.FindWindowW(None, "Microscoper Display 2017"))
         handles.append(ctypes.windll.user32.FindWindowW(None, "Microscoper Server 2017"))
         handles.append(ctypes.windll.user32.FindWindowW(None, "Zaber 2017"))

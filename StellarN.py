@@ -10,6 +10,7 @@ from PyQt5 import QtCore, QtWidgets, QtGui
 from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
 from matplotlib.backends.backend_qt5 import NavigationToolbar2QT as NavigationToolbar
 from threading import Thread
+from multiprocessing.pool import ThreadPool
 from scipy.optimize import curve_fit
 from matplotlib.figure import Figure
 import numpy as np
@@ -329,16 +330,16 @@ class SpectrometerWidget(MplCanvas, PyStellarNet):
             for i, scan in enumerate(self.deviceScanEnable):
                 if scan:
                 # init_time = time.time()
-                    self.intensities[i] = self.SNScan(i+1)*self.calibration[i]
+                    self.intensities[i] = self.SNScan(i+1)
                 # elapsed_time = time.time() - init_time
                 # print("Device %i , Elapsed time %.3f" % (channel, elapsed_time,))
 
             # For each channel, get the wavelengths and restructure into (wavelength, intensity)
                     if background_subtract:
-                        intensity = self.intensities[i] - self.background[i]
-                        intensity[intensity<0] = 0
-                        self.data[i] = x[i],intensity
+                        intensity = self.intensities[i]*self.calibration[i] - self.background[i]
+                        self.data[i] = x[i], intensity
                     else:
+                        self.intensities[i] *= self.calibration[i]
                         self.data[i] = x[i], self.intensities[i]
                 else:
                     self.data[i] = [], []
@@ -572,6 +573,7 @@ class Spectrometer():
         self.getWavelengths()
         self.calibrateEnable = False
         self.fileLoaded = None
+        self.savingContinuously = False
 
         # LOAD DEFAULTS
         self.ui.integration_time_spinbox.setValue(self.integration_time)
@@ -612,6 +614,7 @@ class Spectrometer():
         self.ui.setScanButton.clicked.connect(self.setScan)
         self.ui.yScaleButton.clicked.connect(self.set_yscale)
         self.ui.saveButton.clicked.connect(lambda : self.save())
+        self.ui.saveContinuouslyButton.clicked.connect(lambda : self.start_autosave())
         self.ui.fitButton.clicked.connect(self.fitPlots)
         self.ui.showFitButton.clicked.connect(self.setFit)
         self.ui.calibratedButton.clicked.connect(lambda: Thread(target=self.calibrate).start())
@@ -834,22 +837,50 @@ class Spectrometer():
     def plot(self,background_subtract=False):
         self.spectrometer.plot(background_subtract)
 
+    def start_autosave(self, delay=5):
+
+        if not self.savingContinuously:
+            if not hasattr(self,'filename'):
+                self.filename = None
+
+            if self.filename is None:
+                self.filename, self.saveextension = \
+                    QtWidgets.QFileDialog.getSaveFileName(options=QtWidgets.QFileDialog.DontConfirmOverwrite)
+
+            if self.filename != '':
+                 self.ui.saveContinuouslyButton.setText("Stop saving")
+                 self.savingContinuously = True
+
+                 def autosave(delay=60):
+                     dt = 0.1
+                     time_elapsed = 0
+                     total_time_elapsed = 0
+                     while self.savingContinuously:
+                         self.save(filename=self.filename,label='{}'.format(total_time_elapsed,'%.3f'),append=True)
+                         time.sleep(dt)
+                         time_elapsed += dt
+                         total_time_elapsed += dt
+                         if time_elapsed > delay:
+                             time_elapsed = 0
+
+                 Thread(target=autosave,args=(delay,)).start()
+
+        else:
+            self.ui.saveContinuouslyButton.setText("Save Continuously")
+            self.savingContinuously = False
+
+
+
+
     def save(self, filename = None, label = 'Intensity', append = False):
 
         self.filename = filename
+
+        ### get filename
         if self.filename is None :
             self.filename,self.saveextension = \
                 QtWidgets.QFileDialog.getSaveFileName(options=QtWidgets.QFileDialog.DontConfirmOverwrite)
 
-        # For excel ----> currently disabled because excel writing is very slow
-        # vs csv with the current excel writer : openpyxl
-        # if 'excel' in writer.lower():
-        #     if '.xls' not in os.path.basename(self.filename) :
-        #         self.excelFilename = self.filename + '.xls'
-        #     excelFileExists = os.path.exists(self.filename)
-
-        # For csv
-        # if 'csv' in writer.lower(): ## disabled in preference for csv
         if self.filename is not '':
             csvFileExists = []
             for i, save in enumerate(self.spectrometer.plots):
@@ -869,9 +900,6 @@ class Spectrometer():
                             dataFrame = df.parse(sheetName,index_col=0)
                             self.dataFrames.append(dataFrame)
                     self.fileLoaded = True
-                    # self.writerWorkbook = openpyxl.load_workbook(self.filename) ## disabled in preference for csv
-                    # self.writer = pd.ExcelWriter(self.filename, engine='openpyxl') ## disabled in preference for csv
-                    # self.writer.book = self.writerWorkbook ## disabled in preference for csv
                     print('writer book set')
             else : #if file doesn't exist create blank dataframes
                 self.dataFrames = []
@@ -881,7 +909,6 @@ class Spectrometer():
                     dataFrame['Wavelength'] = self.spectrometer.plots[i]._x
                     dataFrame.set_index('Wavelength', inplace=True)
                     self.dataFrames.append(dataFrame)
-                # self.writer = pd.ExcelWriter(self.filename, engine='openpyxl') ## disabled in preference for csv
                 self.fileLoaded = True
 
 

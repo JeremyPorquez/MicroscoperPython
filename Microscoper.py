@@ -493,6 +493,20 @@ class Microscope(object):
     def __init__(self):
         pass
 
+class MicroscopeSettings(object):
+    imageMaximums = []
+    imageMinimums = []
+    numberOfInputChannels = 0
+    outputChannels = 0
+    rasterOffset = 0, 0
+    #todo : fill up this and use this to simplify microscoper_app code
+
+    def get_settings(self, **kwargs):
+        for key, value in kwargs:
+            if (hasattr(self,key)):
+                setattr(self,key,value)
+
+
 if __name__ == "__main__":
     import time
     s = MicroscopeShutter()

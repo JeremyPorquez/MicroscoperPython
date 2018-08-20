@@ -408,7 +408,7 @@ class Microscope(Microscoper.Microscope):
         if self.scanMove == "None": self.xAxis = 'Default'
         elif self.scanMove == 'Continuous':
             self.xAxis = self.LinearStage.GetPos, self.__returnCalibration
-        elif self.scanMove == "Discrete":
+        elif self.scanMove in ["Discrete","Grab"]:
             if self.scanStage == "zStage": self.xAxis = self.zStage.GetPos
             elif self.scanStage == "LinearStage" : self.xAxis = self.LinearStage.GetPos, self.__returnCalibration
         else : self.xAxis = 'Default'
@@ -419,7 +419,7 @@ class Microscope(Microscoper.Microscope):
             singleFrameScan = False
             waitForLastFrame = False
             if self.scanMove in ['Continuous','Discrete']: waitForLastFrame = True
-            if self.scanFrames == 'Discrete': singleFrameScan = True
+            if self.scanFrames in ['Discrete','Grab']: singleFrameScan = True
             self.ai.init(channel=self.inputChannels,
                          resolution=self.resolution,
                          line_dwell_time=self.msline,
@@ -613,6 +613,13 @@ class Microscope(Microscoper.Microscope):
                 time.sleep(0.1)
             else :
                 self.acquireStop()
+
+        def grab():
+            while True:
+                time.sleep(0.1)
+                if not self.ai.reading:
+                    self.acquireStop()
+
         def stageDefault():
             return None
 
@@ -623,6 +630,8 @@ class Microscope(Microscoper.Microscope):
             self.stageMoveIndex = 1
             if self.scanStage == "LinearStage": stageDiscreteUntilEnds()
             if self.scanStage == "zStage": zDiscreteUntilEnds()
+        if self.scanMove == "Grab":
+
 
     def initSpectrometer(self):
         if self.scanDetector == "Spectrometer":

@@ -223,18 +223,22 @@ class MainServer(QtWidgets.QMainWindow,Ui_ServerGui):
         self.loadScriptButtonWidgets = []
         self.loadScriptButtonWidgets.append(self.loadScriptButtonWidget1)
         self.loadScriptButtonWidgets.append(self.loadScriptButtonWidget2)
+        self.loadScriptButtonWidgets.append(self.loadScriptButtonWidget3)
         self.runScriptButtonWidgets = []
         self.runScriptButtonWidgets.append(self.runScriptButtonWidget1)
         self.runScriptButtonWidgets.append(self.runScriptButtonWidget2)
+        self.runScriptButtonWidgets.append(self.runScriptButtonWidget3)
         # for i in range(0,len(self.loadScriptButtonWidgets)):
         #     self.loadScriptButtonWidgets[i].clicked.connect(lambda: self.loadScript(index=i))
         # for i in range(0,len(self.runScriptButtonWidgets)):
         #     self.runScriptButtonWidgets[i].clicked.connect(lambda: self.runScript(index = i))
         self.loadScriptButtonWidgets[0].clicked.connect(lambda: self.loadScript(index=0))
         self.loadScriptButtonWidgets[1].clicked.connect(lambda: self.loadScript(index=1))
+        self.loadScriptButtonWidgets[2].clicked.connect(lambda: self.loadScript(index=2))
         self.runScriptButtonWidgets[0].clicked.connect(lambda: self.runScript(index=0))
         self.runScriptButtonWidgets[1].clicked.connect(lambda: self.runScript(index=1))
-        self.scriptRunning = [False for i in range(0,2)]
+        self.runScriptButtonWidgets[2].clicked.connect(lambda: self.runScript(index=2))
+        self.scriptRunning = [False for i in range(0,3)]
         self.setWindowTitle("Microscoper Server 2017")
         self.show()
         screen = QtWidgets.QDesktopWidget().screenGeometry()
@@ -310,6 +314,7 @@ class MainServer(QtWidgets.QMainWindow,Ui_ServerGui):
         self.mainPort = int(self.mainPortTextWidget.toPlainText())
         self.spectrometerPort = int(self.spectrometerPortTextWidget.toPlainText())
         self.rotationPort = int(self.rotationStageTextWidget.toPlainText())
+        self.extraPort = int(self.extraPortTextWidget.toPlainText())
         self.serverPort = 10125
 
         self.servers = []
@@ -318,7 +323,8 @@ class MainServer(QtWidgets.QMainWindow,Ui_ServerGui):
         self.serverConnections = [(self.mainPort, "main"),
                             (self.spectrometerPort, "spectrometer"),
                             (self.rotationPort, "zaber"),
-                            (self.serverPort, "server")]
+                            (self.serverPort, "server"),
+                            (self.extraPort, "extra")]
 
         if serverType is None :
             for port, serverType_ in self.serverConnections :
@@ -406,6 +412,7 @@ class MainServer(QtWidgets.QMainWindow,Ui_ServerGui):
             config['Ports']['Main'] = '10120'
             config['Ports']['Spectrometer'] = '10121'
             config['Ports']['Rotation Stage'] = '10122'
+            config['Ports']['Extra Port'] = '10123'
             config['Message'] = {}
             config['Message']['Main'] = ''
             config['Message']['Spectrometer'] = ''
@@ -423,12 +430,15 @@ class MainServer(QtWidgets.QMainWindow,Ui_ServerGui):
             self.mainPortTextWidget.setPlainText(config['Ports']['Main'])
             self.spectrometerPortTextWidget.setPlainText(config['Ports']['Spectrometer'])
             self.rotationStageTextWidget.setPlainText(config['Ports']['Rotation Stage'])
+            self.extraPortTextWidget.setPlainText(config['Ports']['Extra Port'])
             self.mainPortTextWidgetSend.setPlainText(config['Message']['Main'])
             self.spectrometerPortTextWidgetSend.setPlainText(config['Message']['Spectrometer'])
             self.rotationStageTextWidgetSend.setPlainText(config['Message']['Rotation Stage'])
+            self.extraPortTextWidgetSend.setPlainText(config['Message']['Extra Port'])
             self.scriptsPaths = []
             self.scriptsPaths.append(config['Scripts']['1'])
             self.scriptsPaths.append(config['Scripts']['2'])
+            self.scriptsPaths.append(config['Scripts']['3'])
             for index, sectionItem in enumerate(config.items('Scripts')):
                 option, value = sectionItem
                 try :
@@ -456,13 +466,16 @@ class MainServer(QtWidgets.QMainWindow,Ui_ServerGui):
         config['Ports']['Main'] = self.mainPortTextWidget.toPlainText()
         config['Ports']['Spectrometer'] = self.spectrometerPortTextWidget.toPlainText()
         config['Ports']['Rotation Stage'] = self.rotationStageTextWidget.toPlainText()
+        config['Ports']['Extra Port'] = self.extraPortTextWidget.toPlainText()
         config['Message'] = {}
         config['Message']['Main'] = self.mainPortTextWidgetSend.toPlainText()
         config['Message']['Spectrometer'] = self.spectrometerPortTextWidgetSend.toPlainText()
         config['Message']['Rotation Stage'] = self.rotationStageTextWidgetSend.toPlainText()
+        config['Message']['Extra Port'] = self.extraPortTextWidgetSend.toPlainText()
         config['Scripts'] = {}
         config['Scripts']['1'] = self.scriptsPaths[0]
         config['Scripts']['2'] = self.scriptsPaths[1]
+        config['Scripts']['3'] = self.scriptsPaths[2]
 
         with open(self.ini_file, 'w') as configfile:
             config.write(configfile)

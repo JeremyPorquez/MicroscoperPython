@@ -2,11 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="15c4e7d9-b31c-4432-aa3a-0bb75332dca6" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/Gui/ZaberStage.py" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Gui/Server_gui.py" afterPath="$PROJECT_DIR$/Gui/Server_gui.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Gui/Server_gui.ui" afterPath="$PROJECT_DIR$/Gui/Server_gui.ui" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Gui/ZaberStage_gui.py" afterPath="$PROJECT_DIR$/Gui/ZaberStage_gui.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Gui/ZaberStage_gui.ui" afterPath="$PROJECT_DIR$/Gui/ZaberStage_gui.ui" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Microscoper_app.ini" afterPath="$PROJECT_DIR$/Microscoper_app.ini" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Microscoper_app.py" afterPath="$PROJECT_DIR$/Microscoper_app.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Server.ini" afterPath="$PROJECT_DIR$/Server.ini" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Server.py" afterPath="$PROJECT_DIR$/Server.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Zaber.ini" afterPath="$PROJECT_DIR$/Zaber.ini" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Zaber.py" afterPath="$PROJECT_DIR$/Zaber.py" />
@@ -44,45 +47,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Zaber.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Zaber.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="56">
-              <caret line="160" column="50" lean-forward="true" selection-start-line="160" selection-start-column="50" selection-end-line="160" selection-end-column="50" />
-              <folding>
-                <element signature="e#0#51#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Connections.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Network/Connections.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="300">
-              <caret line="105" column="41" lean-forward="false" selection-start-line="105" selection-start-column="41" selection-end-line="105" selection-end-column="41" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Server.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Server.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1938">
-              <caret line="114" column="31" lean-forward="true" selection-start-line="114" selection-start-column="31" selection-end-line="114" selection-end-column="31" />
-              <folding>
-                <element signature="e#217#230#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="Microscoper_app.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Microscoper_app.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="15" column="0" lean-forward="true" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
+            <state relative-caret-position="309">
+              <caret line="616" column="19" lean-forward="true" selection-start-line="616" selection-start-column="19" selection-end-line="616" selection-end-column="19" />
               <folding>
                 <element signature="e#0#14#0" expanded="true" />
               </folding>
@@ -113,8 +82,8 @@
       <file leaf-file-name="AnalogIn.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Devices/AnalogIn.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3400">
-              <caret line="211" column="19" lean-forward="false" selection-start-line="211" selection-start-column="19" selection-end-line="211" selection-end-column="19" />
+            <state relative-caret-position="198">
+              <caret line="331" column="35" lean-forward="false" selection-start-line="331" selection-start-column="24" selection-end-line="331" selection-end-column="35" />
               <folding />
             </state>
           </provider>
@@ -131,15 +100,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>deleteDataPoint</find>
-      <find>calibration</find>
-      <find>getCalibrationFiles</find>
-      <find>if self.calibrate</find>
-      <find>self.calibration[i]</find>
-      <find>self.background</find>
-      <find>print(</find>
-      <find>print</find>
-      <find>contour</find>
       <find>self.scanTypeWidget</find>
       <find>def loa</find>
       <find>scanstatus</find>
@@ -153,14 +113,23 @@
       <find>start_autosave</find>
       <find>resolution</find>
       <find>Settings</find>
-      <find>self.connectionport</find>
       <find>clientObject</find>
       <find>ports</find>
-      <find>loaddefaults</find>
       <find>self.name</find>
       <find>self.connection</find>
       <find>del</find>
       <find>xit</find>
+      <find>loaddefaults</find>
+      <find>savedefa</find>
+      <find>setports</find>
+      <find>self.connectionport</find>
+      <find>savedefaults</find>
+      <find>scr</find>
+      <find>port</find>
+      <find>self.scriptsPaths</find>
+      <find>grab</find>
+      <find>scanMove</find>
+      <find>singleframe</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -216,9 +185,9 @@
         <option value="$PROJECT_DIR$/Microscoper.py" />
         <option value="$PROJECT_DIR$/Gui/Spectrometer_gui.py" />
         <option value="$PROJECT_DIR$/StellarN.py" />
-        <option value="$PROJECT_DIR$/Server.py" />
         <option value="$PROJECT_DIR$/Network/Connections.py" />
         <option value="$PROJECT_DIR$/Zaber.py" />
+        <option value="$PROJECT_DIR$/Server.py" />
         <option value="$PROJECT_DIR$/Microscoper_app.py" />
       </list>
     </option>
@@ -278,20 +247,6 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="microscoperPython" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="microscoperPython" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="Network" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
         </subPane>
       </pane>
     </panes>
@@ -329,7 +284,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.Server">
+  <component name="RunManager" selected="Python.Microscoper_app">
     <configuration default="false" name="Microscoper_app" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -493,9 +448,9 @@
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python.Server" />
-        <item index="1" class="java.lang.String" itemvalue="Python.Zaber" />
-        <item index="2" class="java.lang.String" itemvalue="Python.Microscoper_app" />
+        <item index="0" class="java.lang.String" itemvalue="Python.Microscoper_app" />
+        <item index="1" class="java.lang.String" itemvalue="Python.Server" />
+        <item index="2" class="java.lang.String" itemvalue="Python.Zaber" />
         <item index="3" class="java.lang.String" itemvalue="Python.StellarN" />
         <item index="4" class="java.lang.String" itemvalue="Python.SpectralSurfingGenerator" />
       </list>
@@ -562,17 +517,17 @@
     <frame x="-8" y="-8" width="1616" height="876" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.18573265" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.18573265" sideWeight="0.5" order="1" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3091398" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.40381792" sideWeight="0.51615506" order="6" side_tool="true" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3499327" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24495289" sideWeight="0.49353796" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.26863754" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.26863754" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.23687753" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.45760432" sideWeight="0.4838449" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.10154241" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.09152086" sideWeight="0.4838449" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="true" content_ui="tabs" />
+      <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.10218509" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -680,7 +635,6 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Untitled.ipynb" />
     <entry file="file://$PROJECT_DIR$/test.py" />
-    <entry file="file://C:/Python36-64/Lib/configparser.py" />
     <entry file="file://$PROJECT_DIR$/ServerScripts/ZaberStellarNetScan500mdeg.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1241">
@@ -760,14 +714,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Devices/AnalogIn.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3400">
-          <caret line="211" column="19" lean-forward="false" selection-start-line="211" selection-start-column="19" selection-end-line="211" selection-end-column="19" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Gui/Spectrometer_gui.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3519">
@@ -813,8 +759,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Zaber.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="56">
-          <caret line="160" column="50" lean-forward="true" selection-start-line="160" selection-start-column="50" selection-end-line="160" selection-end-column="50" />
+        <state relative-caret-position="209">
+          <caret line="147" column="0" lean-forward="false" selection-start-line="147" selection-start-column="0" selection-end-line="147" selection-end-column="0" />
           <folding>
             <element signature="e#0#51#0" expanded="true" />
           </folding>
@@ -823,18 +769,34 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Server.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1938">
-          <caret line="114" column="31" lean-forward="true" selection-start-line="114" selection-start-column="31" selection-end-line="114" selection-end-column="31" />
+        <state relative-caret-position="349">
+          <caret line="448" column="61" lean-forward="true" selection-start-line="448" selection-start-column="61" selection-end-line="448" selection-end-column="61" />
           <folding>
             <element signature="e#217#230#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://C:/Python36-64/Lib/configparser.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="1237" column="51" lean-forward="false" selection-start-line="1237" selection-start-column="51" selection-end-line="1237" selection-end-column="51" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Devices/AnalogIn.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="198">
+          <caret line="331" column="35" lean-forward="false" selection-start-line="331" selection-start-column="24" selection-end-line="331" selection-end-column="35" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/Microscoper_app.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="15" column="0" lean-forward="true" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
+        <state relative-caret-position="309">
+          <caret line="616" column="19" lean-forward="true" selection-start-line="616" selection-start-column="19" selection-end-line="616" selection-end-column="19" />
           <folding>
             <element signature="e#0#14#0" expanded="true" />
           </folding>

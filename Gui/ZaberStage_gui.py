@@ -138,7 +138,7 @@ class Ui_Zaber(object):
         self.moveButton3.setText(_translate("Zaber", "Move"))
         self.upButton.setText(_translate("Zaber", "Up"))
         self.downButton.setText(_translate("Zaber", "Down"))
-        self.lineEditComport.setText(_translate("Zaber", "4"))
+        self.lineEditComport.setText(_translate("Zaber", "COM4"))
         self.labelComport.setText(_translate("Zaber", "COM PORT"))
         self.labelComport_2.setText(_translate("Zaber", "Connection PORT"))
         self.lineEditConnport.setText(_translate("Zaber", "10122"))

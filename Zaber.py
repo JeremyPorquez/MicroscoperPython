@@ -5,6 +5,7 @@ from threading import Thread
 import time
 import configparser
 import os
+import sys
 from Network.Connections import clientObject
 
 def degToMicrosteps(deg,microstepSize=0.0009375):
@@ -39,17 +40,8 @@ class Zaber():
 
     def __init__(self,port = "COM4"):
         self.__checkExists()
-        try :
-            binaryPort = BinarySerial(port)
-            # self.port = AsciiSerial(port)
-            self.address = 1
-            # AsciiDevice.__init__(self,self.port,1)
-            self.device = BinaryDevice(binaryPort,self.address)
-            self.deviceLoaded = True
-        except :
-            print('Device not found, simulating device.')
-            self.deviceLoaded = False
-
+        self.name = port
+        self.loadDevice(port)
 
         self.connection = clientObject(parent=self)
         self.setupUi()
@@ -64,6 +56,22 @@ class Zaber():
 
         self.positionThread = Thread(target=self.getPositionThread)
         self.positionThread.start()
+
+        self.establishConnection()
+
+    def loadDevice(self,port):
+        try :
+            binaryPort = BinarySerial(port)
+            # self.port = AsciiSerial(port)
+            self.address = 1
+            # AsciiDevice.__init__(self,self.port,1)
+            self.device = BinaryDevice(binaryPort,self.address)
+            self.deviceLoaded = True
+        except :
+            print(f'Device not found in {port}, simulating device.')
+            self.deviceLoaded = False
+
+    def establishConnection(self):
         self.connection.autoConnect(connectionPort = self.connectionPort)
         self.connection.connectionIsBusy = False
 
@@ -80,6 +88,7 @@ class Zaber():
         self.mainWindow.activateWindow()
 
     def connectUI(self):
+        self.ui.buttonSetPorts.clicked.connect(self.setPorts)
         self.ui.homeButton.clicked.connect(self.home)
         self.ui.setHomeOffsetButton.clicked.connect(self.setHomeOffset)
         self.ui.moveButton1.clicked.connect(self.move1)
@@ -95,24 +104,30 @@ class Zaber():
         self.connectionPort = None
         self.ini_file = os.path.dirname(os.path.realpath(__file__)) + '/Zaber.ini'
         config = configparser.ConfigParser()
+
+        # todo : Settings --> COM specific settings
+        # e.g.
+        # config['COM4'] = {}
+        # config['Move1'] = {}
+
         def make_default_ini():
-            config['Settings'] = {}
-            config['Settings']['Move1'] = '0'
-            config['Settings']['Move2'] = '0'
-            config['Settings']['Move3'] = '0'
-            config['Settings']['Inc'] = '0.5'
-            config['Settings']['Port'] = '10122'
-            config['Settings']['Offset'] = '0'
+            config[self.name] = {}
+            config[self.name]['Move1'] = '0'
+            config[self.name]['Move2'] = '0'
+            config[self.name]['Move3'] = '0'
+            config[self.name]['Inc'] = '0.5'
+            config[self.name]['Port'] = '10122'
+            config[self.name]['Offset'] = '0'
             with open(self.ini_file, 'w') as configfile:
                 config.write(configfile)
         def load_default_ini():
             config.read(self.ini_file)
-            self.ui.moveSpinbox1.setValue(float(config['Settings']['Move1']))
-            self.ui.moveSpinbox2.setValue(float(config['Settings']['Move2']))
-            self.ui.moveSpinbox3.setValue(float(config['Settings']['Move3']))
-            self.ui.incSpinbox.setValue(float(config['Settings']['Inc']))
-            self.ui.homeOffsetSpinbox.setValue(float(config['Settings']['Offset']))
-            self.connectionPort = int(config['Settings']['Port'])
+            self.ui.moveSpinbox1.setValue(float(config[self.name]['Move1']))
+            self.ui.moveSpinbox2.setValue(float(config[self.name]['Move2']))
+            self.ui.moveSpinbox3.setValue(float(config[self.name]['Move3']))
+            self.ui.incSpinbox.setValue(float(config[self.name]['Inc']))
+            self.ui.homeOffsetSpinbox.setValue(float(config[self.name]['Offset']))
+            self.connectionPort = int(config[self.name]['Port'])
 
         try :
             load_default_ini()
@@ -123,13 +138,13 @@ class Zaber():
     def saveDefaults(self):
         self.ini_file = os.path.dirname(os.path.realpath(__file__)) + '/Zaber.ini'
         config = configparser.ConfigParser()
-        config['Settings'] = {}
-        config['Settings']['Move1'] = str(self.ui.moveSpinbox1.value())
-        config['Settings']['Move2'] = str(self.ui.moveSpinbox2.value())
-        config['Settings']['Move3'] = str(self.ui.moveSpinbox3.value())
-        config['Settings']['Inc'] = str(self.ui.incSpinbox.value())
-        config['Settings']['Port'] = str(self.connectionPort)
-        config['Settings']['Offset'] = str(self.ui.homeOffsetSpinbox.value())
+        config[self.name] = {}
+        config[self.name]['Move1'] = str(self.ui.moveSpinbox1.value())
+        config[self.name]['Move2'] = str(self.ui.moveSpinbox2.value())
+        config[self.name]['Move3'] = str(self.ui.moveSpinbox3.value())
+        config[self.name]['Inc'] = str(self.ui.incSpinbox.value())
+        config[self.name]['Port'] = str(self.connectionPort)
+        config[self.name]['Offset'] = str(self.ui.homeOffsetSpinbox.value())
         with open(self.ini_file, 'w') as configfile:
             config.write(configfile)
 
@@ -140,6 +155,15 @@ class Zaber():
     def setHomeOffset(self):
         homeOffset = degToMicrosteps(self.ui.homeOffsetSpinbox.value())
         data = self.device.send(47,homeOffset).data
+
+    def setPorts(self):
+        self.connectionPort = int(self.ui.lineEditConnport.text())
+        self.name = self.ui.lineEditComport.text()
+        self.loadDevice(self.name)
+        self.connection.stopClientConnection()
+        # del self.connection
+        self.establishConnection()
+
 
     def move_abs(self,position):
         if self.deviceLoaded:
@@ -244,9 +268,16 @@ if __name__ == "__main__":
     import ctypes
     myappid = u'microscoperzaber'  # arbitrary string
     ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)
-
+    if len(sys.argv) > 1:
+        port = sys.argv[1]
+        assert isinstance(port,str)
+        port = port.capitalize()
+        if 'COM' not in com:
+            port = 'COM4'
+    else:
+        port = 'COM4'
     qapp = QtWidgets.QApplication([])
-    app = Zaber()
+    app = Zaber(port=port)
     qapp.exec()
 
 # command = AsciiCommand("home")

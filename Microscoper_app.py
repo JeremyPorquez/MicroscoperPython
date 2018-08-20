@@ -14,6 +14,8 @@ import Math
 from StellarN import SpectrometerExtension
 import csv
 
+## todo : to implement memcached instead of my own custom server
+
 if sys.maxsize > 2 ** 32:
     sixfourbit = True
 else :

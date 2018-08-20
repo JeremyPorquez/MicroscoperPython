@@ -405,7 +405,7 @@ class MainServer(QtWidgets.QMainWindow,Ui_ServerGui):
             config['Ports'] = {}
             config['Ports']['Main'] = '10120'
             config['Ports']['Spectrometer'] = '10121'
-            config['Ports']['Rotation Stage'] = '10123'
+            config['Ports']['Rotation Stage'] = '10122'
             config['Message'] = {}
             config['Message']['Main'] = ''
             config['Message']['Spectrometer'] = ''

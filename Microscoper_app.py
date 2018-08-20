@@ -560,7 +560,7 @@ class Microscope(Microscoper.Microscope):
             self.xStage.Stop()
             self.yStage.Stop()
             if sixfourbit : self.zStage.Stop()
-            if self.ai.reading : self.ai.clear()
+            self.ai.clear()
             if self.display is not None: self.display.stop()
             while self.ai.reading: time.sleep(0.1)
             if self.ao is not None :

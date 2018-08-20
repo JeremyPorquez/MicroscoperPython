@@ -108,26 +108,32 @@ class Zaber():
         self.ui.action_Quit.triggered.connect(self.quit)
 
     def updateUIValues(self):
-        self.ui.moveSpinbox1.setValue(float(self.config[self.name]['Move1']))
-        self.ui.moveSpinbox2.setValue(float(self.config[self.name]['Move2']))
-        self.ui.moveSpinbox3.setValue(float(self.config[self.name]['Move3']))
-        self.ui.incSpinbox.setValue(float(self.config[self.name]['Inc']))
-        self.ui.homeOffsetSpinbox.setValue(float(self.config[self.name]['Offset']))
-        self.connectionPort = int(self.config[self.name]['Port'])
+        def updateUI():
+            self.ui.moveSpinbox1.setValue(float(self.config[self.name]['Move1']))
+            self.ui.moveSpinbox2.setValue(float(self.config[self.name]['Move2']))
+            self.ui.moveSpinbox3.setValue(float(self.config[self.name]['Move3']))
+            self.ui.incSpinbox.setValue(float(self.config[self.name]['Inc']))
+            self.ui.homeOffsetSpinbox.setValue(float(self.config[self.name]['Offset']))
+            self.connectionPort = int(self.config[self.name]['Port'])
+        try:
+            updateUI()
+        except :
+            self.make_default_ini()
+            updateUI()
+
+    def make_default_ini(self):
+        self.config[self.name] = {}
+        self.config[self.name]['Move1'] = '0'
+        self.config[self.name]['Move2'] = '0'
+        self.config[self.name]['Move3'] = '0'
+        self.config[self.name]['Inc'] = '0.5'
+        self.config[self.name]['Port'] = '10122'
+        self.config[self.name]['Offset'] = '0'
+        with open(self.ini_file, 'w') as configfile:
+            self.config.write(configfile)
 
     def loadDefaults(self):
         self.connectionPort = None
-
-        def make_default_ini():
-            self.config[self.name] = {}
-            self.config[self.name]['Move1'] = '0'
-            self.config[self.name]['Move2'] = '0'
-            self.config[self.name]['Move3'] = '0'
-            self.config[self.name]['Inc'] = '0.5'
-            self.config[self.name]['Port'] = '10122'
-            self.config[self.name]['Offset'] = '0'
-            with open(self.ini_file, 'w') as configfile:
-                self.config.write(configfile)
 
         def load_default_ini():
             self.config.read(self.ini_file)
@@ -136,7 +142,7 @@ class Zaber():
         try :
             load_default_ini()
         except :
-            make_default_ini()
+            self.make_default_ini()
             load_default_ini()
 
     def saveDefaults(self):
@@ -163,7 +169,6 @@ class Zaber():
         self.name = self.ui.lineEditComport.text()
         self.loadDevice(self.name)
         self.connection.stopClientConnection()
-        # del self.connection
         self.establishConnection()
         self.updateUIValues()
 

@@ -631,6 +631,7 @@ class Microscope(Microscoper.Microscope):
             if self.scanStage == "LinearStage": stageDiscreteUntilEnds()
             if self.scanStage == "zStage": zDiscreteUntilEnds()
         if self.scanMove == "Grab":
+            grab()
 
 
     def initSpectrometer(self):

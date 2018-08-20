@@ -88,7 +88,7 @@ class Microscope(Microscoper.Microscope):
 
     def setupScanList(self):
         scanFilePath = os.path.join(self.cwd,"Microscoper_app_scanList.csv")
-        self.scanList = pd.read_csv(scanFilePath)
+        self.scanList = pd.read_csv(scanFilePath, delimiter='\t')
         scanList = self.scanList['Scan Name'].values
         self.ui.scanTypeWidget.clear()
         self.ui.scanTypeWidget.addItems(scanList)

@@ -31,6 +31,7 @@ class Microscope(Microscoper.Microscope):
         scanDoneSignal = QtCore.pyqtSignal()
         scanSoftDoneSignal = QtCore.pyqtSignal()
         scanStartSignal = QtCore.pyqtSignal()
+        scanStartAcquire = QtCore.pyqtSignal()
         imageAcquireStartSignal = QtCore.pyqtSignal()
         imageAcquireFinishedSignal = QtCore.pyqtSignal()
 
@@ -52,6 +53,7 @@ class Microscope(Microscoper.Microscope):
         self.connection = clientObject(parent=self)
         self.cwd = os.path.dirname(os.path.realpath(__file__))
         self.verbose = True
+        self.remoteStart = False
 
         # Setup UI
         self.setupUi()
@@ -84,6 +86,7 @@ class Microscope(Microscoper.Microscope):
         self.spectrometer = SpectrometerExtension(self)
 
         self.connection.autoConnect(self.connectionPort)
+        self.signal.scanStartAcquire.connect(self.acquire)
         self.connection.connectionSignal.connectionLost.connect(self.acquireStop)
 
     def setupScanList(self):
@@ -312,6 +315,7 @@ class Microscope(Microscoper.Microscope):
             self.acquireStop()
 
     def acquire(self):
+        self.connection.connectionIsBusy = True
         self.ui.AcquireButton.setText("Stop Acquire")
         self.acquireInit()
         self.acquireStart()
@@ -575,8 +579,12 @@ class Microscope(Microscoper.Microscope):
             print(e)
         self.signal.scanDoneSignal.emit()
 
+        self.connection.connectionIsBusy = False
+
+
     def detectScanStatus(self):
         self.scanStatusThreadInterrupt = False
+        #todo : currently wont stop acquiring even if stage done
         def stageContinuousUntilEnds():
             if self.scanStage == "LinearStage":
                 self.LinearStage.SetStartScan()
@@ -633,7 +641,6 @@ class Microscope(Microscoper.Microscope):
             if self.scanStage == "zStage": zDiscreteUntilEnds()
         if self.scanMove == "Grab":
             grab()
-
 
 
     def initSpectrometer(self):

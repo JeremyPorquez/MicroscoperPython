@@ -220,6 +220,7 @@ class MainServer(QtWidgets.QMainWindow,Ui_ServerGui):
         self.mainSendButtonWidget.clicked.connect(lambda: self.sendServerMessage(self.mainPortTextWidgetSend))
         self.spectrometerSendButtonWidget.clicked.connect(lambda: self.sendServerMessage(self.spectrometerPortTextWidgetSend))
         self.rotationStageSendButtonWidget.clicked.connect(lambda: self.sendServerMessage(self.rotationStageTextWidgetSend))
+        self.extraPortSendButtonWidget.clicked.connect((lambda: self.sendServerMessage(self.extraPortTextWidgetSend)))
         self.loadScriptButtonWidgets = []
         self.loadScriptButtonWidgets.append(self.loadScriptButtonWidget1)
         self.loadScriptButtonWidgets.append(self.loadScriptButtonWidget2)

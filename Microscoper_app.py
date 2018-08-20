@@ -619,6 +619,7 @@ class Microscope(Microscoper.Microscope):
                 time.sleep(0.1)
                 if not self.ai.reading:
                     self.acquireStop()
+                    break
 
         def stageDefault():
             return None
@@ -632,6 +633,7 @@ class Microscope(Microscoper.Microscope):
             if self.scanStage == "zStage": zDiscreteUntilEnds()
         if self.scanMove == "Grab":
             grab()
+
 
 
     def initSpectrometer(self):

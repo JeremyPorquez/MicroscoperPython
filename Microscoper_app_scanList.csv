@@ -1,9 +1,9 @@
-﻿Scan Name,Stage,Move Type,Detector Type,Frames,Move Units
-Default,None,None,PMT,Continuous,Speed (mm/s)
-Continuous,LinearStage,Continuous,PMT,Continuous,Speed (mm/s)
-Discrete,LinearStage,Discrete,PMT,Discrete,Step size (mm)
-Discrete Z,zStage,Discrete,PMT,Discrete,Step size (um)
-Point,None,None,PMT,Continuous,Speed (mm/s)
-Point Discrete Spectrometer,LinearStage,Discrete,Spectrometer,Discrete,Step size (mm)
-Continuous Spectrometer,LinearStage,Continuous,Spectrometer,Continuous,Speed (mm/s)
-Grab,None,None,PMT,Discrete,Step size (mm)
+Scan Name	Stage	Move Type	Detector Type	Frames	Move Units
+Default	None	None	PMT	Continuous	Speed (mm/s)
+Continuous	LinearStage	Continuous	PMT	Continuous	Speed (mm/s)
+Discrete	LinearStage	Discrete	PMT	Discrete	Step size (mm)
+Discrete Z	zStage	Discrete	PMT	Discrete	Step size (um)
+Point	None	None	PMT	Continuous	Speed (mm/s)
+Point Discrete Spectrometer	LinearStage	Discrete	Spectrometer	Discrete	Step size (mm)
+Continuous Spectrometer	LinearStage	Continuous	Spectrometer	Continuous	Speed (mm/s)
+Grab	None	Grab	PMT	Discrete	Step size (mm)

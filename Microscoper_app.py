@@ -579,8 +579,6 @@ class Microscope(Microscoper.Microscope):
             print(e)
         self.signal.scanDoneSignal.emit()
 
-        self.connection.connectionIsBusy = False
-
 
     def detectScanStatus(self):
         self.scanStatusThreadInterrupt = False
@@ -595,6 +593,8 @@ class Microscope(Microscoper.Microscope):
             else :
                 self.acquireStop()
                 self.setStage()
+                self.connection.connectionIsBusy = False
+
         def stageDiscreteUntilEnds():
             while (self.LinearStage.currentPosition < self.LinearStage.endScanPosition) and (not self.scanStatusThreadInterrupt):
                 if not self.ai.reading:
@@ -607,6 +607,7 @@ class Microscope(Microscoper.Microscope):
                 time.sleep(0.1)
             self.acquireStop()
             self.setStage()
+            self.connection.connectionIsBusy = False
         def zDiscreteUntilEnds():
             while (self.zStage.currentPosition < self.zStage.endScanPosition) and (not self.scanStatusThreadInterrupt):
                 if not self.ai.reading:
@@ -621,16 +622,18 @@ class Microscope(Microscoper.Microscope):
                 time.sleep(0.1)
             else :
                 self.acquireStop()
+                self.connection.connectionIsBusy = False
 
         def grab():
             while True:
                 time.sleep(0.1)
                 if not self.ai.reading:
                     self.acquireStop()
+                    self.connection.connectionIsBusy = False
                     break
 
         def stageDefault():
-            return None
+            self.connection.connectionIsBusy = False
 
         if self.scanMove == "None": stageDefault()
         if self.scanMove == "Continuous": stageContinuousUntilEnds()

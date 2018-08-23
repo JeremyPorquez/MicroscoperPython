@@ -1,1 +1,1 @@
-start C:\Python36-64\Pythonw.exe Microscoper_app.py
+start C:\Python36-64\Python.exe Microscoper_app.py

@@ -29,6 +29,7 @@ class script(Script.Script):
                 self.zaberMove(deg)
                 time.sleep(1)
                 self.scriptSend('main.signal.scanStartAcquire.emit()')
+                self.scriptSend('main.setConnectionIsBusy()')
                 time.sleep(1)
                 self.parent.connection.askForResponse(receiver="main", sender="server", timeout=9999)
 

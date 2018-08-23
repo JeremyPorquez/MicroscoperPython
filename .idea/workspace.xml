@@ -3,7 +3,10 @@
   <component name="ChangeListManager">
     <list default="true" id="15c4e7d9-b31c-4432-aa3a-0bb75332dca6" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Microscoper_app.ini" afterPath="$PROJECT_DIR$/Microscoper_app.ini" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Microscoper_app.py" afterPath="$PROJECT_DIR$/Microscoper_app.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Server.ini" afterPath="$PROJECT_DIR$/Server.ini" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ServerScripts/pcars.py" afterPath="$PROJECT_DIR$/ServerScripts/pcars.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -29,8 +32,8 @@
       <file leaf-file-name="pcars.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/ServerScripts/pcars.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="315">
-              <caret line="32" column="101" lean-forward="true" selection-start-line="32" selection-start-column="101" selection-end-line="32" selection-end-column="101" />
+            <state relative-caret-position="68">
+              <caret line="32" column="29" lean-forward="true" selection-start-line="32" selection-start-column="29" selection-end-line="32" selection-end-column="29" />
               <folding />
             </state>
           </provider>
@@ -49,8 +52,8 @@
       <file leaf-file-name="Zaber.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Zaber.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="630">
-              <caret line="195" column="50" lean-forward="true" selection-start-line="195" selection-start-column="50" selection-end-line="195" selection-end-column="50" />
+            <state relative-caret-position="137">
+              <caret line="166" column="23" lean-forward="true" selection-start-line="166" selection-start-column="23" selection-end-line="166" selection-end-column="23" />
               <folding />
             </state>
           </provider>
@@ -59,8 +62,8 @@
       <file leaf-file-name="Server.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Server.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="7922">
-              <caret line="477" column="29" lean-forward="false" selection-start-line="477" selection-start-column="29" selection-end-line="477" selection-end-column="29" />
+            <state relative-caret-position="141">
+              <caret line="466" column="71" lean-forward="true" selection-start-line="466" selection-start-column="71" selection-end-line="466" selection-end-column="71" />
               <folding>
                 <element signature="e#217#230#0" expanded="true" />
               </folding>
@@ -83,8 +86,8 @@
       <file leaf-file-name="Microscoper_app.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Microscoper_app.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="407">
-              <caret line="645" column="18" lean-forward="true" selection-start-line="645" selection-start-column="18" selection-end-line="645" selection-end-column="18" />
+            <state relative-caret-position="121">
+              <caret line="581" column="15" lean-forward="false" selection-start-line="581" selection-start-column="4" selection-end-line="581" selection-end-column="15" />
               <folding>
                 <element signature="e#0#14#0" expanded="true" />
               </folding>
@@ -102,26 +105,6 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Response.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Network/Response.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
-              <caret line="9" column="65" lean-forward="false" selection-start-line="9" selection-start-column="59" selection-end-line="9" selection-end-column="65" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="AnalogIn.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Devices/AnalogIn.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="5440">
-              <caret line="331" column="40" lean-forward="false" selection-start-line="331" selection-start-column="40" selection-end-line="331" selection-end-column="40" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
     </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
@@ -133,8 +116,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>save</find>
-      <find>spectrometer</find>
       <find>self.script</find>
       <find>savefile</find>
       <find>acquireStart</find>
@@ -163,6 +144,8 @@
       <find>self.LinearStage</find>
       <find>self.LinearStage =</find>
       <find>acquireStop</find>
+      <find>isbusy</find>
+      <find>connectionIsBusy</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -218,9 +201,9 @@
         <option value="$PROJECT_DIR$/Network/Connections.py" />
         <option value="$PROJECT_DIR$/Server.py" />
         <option value="$PROJECT_DIR$/Gui/Microscoper_gui.py" />
-        <option value="$PROJECT_DIR$/ServerScripts/pcars.py" />
         <option value="$PROJECT_DIR$/Devices/AnalogIn.py" />
         <option value="$PROJECT_DIR$/Zaber.py" />
+        <option value="$PROJECT_DIR$/ServerScripts/pcars.py" />
         <option value="$PROJECT_DIR$/Microscoper_app.py" />
       </list>
     </option>
@@ -481,8 +464,8 @@
     </list>
     <recent_temporary>
       <list size="5">
-        <item index="0" class="java.lang.String" itemvalue="Python.Microscoper_app" />
-        <item index="1" class="java.lang.String" itemvalue="Python.Server" />
+        <item index="0" class="java.lang.String" itemvalue="Python.Server" />
+        <item index="1" class="java.lang.String" itemvalue="Python.Microscoper_app" />
         <item index="2" class="java.lang.String" itemvalue="Python.Zaber" />
         <item index="3" class="java.lang.String" itemvalue="Python.StellarN" />
         <item index="4" class="java.lang.String" itemvalue="Python.SpectralSurfingGenerator" />
@@ -548,7 +531,6 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1616" height="876" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -592,7 +574,7 @@
           </properties>
         </breakpoint>
       </default-breakpoints>
-      <option name="time" value="10" />
+      <option name="time" value="11" />
     </breakpoint-manager>
     <watches-manager />
   </component>
@@ -762,30 +744,12 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/ServerScripts/ZaberStellarNetScan500mdeg.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="24" column="25" lean-forward="false" selection-start-line="24" selection-start-column="25" selection-end-line="24" selection-end-column="25" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Network/Connections.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1258">
           <caret line="78" column="36" lean-forward="false" selection-start-line="78" selection-start-column="35" selection-end-line="78" selection-end-column="36" />
           <folding>
             <element signature="e#0#31#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/Server.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="7922">
-          <caret line="477" column="29" lean-forward="false" selection-start-line="477" selection-start-column="29" selection-end-line="477" selection-end-column="29" />
-          <folding>
-            <element signature="e#217#230#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -819,14 +783,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Zaber.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="630">
-          <caret line="195" column="50" lean-forward="true" selection-start-line="195" selection-start-column="50" selection-end-line="195" selection-end-column="50" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Network/Response.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="153">
@@ -843,18 +799,44 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/Server.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="141">
+          <caret line="466" column="71" lean-forward="true" selection-start-line="466" selection-start-column="71" selection-end-line="466" selection-end-column="71" />
+          <folding>
+            <element signature="e#217#230#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Zaber.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="137">
+          <caret line="166" column="23" lean-forward="true" selection-start-line="166" selection-start-column="23" selection-end-line="166" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/ServerScripts/ZaberStellarNetScan500mdeg.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="24" column="25" lean-forward="false" selection-start-line="24" selection-start-column="25" selection-end-line="24" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/ServerScripts/pcars.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="32" column="101" lean-forward="true" selection-start-line="32" selection-start-column="101" selection-end-line="32" selection-end-column="101" />
+        <state relative-caret-position="68">
+          <caret line="32" column="29" lean-forward="true" selection-start-line="32" selection-start-column="29" selection-end-line="32" selection-end-column="29" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Microscoper_app.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="407">
-          <caret line="645" column="18" lean-forward="true" selection-start-line="645" selection-start-column="18" selection-end-line="645" selection-end-column="18" />
+        <state relative-caret-position="121">
+          <caret line="581" column="15" lean-forward="false" selection-start-line="581" selection-start-column="4" selection-end-line="581" selection-end-column="15" />
           <folding>
             <element signature="e#0#14#0" expanded="true" />
           </folding>

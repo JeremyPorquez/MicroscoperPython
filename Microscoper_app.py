@@ -315,7 +315,7 @@ class Microscope(Microscoper.Microscope):
             self.acquireStop()
 
     def acquire(self):
-        self.connection.connectionIsBusy = True
+        # self.connection.connectionIsBusy = True
         self.ui.AcquireButton.setText("Stop Acquire")
         self.acquireInit()
         self.acquireStart()
@@ -579,6 +579,8 @@ class Microscope(Microscoper.Microscope):
             print(e)
         self.signal.scanDoneSignal.emit()
 
+    def setConnectionIsBusy(self):
+        self.connection.connectionIsBusy = True
 
     def detectScanStatus(self):
         self.scanStatusThreadInterrupt = False
@@ -872,8 +874,10 @@ class Microscope(Microscoper.Microscope):
             pass
 
     def __returnCalibration(self):
-        wavenumber = eval(
+        try : wavenumber = eval(
             self.stageCalibrationFormulaString.replace("x", self.ui.currentLStagePositionText.text()))
+        except :
+            wavenumber = 0
         return wavenumber
 
     def __maximizeWindows(self):

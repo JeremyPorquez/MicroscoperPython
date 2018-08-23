@@ -590,7 +590,8 @@ class Microscope(Microscoper.Microscope):
                 self.LinearStage.SetStartScan()
             elif self.scanStage == "zStage":
                 self.zStage.SetStartScan()
-            while (abs(self.LinearStage.currentPosition - self.LinearStage.endScanPosition) > 1e-4) and (not self.scanStatusThreadInterrupt):
+            while ((abs(self.LinearStage.currentPosition - self.LinearStage.endScanPosition) > 1e-4) and (not self.scanStatusThreadInterrupt))\
+                    or (self.LinearStage.currentPosition < self.LinearStage.endScanPosition):
                 time.sleep(0.1)
             else :
                 self.acquireStop()

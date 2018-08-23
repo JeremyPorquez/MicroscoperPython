@@ -2,11 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="15c4e7d9-b31c-4432-aa3a-0bb75332dca6" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Microscoper_app.ini" afterPath="$PROJECT_DIR$/Microscoper_app.ini" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Microscoper_app.py" afterPath="$PROJECT_DIR$/Microscoper_app.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/Server.ini" afterPath="$PROJECT_DIR$/Server.ini" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/ServerScripts/pcars.py" afterPath="$PROJECT_DIR$/ServerScripts/pcars.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/microscoper.bat" afterPath="$PROJECT_DIR$/microscoper.bat" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -32,8 +29,8 @@
       <file leaf-file-name="pcars.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/ServerScripts/pcars.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="68">
-              <caret line="32" column="29" lean-forward="true" selection-start-line="32" selection-start-column="29" selection-end-line="32" selection-end-column="29" />
+            <state relative-caret-position="476">
+              <caret line="32" column="29" lean-forward="false" selection-start-line="32" selection-start-column="29" selection-end-line="32" selection-end-column="29" />
               <folding />
             </state>
           </provider>
@@ -52,18 +49,18 @@
       <file leaf-file-name="Zaber.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Zaber.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="137">
-              <caret line="166" column="23" lean-forward="true" selection-start-line="166" selection-start-column="23" selection-end-line="166" selection-end-column="23" />
+            <state relative-caret-position="2686">
+              <caret line="166" column="23" lean-forward="false" selection-start-line="166" selection-start-column="23" selection-end-line="166" selection-end-column="23" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Server.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Server.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/Server.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="141">
-              <caret line="466" column="71" lean-forward="true" selection-start-line="466" selection-start-column="71" selection-end-line="466" selection-end-column="71" />
+            <state relative-caret-position="243">
+              <caret line="472" column="75" lean-forward="true" selection-start-line="472" selection-start-column="75" selection-end-line="472" selection-end-column="75" />
               <folding>
                 <element signature="e#217#230#0" expanded="true" />
               </folding>
@@ -83,11 +80,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Microscoper_app.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Microscoper_app.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Microscoper_app.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="121">
-              <caret line="581" column="15" lean-forward="false" selection-start-line="581" selection-start-column="4" selection-end-line="581" selection-end-column="15" />
+            <state relative-caret-position="169">
+              <caret line="587" column="39" lean-forward="true" selection-start-line="587" selection-start-column="39" selection-end-line="587" selection-end-column="39" />
               <folding>
                 <element signature="e#0#14#0" expanded="true" />
               </folding>
@@ -98,7 +95,7 @@
       <file leaf-file-name="Microscoper.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/Microscoper.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1505">
+            <state relative-caret-position="1615">
               <caret line="104" column="6" lean-forward="false" selection-start-line="104" selection-start-column="6" selection-end-line="104" selection-end-column="6" />
               <folding />
             </state>
@@ -116,7 +113,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>self.script</find>
       <find>savefile</find>
       <find>acquireStart</find>
       <find>acquireset</find>
@@ -146,6 +142,7 @@
       <find>acquireStop</find>
       <find>isbusy</find>
       <find>connectionIsBusy</find>
+      <find>def detect</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -300,7 +297,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="Python.Zaber">
+  <component name="RunManager" selected="Python.Server">
     <configuration default="false" name="Microscoper_app" type="PythonConfigurationType" factoryName="Python" temporary="true">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -531,6 +528,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1616" height="876" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -538,10 +536,10 @@
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25321338" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25642672" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39973083" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.39973083" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Data View" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -758,7 +756,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="5440">
           <caret line="331" column="40" lean-forward="false" selection-start-line="331" selection-start-column="40" selection-end-line="331" selection-end-column="40" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -793,26 +790,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Microscoper.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1505">
+        <state relative-caret-position="1615">
           <caret line="104" column="6" lean-forward="false" selection-start-line="104" selection-start-column="6" selection-end-line="104" selection-end-column="6" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/Server.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="141">
-          <caret line="466" column="71" lean-forward="true" selection-start-line="466" selection-start-column="71" selection-end-line="466" selection-end-column="71" />
-          <folding>
-            <element signature="e#217#230#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/Zaber.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="137">
-          <caret line="166" column="23" lean-forward="true" selection-start-line="166" selection-start-column="23" selection-end-line="166" selection-end-column="23" />
+        <state relative-caret-position="2686">
+          <caret line="166" column="23" lean-forward="false" selection-start-line="166" selection-start-column="23" selection-end-line="166" selection-end-column="23" />
           <folding />
         </state>
       </provider>
@@ -827,18 +814,28 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/ServerScripts/pcars.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="32" column="29" lean-forward="true" selection-start-line="32" selection-start-column="29" selection-end-line="32" selection-end-column="29" />
+        <state relative-caret-position="476">
+          <caret line="32" column="29" lean-forward="false" selection-start-line="32" selection-start-column="29" selection-end-line="32" selection-end-column="29" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/Microscoper_app.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="121">
-          <caret line="581" column="15" lean-forward="false" selection-start-line="581" selection-start-column="4" selection-end-line="581" selection-end-column="15" />
+        <state relative-caret-position="169">
+          <caret line="587" column="39" lean-forward="true" selection-start-line="587" selection-start-column="39" selection-end-line="587" selection-end-column="39" />
           <folding>
             <element signature="e#0#14#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/Server.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="243">
+          <caret line="472" column="75" lean-forward="true" selection-start-line="472" selection-start-column="75" selection-end-line="472" selection-end-column="75" />
+          <folding>
+            <element signature="e#217#230#0" expanded="true" />
           </folding>
         </state>
       </provider>

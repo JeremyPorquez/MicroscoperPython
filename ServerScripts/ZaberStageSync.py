@@ -22,15 +22,12 @@ class script(Script.Script):
         # self.loadDefaults()
 
         surfingCalibrationFilename = "calibrationSurfing.csv"
-        stageCalibrationFilename = "calibrationStage.txt"
 
         self.surfingCalibrationFilePath = os.path.join(self.parent.cwd,'Calibrations',surfingCalibrationFilename)
-        self.stageCalibrationFilePath = os.path.join(self.parent.cwd,'Calibrations',stageCalibrationFilename)
 
-
-        # self.surfingCalibrationFilePath = os.path.join(self.cwd,surfingCalibrationFilename)
-        # self.stageCalibrationFilePath = os.path.join(self.cwd,stageCalibrationFilename)
-
+        self.parent.stageCalibrationFilePath = None
+        self.parent.connection.askForResponse(receiver="main", sender="server", question="self.parent.ui.CalibrationFilenameText.text()",
+                                              target='self.stageCalibrationFilePath', wait=True, verbose=self.verbose, type=str)
 
     def start(self):
         self.parent.scriptStagePosition = None
@@ -62,7 +59,7 @@ class script(Script.Script):
             time.sleep(0.1)
 
     def loadStageCalibrationFile(self):
-        calibrationFile = open(self.stageCalibrationFilePath,"r")
+        calibrationFile = open(self.parent.stageCalibrationFilePath,"r")
         self.stageCalibrationFormulaString = calibrationFile.read()
 
     def loadSurfingCalibrationFile(self):
@@ -139,7 +136,7 @@ class script(Script.Script):
 
         def read_ini():
             self.surfingCalibrationFilePath = config['Files']['Surfing file']
-            self.stageCalibrationFilePath = config['Files']['Calibration file']
+            self.parent.stageCalibrationFilePath = config['Files']['Calibration file']
 
         try:
             read_ini()
@@ -153,6 +150,6 @@ class script(Script.Script):
 
         config['Files'] = {}
         config['Files']['Surfing file'] = self.surfingCalibrationFilePath
-        config['Files']['Calibration file'] = self.stageCalibrationFilePath
+        config['Files']['Calibration file'] = self.parent.stageCalibrationFilePath
 
 

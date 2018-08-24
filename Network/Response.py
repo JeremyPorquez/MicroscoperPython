@@ -7,7 +7,7 @@ class Responder(object):
     def __init__(self,parent=None):
         self.parent = parent
 
-    def askedForResponse(self, sender=None, question=None, target=None, verbose=True):
+    def askedForResponse(self, sender=None, question=None, target=None, verbose=True, type=None):
         sender = None if sender == 'None' else sender
         question = None if question == 'None' else question
         target = None if target == 'None' else target
@@ -19,8 +19,11 @@ class Responder(object):
             if (question is not None) & (target is not None):
                 if 'self.' in target :
                     target = target[target.find('.')+1:]
-                answer = eval(question) ## check if this works
-                response = "%s.%s = %s"%(sender,target,answer)
+                    answer = eval(question) ## check if this works
+                if type == str:
+                    response = "%s.%s = '%s'" % (sender, target, answer)
+                else:
+                    response = "%s.%s = %s"%(sender,target,answer)
                 self.sendConnectionMessage(response)
                 while self.connectionIsBusy:
                     time.sleep(0.1)
@@ -30,13 +33,16 @@ class Responder(object):
             if verbose:
                 print('Response sent')
 
-    def askForResponse(self, receiver=None, sender=None, question=None, target=None, wait=True, timeout=5, verbose=True):
+    def askForResponse(self, receiver=None, sender=None, question=None, target=None, wait=True, timeout=5, verbose=True, type=None):
         hasTimedOut = False
         self.connectionIsWaitingForReponse = wait
         time_initial = time.time()
 
         # message = "%s.askedForResponse(sender='%s')" % (receiver, sender)
-        message = "%s.connection.askedForResponse(sender='%s',question='%s',target='%s')" % (receiver, sender, question, target)
+        if type == str:
+            message = "%s.connection.askedForResponse(sender='%s',question='%s',target='%s', type=str)" % (receiver, sender, question, target)
+        else:
+            message = "%s.connection.askedForResponse(sender='%s',question='%s',target='%s')" % (receiver, sender, question, target)
         if verbose:
             print(message)
         self.sendConnectionMessage(message)

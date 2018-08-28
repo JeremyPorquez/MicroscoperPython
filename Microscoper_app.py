@@ -5,13 +5,13 @@ import configparser
 import numpy as np
 import pandas as pd
 from PyQt5 import QtWidgets, QtGui, QtCore
-import Microscoper
 from Microscoper import get_number_of_channels
 from Gui.Microscoper_gui import Ui_Microscoper2017
 from Devices import Display
 from Network.Connections import clientObject
-import Math
 from StellarN import SpectrometerExtension
+import Microscoper
+import Math
 import csv
 
 ## todo : to implement memcached instead of my own custom server
@@ -579,12 +579,14 @@ class Microscope(Microscoper.Microscope):
             print(e)
         self.signal.scanDoneSignal.emit()
 
+    def setConnectionNotBusy(self):
+        self.connection.connectionIsBusy = False
+
     def setConnectionIsBusy(self):
         self.connection.connectionIsBusy = True
 
     def detectScanStatus(self):
         self.scanStatusThreadInterrupt = False
-        #todo : currently wont stop acquiring even if stage done
         def stageContinuousUntilEnds():
             if self.scanStage == "LinearStage":
                 self.LinearStage.SetStartScan()
@@ -596,7 +598,7 @@ class Microscope(Microscoper.Microscope):
             else :
                 self.acquireStop()
                 self.setStage()
-                self.connection.connectionIsBusy = False
+
 
         def stageDiscreteUntilEnds():
             while (self.LinearStage.currentPosition < self.LinearStage.endScanPosition) and (not self.scanStatusThreadInterrupt):
@@ -610,7 +612,8 @@ class Microscope(Microscoper.Microscope):
                 time.sleep(0.1)
             self.acquireStop()
             self.setStage()
-            self.connection.connectionIsBusy = False
+            self.setConnectionNotBusy()
+
         def zDiscreteUntilEnds():
             while (self.zStage.currentPosition < self.zStage.endScanPosition) and (not self.scanStatusThreadInterrupt):
                 if not self.ai.reading:
@@ -625,14 +628,14 @@ class Microscope(Microscoper.Microscope):
                 time.sleep(0.1)
             else :
                 self.acquireStop()
-                self.connection.connectionIsBusy = False
+                self.setConnectionNotBusy()
 
         def grab():
             while True:
                 time.sleep(0.1)
                 if not self.ai.reading:
                     self.acquireStop()
-                    self.connection.connectionIsBusy = False
+                    self.setConnectionNotBusy()
                     break
 
         def stageDefault():
@@ -837,10 +840,6 @@ class Microscope(Microscoper.Microscope):
 
     def __calculate_fillFraction(self):
         self.ff = self.ui.fillFractionWidget.value()
-        # if self.zoomWidget.value() < 4:
-        #     self.ff = 1
-        # else :
-        #     self.ff = 0.5
         if self.verbose : print('Fill fraction set to %.2f'%self.ff)
 
     def __getSaveFile(self):
@@ -911,4 +910,3 @@ if __name__ == "__main__":
     qAppx = QtWidgets.QApplication(sys.argv)
     app = Microscope(app=qAppx)
     sys.exit(qAppx.exec_())
-    ## todo : grab does not work properly

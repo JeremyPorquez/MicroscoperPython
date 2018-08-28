@@ -35,6 +35,8 @@ class script(Script.Script):
 
     def endScan(self):
         self.zaberMove(0)
+        self.scriptsend('main.acquireStop()')
+        self.scriptSend('main.setConnectionNotBusy()')
         self.scriptSend("server.endScript()")
 
     def stop(self):

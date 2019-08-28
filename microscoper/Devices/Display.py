@@ -234,12 +234,11 @@ class Display2D(pg.GraphicsWindow):
                 self.plots.append(plot)
                 self.layout.addWidget(plotWidget, 2, i, 1, 1)
 
-            # todo : Add intensity values
             self.intensityWidgets = []
             for i in range(0, self.imageData.__len__()):
                 intensityLabel = QtWidgets.QLabel()
                 intensityLabel.setStyleSheet('color: yellow')
-                intensityLabel.setText(f"ASD{i}")
+                intensityLabel.setText(f"Channel {i}")
                 sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
                 sizePolicy.setHorizontalStretch(0)
                 sizePolicy.setVerticalStretch(0)
@@ -267,7 +266,7 @@ class Display2D(pg.GraphicsWindow):
             # Update display
             self.img_handle[i].display(self.imageData[i].T, levels=[self.imageMinimums[i],self.imageMaximums[i]])
             averageIntensity = np.mean(self.imageData[i])
-            self.intensityWidgets[i].setText(f"{averageIntensity})")
+            self.intensityWidgets[i].setText(f"{averageIntensity}")
 
             # self.img_handle[i].setImage(self.imageData[i], autoLevels=False)
             if self.intensities is not None:

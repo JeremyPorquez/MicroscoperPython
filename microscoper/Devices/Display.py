@@ -27,7 +27,6 @@ class imageWidget(RawImageWidget.RawImageWidget, QtWidgets.QWidget):
         self.signal = self.Signal()
 
     def display(self,image,levels):
-        # self.setImage(image)
         self.setImage(image,levels=levels)
 
     def mousePressEvent(self,event):
@@ -184,9 +183,7 @@ class Display2D(pg.GraphicsWindow):
             self.imageMinimums = imageMinimums
         self.clickPosition = None
         self.app = app
-        # self.signal = self.Signal()
         self.show()
-        # self.activateWindow() ## commented out because sometimes crashes
 
 
     def start(self):
@@ -216,14 +213,16 @@ class Display2D(pg.GraphicsWindow):
 
         screen = QtWidgets.QDesktopWidget()
         if not self.shown:
-        # Creates container / widget for images
-            self.img_handle = []
 
+            # Creates container / widget for images
+            # the img_handle contains objects of custom class imageWidget
+            self.img_handle = []
             for i in range(0, self.imageData.__len__()):
                 img = imageWidget()
                 img.signal.mousePressSignal.connect(self.getClickPosition)
                 self.img_handle.append(img)
                 self.layout.addWidget(img, 0, i, 2, 1)
+
 
             # Add intensity plots layout
             self.plots = []
@@ -248,6 +247,9 @@ class Display2D(pg.GraphicsWindow):
                 intensityLabel.setSizePolicy(sizePolicy)
                 self.intensityWidgets.append(intensityLabel)
                 self.layout.addWidget(intensityLabel, 1, i, 1, 1)
+                ## intensityLabel can be accessed through self.intensityWidgets
+                ## the intensityLabel can be updated through the syntax
+                ##      self.intensityWidgets[i].setText("myTextHere")
 
             self.layout.setRowMinimumHeight(0, 400)
             self.layout.setRowMinimumHeight(1, 0)
@@ -264,6 +266,9 @@ class Display2D(pg.GraphicsWindow):
         for i in range(0, self.imageData.__len__()):
             # Update display
             self.img_handle[i].display(self.imageData[i].T, levels=[self.imageMinimums[i],self.imageMaximums[i]])
+            averageIntensity = np.mean(self.imageData[i])
+            self.intensityWidgets[i].setText(f"{averageIntensity})")
+
             # self.img_handle[i].setImage(self.imageData[i], autoLevels=False)
             if self.intensities is not None:
                 try:

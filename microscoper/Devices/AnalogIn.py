@@ -2,13 +2,19 @@ import ctypes
 import time
 import os
 import numpy as np
-import PyDAQmx as pdmx
-# import tifffile as tf
+import types
+
+try :
+    import PyDAQmx as pdmx
+except :
+    print("PyDAQmx import failed. Simulating PyDAQmx.")
+    import Devices.FakePyDAQmx as pdmx
+
 from threading import Thread
 import multiprocessing
 import Devices.TiffWriter as tf
 
-from Math.Cython.CMath import updateArray, cupdateArray, nupdateArray, nmeanArray
+from MMath.CMath import updateArray, cupdateArray, nupdateArray, nmeanArray
 from Devices.Sync import sync_parameters
 
 def get_number_of_channels(channel='Dev1/ai0:2'):
@@ -108,7 +114,7 @@ class readProcess(multiprocessing.Process):
         self.analog_input.ClearTask()
 
 
-class Analog_input(object):
+class AnalogInput(object):
     # Create task
     '''
     1. Set channel
@@ -127,7 +133,6 @@ class Analog_input(object):
     max_timebase_frequency = 20e6
 
     def __init__(self, parent=None, inputChannels = "Dev1/ai0:3", polarityWidgets = None):
-        # super().__init__()
         self.cwd = os.path.basename(os.path.realpath(__file__))
         self.parent = parent
         os.chdir("Devices")
@@ -168,13 +173,13 @@ class Analog_input(object):
             self.imageData = np.zeros((self.numberOfChannels, self.y_pixels, self.x_pixels))
         return self.imageData
 
-    def init(self,channel="Dev1/ai0",resolution=(50,50),line_dwell_time=2.,fill_fraction=0.5,hwbuffer=8192,
+    def init(self,channel="Dev1/ai0",resolution=50,line_dwell_time=2.,fill_fraction=0.5,hwbuffer=8192,
              verbose=False,save=False,saveFilename='',saveFileIndex='',xAxis='',metadata='',waitForLastFrame=False,
              singleFrameScan=False,framesToAverage=1,dataMaximums=None,dataMinimums=None):
 
         self.channel = channel
         self.numberOfChannels = get_number_of_channels(channel)
-        self.x_pixels, self.y_pixels = resolution
+        self.x_pixels, self.y_pixels = resolution, resolution
         self.msline = line_dwell_time
         self.fill_fraction = fill_fraction
         self.hwbuffer = hwbuffer
@@ -278,6 +283,8 @@ class Analog_input(object):
 
     def terminate(self):
         self.parentConnectionReader.send({'detect connection' : False})
+        # self.readProcess.join()
+
 
     def calculateDisplay(self):
         while self.reading :
@@ -317,11 +324,16 @@ class Analog_input(object):
         while self.reading:
             if self.atTheLastFrame:
                 for channel in range(self.numberOfChannels):
+
                     # Calculate intensity of image at given channel
                     intensity = np.average(self.imageData[channel])
                     self.intensities[channel].append(intensity)
-                        # Calculate the intensity x-axis
-                    index = self.xAxis[-1]()  # index 0 is time index by default, -1 is last index eg. Raman from [Time, Stage, Raman]
+
+                    # Calculate the intensity x-axis
+                    if isinstance(self.xAxis[-1], types.FunctionType) or isinstance(self.xAxis[-1], types.MethodType):
+                        index = self.xAxis[-1]()  # index 0 is time index by default, -1 is last index eg. Raman from [Time, Stage, Raman]
+                    else:
+                        index = self.xAxis[-1]
                     self.intensitiesIndex[channel].append(index)
                     if self.save:
                         self.saveImage(channel)

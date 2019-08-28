@@ -100,6 +100,8 @@ class MplCanvas(FigureCanvas):
     def compute_initial_figure(self):
         pass
 
+
+## todo : create new 2D display showing intensity number and more basic qt label based on autoalign
 class Display2D(pg.GraphicsWindow):
     '''pg.GraphicsWindow is also a QtWidgets.Widget class
     Display2D class is a window that displays microscope images
@@ -128,24 +130,24 @@ class Display2D(pg.GraphicsWindow):
         while self.displaying:
             if self.simulate:
                 self.simulate_image()
-                self.image.setImage(self.imageData)
+                self.image.setImage(self.imageData*1.5)
             else:
                 self.signal.update.emit()
             time.sleep(1. / self.fps)
 
 
     ## create additional panel for spectrometer data receiving data at some socket then plot
-    def __init__(self, image_input, intensity_plot=None,
-                 intensity_index=None, imageMaximums=None, imageMinimums=None,
+    def __init__(self, imageInput, intensityPlot=None,
+                 intensityIndex=None, imageMaximums=None, imageMinimums=None,
                  app=None, parent=None):
         super().__init__()
         self.setWindowTitle(self.__title)
         self.signal = self.Signal()
 
         ## CREATE READ AND DISPLAY THREAD
-        self.imageData = image_input
-        self.intensities = intensity_plot
-        self.intensitiesIndex = intensity_index
+        self.imageData = imageInput
+        self.intensities = intensityPlot
+        self.intensitiesIndex = intensityIndex
 
         if imageMaximums is None:
             self.imageMaximums = [1] * len(self.imageData)
@@ -165,13 +167,13 @@ class Display2D(pg.GraphicsWindow):
         self.initUI()
         self.setupSignals()
 
-    def set(self, image_input, intensity_plot=None,
-                 intensity_index=None, imageMaximums=None, imageMinimums=None,
+    def set(self, imageInput, intensityPlot=None,
+                 intensityIndex=None, imageMaximums=None, imageMinimums=None,
                  app=None, parent=None):
 
-        self.imageData = image_input
-        self.intensities = intensity_plot
-        self.intensitiesIndex = intensity_index
+        self.imageData = imageInput
+        self.intensities = intensityPlot
+        self.intensitiesIndex = intensityIndex
         if imageMaximums is None:
             self.imageMaximums = [1] * len(self.imageData)
         else:
@@ -233,8 +235,23 @@ class Display2D(pg.GraphicsWindow):
                 self.plots.append(plot)
                 self.layout.addWidget(plotWidget, 2, i, 1, 1)
 
-            self.layout.setRowMinimumHeight(0, 300)
-            self.layout.setRowMinimumHeight(1, 100)
+            # todo : Add intensity values
+            self.intensityWidgets = []
+            for i in range(0, self.imageData.__len__()):
+                intensityLabel = QtWidgets.QLabel()
+                intensityLabel.setStyleSheet('color: yellow')
+                intensityLabel.setText(f"ASD{i}")
+                sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
+                sizePolicy.setHorizontalStretch(0)
+                sizePolicy.setVerticalStretch(0)
+                sizePolicy.setHeightForWidth(intensityLabel.sizePolicy().horizontalStretch())
+                intensityLabel.setSizePolicy(sizePolicy)
+                self.intensityWidgets.append(intensityLabel)
+                self.layout.addWidget(intensityLabel, 1, i, 1, 1)
+
+            self.layout.setRowMinimumHeight(0, 400)
+            self.layout.setRowMinimumHeight(1, 0)
+            self.layout.setRowMinimumHeight(2, 1)
 
 
             self.show()

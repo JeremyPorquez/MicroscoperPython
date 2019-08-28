@@ -1,1 +1,0 @@
-start C:\Python36-32\Python.exe StellarN.py

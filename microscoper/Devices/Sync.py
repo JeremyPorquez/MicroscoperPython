@@ -50,7 +50,7 @@ class sync_parameters(object):
         self.x_pixels, self.y_pixels = resolution
         self.msline = line_dwell_time
         self.fill_fraction = fill_fraction
-        self.max_timebase_frequency = max_timebase_frequency
+        self.max_timebase_frequency = float(max_timebase_frequency)
         self.tolerance = tolerance
         self.divisorD = divisorD
         self.maxbuffer = maxbuffer

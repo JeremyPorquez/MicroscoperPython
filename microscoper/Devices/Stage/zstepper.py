@@ -15,30 +15,34 @@ class zstepper(object):
 
     def __init__(self):
 
-        if sys.maxsize > 2 ** 32:
-            dllname = os.path.join(self.cwd,'ThorZStepper.dll')
-            self.dll = ctypes.WinDLL(dllname)
-            self.deviceCountC = ctypes.pointer(ctypes.c_long())
-            self.dll.FindDevices(self.deviceCountC)
-            self.deviceCount = self.deviceCountC.contents.value
-            if self.deviceCount < 1:
-                print('No devices found. Simulating stage.')
-                self.deviceLoaded = False
-            else:
-                self.dll.SelectDevice(0)
-                self.deviceLoaded = True
-        else :
-            dllname = os.path.join(self.cwd,'ThorZStepper32.dll')
-            self.dll = ctypes.CDLL(dllname)
-            self.deviceCountC = ctypes.pointer(ctypes.c_long())
-            self.dll.FindDevices(self.deviceCountC)
-            self.deviceCount = self.deviceCountC.contents.value
-            if self.deviceCount < 1:
-                print('No devices found. Simulating stage.')
-                self.deviceLoaded = False
-            else:
-                self.dll.SelectDevice(0)
-                self.deviceLoaded = True
+        try :
+            if sys.maxsize > 2 ** 32:
+                dllname = os.path.join(self.cwd,'ThorZStepper.dll')
+                self.dll = ctypes.WinDLL(dllname)
+                self.deviceCountC = ctypes.pointer(ctypes.c_long())
+                self.dll.FindDevices(self.deviceCountC)
+                self.deviceCount = self.deviceCountC.contents.value
+                if self.deviceCount < 1:
+                    print('No devices found. Simulating stage.')
+                    self.deviceLoaded = False
+                else:
+                    self.dll.SelectDevice(0)
+                    self.deviceLoaded = True
+            else :
+                dllname = os.path.join(self.cwd,'ThorZStepper32.dll')
+                self.dll = ctypes.CDLL(dllname)
+                self.deviceCountC = ctypes.pointer(ctypes.c_long())
+                self.dll.FindDevices(self.deviceCountC)
+                self.deviceCount = self.deviceCountC.contents.value
+                if self.deviceCount < 1:
+                    print('No devices found. Simulating stage.')
+                    self.deviceLoaded = False
+                else:
+                    self.dll.SelectDevice(0)
+                    self.deviceLoaded = True
+        except:
+            self.deviceCount = 0
+            self.deviceLoaded = False
 
 
         # except:
@@ -80,11 +84,17 @@ class zstepper(object):
             else : self.dll.GetParam()
             self.position = param.contents.value*self.zToMicrons
             return self.position
+        else:
+            self.position = 0
+            return 0
 
     def statusPosition(self):
-        status = ctypes.pointer(ctypes.c_int32())
-        self.dll.StatusPosition(status)
-        status = status.contents.value
+        if self.deviceLoaded:
+            status = ctypes.pointer(ctypes.c_int32())
+            self.dll.StatusPosition(status)
+            status = status.contents.value
+        else:
+            status = 0
         return status
 
     def move(self,position,tolerance=0.05,maxIterations=20):

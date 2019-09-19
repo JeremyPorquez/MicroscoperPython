@@ -2,12 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="15c4e7d9-b31c-4432-aa3a-0bb75332dca6" name="Default" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/AdditionalPackages/MMath/MMath.egg-info/PKG-INFO" beforeDir="false" afterPath="$PROJECT_DIR$/AdditionalPackages/MMath/MMath.egg-info/PKG-INFO" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/AdditionalPackages/MNetwork/MNetwork.egg-info/PKG-INFO" beforeDir="false" afterPath="$PROJECT_DIR$/AdditionalPackages/MNetwork/MNetwork.egg-info/PKG-INFO" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AdditionalPackages/PyMCC/PyMCC/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/AdditionalPackages/PyMCC/PyMCC/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AdditionalPackages/PyMCC/dist/PyMCC-0.1.tar.gz" beforeDir="false" afterPath="$PROJECT_DIR$/AdditionalPackages/PyMCC/dist/PyMCC-0.1.tar.gz" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />

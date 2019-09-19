@@ -1,0 +1,10 @@
+setup.cfg
+setup.py
+MMath/__init__.py
+MMath/setup.py
+MMath/test.py
+MMath.egg-info/PKG-INFO
+MMath.egg-info/SOURCES.txt
+MMath.egg-info/dependency_links.txt
+MMath.egg-info/not-zip-safe
+MMath.egg-info/top_level.txt

@@ -1,0 +1,4 @@
+Cython must be installed
+
+to compile, run :
+python setup.py build_ext --inplace

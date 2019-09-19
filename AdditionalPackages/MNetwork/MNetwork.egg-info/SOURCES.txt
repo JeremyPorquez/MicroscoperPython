@@ -1,0 +1,9 @@
+setup.py
+MNetwork/Connections.py
+MNetwork/Response.py
+MNetwork/__init__.py
+MNetwork.egg-info/PKG-INFO
+MNetwork.egg-info/SOURCES.txt
+MNetwork.egg-info/dependency_links.txt
+MNetwork.egg-info/not-zip-safe
+MNetwork.egg-info/top_level.txt

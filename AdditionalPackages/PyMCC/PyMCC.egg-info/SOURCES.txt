@@ -1,0 +1,7 @@
+setup.py
+PyMCC/__init__.py
+PyMCC.egg-info/PKG-INFO
+PyMCC.egg-info/SOURCES.txt
+PyMCC.egg-info/dependency_links.txt
+PyMCC.egg-info/not-zip-safe
+PyMCC.egg-info/top_level.txt

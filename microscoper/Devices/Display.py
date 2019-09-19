@@ -197,13 +197,16 @@ class Display2D(pg.GraphicsWindow):
     def initUI(self):
 
         # self.mainWindow = QtWidgets.QWidget() self.imageData.__len__() * 200
-        self.setGeometry(50, 50, self.imageData.__len__() * 300, 400)
+        self.setGeometry(50, 50, self.imageData.__len__() * 400, 400)
         self.scaleWidth = 1
         self.scaleHeight = 1
 
         self.layout = QtWidgets.QGridLayout()
         self.layout.setContentsMargins(0, 0, 0, 0)
         self.layout.setSizeConstraint(QtWidgets.QLayout.SetDefaultConstraint)
+        self.layout.setRowStretch(0, 3) 
+        self.layout.setRowStretch(1, 1)
+         self.layout.setRowStretch(2, 1)
 
         self.setLayout(self.layout)
         self.imgFormat = QtGui.QImage.Format_ARGB32
@@ -221,8 +224,26 @@ class Display2D(pg.GraphicsWindow):
                 img = imageWidget()
                 img.signal.mousePressSignal.connect(self.getClickPosition)
                 self.img_handle.append(img)
-                self.layout.addWidget(img, 0, i, 2, 1)
+                self.layout.addWidget(img, 0, i, 3, 1)
 
+
+            # Add image intensity label widgets                                             Updated 2019-09-06
+            self.intensityWidgets = []
+            for i in range(0, self.imageData.__len__()):
+                intensityLabel = QtWidgets.QLabel()
+                intensityLabel.setStyleSheet('color: yellow')
+                intensityLabel.setText(f"Channel {i}")
+                sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum,
+                                                   QtWidgets.QSizePolicy.Minimum)
+                sizePolicy.setHorizontalStretch(0)
+                sizePolicy.setVerticalStretch(0)
+                sizePolicy.setHeightForWidth(intensityLabel.sizePolicy().horizontalStretch())
+                intensityLabel.setSizePolicy(sizePolicy)
+                self.intensityWidgets.append(intensityLabel)
+                self.layout.addWidget(intensityLabel, 1, i, 1, 1)
+                ## intensityLabel can be accessed through self.intensityWidgets
+                ## the intensityLabel can be updated through the syntax
+                ##      self.intensityWidgets[i].setText("myTextHere")
 
             # Add intensity plots layout
             self.plots = []
@@ -233,22 +254,6 @@ class Display2D(pg.GraphicsWindow):
                 self.plotWidgets.append(plotWidget)
                 self.plots.append(plot)
                 self.layout.addWidget(plotWidget, 2, i, 1, 1)
-
-            self.intensityWidgets = []
-            for i in range(0, self.imageData.__len__()):
-                intensityLabel = QtWidgets.QLabel()
-                intensityLabel.setStyleSheet('color: yellow')
-                intensityLabel.setText(f"Channel {i}")
-                sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
-                sizePolicy.setHorizontalStretch(0)
-                sizePolicy.setVerticalStretch(0)
-                sizePolicy.setHeightForWidth(intensityLabel.sizePolicy().horizontalStretch())
-                intensityLabel.setSizePolicy(sizePolicy)
-                self.intensityWidgets.append(intensityLabel)
-                self.layout.addWidget(intensityLabel, 1, i, 1, 1)
-                ## intensityLabel can be accessed through self.intensityWidgets
-                ## the intensityLabel can be updated through the syntax
-                ##      self.intensityWidgets[i].setText("myTextHere")
 
             self.layout.setRowMinimumHeight(0, 400)
             self.layout.setRowMinimumHeight(1, 0)

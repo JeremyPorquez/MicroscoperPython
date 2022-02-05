@@ -3,10 +3,7 @@ import pyqtgraph as pg
 from pyqtgraph.widgets import RawImageWidget
 from PyQt5 import QtWidgets, QtCore, QtGui
 from threading import Thread
-from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
-from matplotlib.figure import Figure
 import time
-
 
 pg.setConfigOptions(imageAxisOrder='row-major')
 
@@ -14,34 +11,35 @@ pg.setConfigOptions(imageAxisOrder='row-major')
 class imageWidget(RawImageWidget.RawImageWidget, QtWidgets.QWidget):
     ''' Image container. Basically a wrapper for RawImageWidget with a modified mousePressEvent.
     '''
-    class Signal(QtCore.QObject):
 
+    class Signal(QtCore.QObject):
         mousePressSignal = QtCore.pyqtSignal()
 
     def __init__(self):
-        RawImageWidget.RawImageWidget.__init__(self,scaled=True)
+        RawImageWidget.RawImageWidget.__init__(self, scaled=True)
         QtWidgets.QWidget.__init__(self)
-
 
         self.clickPosition = None
         self.signal = self.Signal()
 
-    def display(self,image,levels):
-        self.setImage(image,levels=levels)
+    def display(self, image, levels):
+        self.setImage(image, levels=levels)
 
-    def mousePressEvent(self,event):
-        self.clickPosition = event.pos().x(),event.pos().y()
-        self.clickPositionRatio = self.clickPosition[0]/self.frameSize().width(), self.clickPosition[1]/self.frameSize().height()
+    def mousePressEvent(self, event):
+        self.clickPosition = event.pos().x(), event.pos().y()
+        self.clickPositionRatio = self.clickPosition[0] / self.frameSize().width(), self.clickPosition[1] / self.frameSize().height()
         self.signal.mousePressSignal.emit()
+
 
 class image(QtWidgets.QLabel):
     ''' Image container. Basically a wrapper for QtWidgets.QLabel with a modified mousePressEvent.
     '''
+
     class Signal(QtCore.QObject):
 
         mousePressSignal = QtCore.pyqtSignal()
 
-    def __init__(self,imageData,imgFormat):
+    def __init__(self, imageData, imgFormat):
         super().__init__()
         self.clickPosition = None
         self.imageData = imageData
@@ -54,19 +52,21 @@ class image(QtWidgets.QLabel):
         self.clickPosition = None
         self.signal = self.Signal()
 
-    def display(self,image,levels):
-        try :
-            image,alpha = pg.makeARGB(image,levels=levels)
+    def display(self, image, levels):
+        try:
+            image, alpha = pg.makeARGB(image, levels=levels)
             image = QtGui.QImage(image, image.shape[1], image.shape[0], self.imgFormat)
             pixmap = QtGui.QPixmap.fromImage(image)
             self.setPixmap(pixmap.scaled(self.w, self.h, QtCore.Qt.KeepAspectRatio))
         # self.setPixmap(QtGui.QPixmap.fromImage(image))
-        except :
+        except:
             pass
 
     def mousePressEvent(self, QMouseEvent):
-        self.clickPosition = QMouseEvent.pos().x(),QMouseEvent.pos().y()
+        self.clickPosition = QMouseEvent.pos().x(), QMouseEvent.pos().y()
         self.signal.mousePressSignal.emit()
+
+
 #        return self.clickPosition
 
 class imageItem(pg.ImageItem):
@@ -74,30 +74,10 @@ class imageItem(pg.ImageItem):
         super().__init__()
         self.clickPosition = None
 
-    def mouseClickEvent(self,event):
+    def mouseClickEvent(self, event):
         self.clickPosition = event.pos().x(), event.pos().y()
-        print(self.clickPosition) ## todo: replace with sprite at click position
+        print(self.clickPosition)  ## todo: replace with sprite at click position
         return self.clickPosition
-
-class MplCanvas(FigureCanvas):
-    """Ultimately, this is a QWidget (as well as a FigureCanvasAgg, etc.)."""
-
-    def __init__(self, parent=None, width=5, height=4, dpi=100):
-        # super().__init__()
-        # Figure().__init__(figsize=(width,height), dpi=dpi)
-
-        self.figure = Figure(figsize=(width, height), dpi=dpi)
-        # self.axes = fig.add_subplot(111)
-        self.compute_initial_figure()
-        FigureCanvas.__init__(self, self.figure)
-        self.setParent(parent)
-        FigureCanvas.setSizePolicy(self,
-                                   QtWidgets.QSizePolicy.Expanding,
-                                   QtWidgets.QSizePolicy.Expanding)
-        FigureCanvas.updateGeometry(self)
-
-    def compute_initial_figure(self):
-        pass
 
 
 ## todo : create new 2D display showing intensity number and more basic qt label based on autoalign
@@ -134,7 +114,6 @@ class Display2D(pg.GraphicsWindow):
                 self.signal.update.emit()
             time.sleep(1. / self.fps)
 
-
     ## create additional panel for spectrometer data receiving data at some socket then plot
     def __init__(self, imageInput, intensityPlot=None,
                  intensityIndex=None, imageMaximums=None, imageMinimums=None,
@@ -167,8 +146,8 @@ class Display2D(pg.GraphicsWindow):
         self.setupSignals()
 
     def set(self, imageInput, intensityPlot=None,
-                 intensityIndex=None, imageMaximums=None, imageMinimums=None,
-                 app=None, parent=None):
+            intensityIndex=None, imageMaximums=None, imageMinimums=None,
+            app=None, parent=None):
 
         self.imageData = imageInput
         self.intensities = intensityPlot
@@ -184,7 +163,6 @@ class Display2D(pg.GraphicsWindow):
         self.clickPosition = None
         self.app = app
         self.show()
-
 
     def start(self):
 
@@ -225,7 +203,6 @@ class Display2D(pg.GraphicsWindow):
                 self.img_handle.append(img)
                 self.layout.addWidget(img, 0, i, 3, 1)
 
-
             self.intensityWidgets = []
             for i in range(0, self.imageData.__len__()):
                 intensityLabel = QtWidgets.QLabel()
@@ -242,7 +219,6 @@ class Display2D(pg.GraphicsWindow):
                 ## the intensityLabel can be updated through the syntax
                 ##      self.intensityWidgets[i].setText("myTextHere")
 
-
             # Add intensity plots layout
             self.plots = []
             self.plotWidgets = []
@@ -257,7 +233,6 @@ class Display2D(pg.GraphicsWindow):
             self.layout.setRowMinimumHeight(1, 0)
             self.layout.setRowMinimumHeight(2, 1)
 
-
             self.show()
             self.shown = True
 
@@ -267,7 +242,7 @@ class Display2D(pg.GraphicsWindow):
     def display(self):
         for i in range(0, self.imageData.__len__()):
             # Update display
-            self.img_handle[i].display(self.imageData[i].T, levels=[self.imageMinimums[i],self.imageMaximums[i]])
+            self.img_handle[i].display(self.imageData[i].T, levels=[self.imageMinimums[i], self.imageMaximums[i]])
             # self.img_handle[i].display(self.imageData[i].T,
             #                            levels=[self.imageMinimums[i], np.mean(self.imageData[i]*1.2)])
             averageIntensity = np.mean(self.imageData[i])
@@ -302,7 +277,6 @@ class Display2D(pg.GraphicsWindow):
     def setImage(self, image_input):
         self.imageData = image_input
 
-
     def setIntensity(self, intensities=None, intensitiesIndex=None):
         self.intensities = intensities
         self.intensitiesIndex = intensitiesIndex
@@ -318,15 +292,15 @@ class Display2D(pg.GraphicsWindow):
         self.signal.close.emit()
         event.accept()
 
-class ImageLevelsWidget(QtWidgets.QWidget):
 
+class ImageLevelsWidget(QtWidgets.QWidget):
     class Signal(QtCore.QObject):
         close = QtCore.pyqtSignal()
         update = QtCore.pyqtSignal()
 
     class SpinBox(QtWidgets.QSpinBox):
         def __init__(self, parent=None):
-            QtWidgets.QSpinBox.__init__(self,parent)
+            QtWidgets.QSpinBox.__init__(self, parent)
 
         def updateArrayFunction(self):
             ## Weak ref?
@@ -336,20 +310,20 @@ class ImageLevelsWidget(QtWidgets.QWidget):
             super().keyPressEvent(event)
             if event.key() == QtCore.Qt.Key_Return:
                 self.updateArrayFunction()
-            else :
+            else:
                 pass
 
-    def __init__(self,parent=None,numberOfImages=0,arrayValuesMax=None,arrayValuesMin=None,images=None):
+    def __init__(self, parent=None, numberOfImages=0, arrayValuesMax=None, arrayValuesMin=None, images=None):
         super().__init__()
         self.parent = parent
         self.exists = True
         self.numberOfSliders = int(numberOfImages)
         self.arrayValuesMax = arrayValuesMax
         self.arrayValuesMin = arrayValuesMin
-        if images is not None :self.images = images
+        if images is not None: self.images = images
 
         self.setObjectName("DisplayLevels")
-        width = 20+60*self.numberOfSliders
+        width = 20 + 60 * self.numberOfSliders
         height = 135
         self.resize(width, height)
         self.createLayout()
@@ -360,7 +334,7 @@ class ImageLevelsWidget(QtWidgets.QWidget):
         self.spinBoxesMax = []
 
         self.createAutoButton()
-        for i in range(0,self.numberOfSliders):
+        for i in range(0, self.numberOfSliders):
             # self.createVerticalSlider(i)
             self.createSpinbox(i)
         self.createActionUpdates()
@@ -376,9 +350,9 @@ class ImageLevelsWidget(QtWidgets.QWidget):
             self.setImage(self.parent.ai.imageData)
 
     def autoLevel(self):
-        try :
+        try:
             self.reloadImages()
-            for i,image in enumerate(self.images):
+            for i, image in enumerate(self.images):
                 maximum = image.max()
                 minimum = image.min()
                 self.arrayValuesMax[i] = maximum
@@ -387,27 +361,27 @@ class ImageLevelsWidget(QtWidgets.QWidget):
                 self.spinBoxesMax[i].setValue(maximum)
                 self.spinBoxesMin[i].setValue(minimum)
             self.signal.update.emit()
-        except :
+        except:
             print('No images loaded.')
 
     def createAutoButton(self):
-        self.autoButton = QtWidgets.QPushButton('Auto Level',self)
-        self.autoButton.resize(100,30)
-        self.autoButton.move(10,10)
+        self.autoButton = QtWidgets.QPushButton('Auto Level', self)
+        self.autoButton.resize(100, 30)
+        self.autoButton.move(10, 10)
         self.autoButton.clicked.connect(self.autoLevel)
 
     def createActionUpdates(self):
         self.updateSpinboxFunctions = []
         self.updateSliderFunctions = []
 
-        for i in range(0,len(self.spinBoxesMax)):
+        for i in range(0, len(self.spinBoxesMax)):
             def arrayValueFunction(i):
                 def updateArrayValue():
                     self.arrayValuesMax[i] = self.spinBoxesMax[i].value()
                     self.arrayValuesMin[i] = self.spinBoxesMin[i].value()
                     self.signal.update.emit()
-                return updateArrayValue
 
+                return updateArrayValue
 
             updateArrayValueNewFunction = arrayValueFunction(i)
 
@@ -415,8 +389,8 @@ class ImageLevelsWidget(QtWidgets.QWidget):
             self.spinBoxesMin[i].updateArrayFunction = updateArrayValueNewFunction
             self.spinBoxesMax[i].valueChanged.connect(lambda: self.signal.update.emit())
             self.spinBoxesMin[i].valueChanged.connect(lambda: self.signal.update.emit())
-            #self.spinBoxesMax[i].valueChanged.connect(updateArrayMaxValueNewFunction)
-            #self.spinBoxesMin[i].valueChanged.connect(updateArrayMinValueNewFunction)
+            # self.spinBoxesMax[i].valueChanged.connect(updateArrayMaxValueNewFunction)
+            # self.spinBoxesMin[i].valueChanged.connect(updateArrayMinValueNewFunction)
 
             # def updateSpinboxFunction(i):
             #     def updateSpinbox():
@@ -435,17 +409,16 @@ class ImageLevelsWidget(QtWidgets.QWidget):
 
             # updateSliderNewFunction = updateSliderFunction(i)
 
-
     def createLayout(self):
         self.verticalLayoutWidget = QtWidgets.QWidget(self)
-        self.verticalLayoutWidget.setGeometry(QtCore.QRect(10, 50, 60*self.numberOfSliders, 80))
+        self.verticalLayoutWidget.setGeometry(QtCore.QRect(10, 50, 60 * self.numberOfSliders, 80))
         self.verticalLayoutWidget.setObjectName("verticalLayoutWidget")
         self.gridLayout = QtWidgets.QGridLayout(self.verticalLayoutWidget)
         self.gridLayout.setContentsMargins(0, 0, 0, 0)
         self.gridLayout.setObjectName("gridLayout")
 
-    def createSpinbox(self,n):
-        self.spinBoxesMax.append(self.SpinBox(self.verticalLayoutWidget))#QtWidgets.QSpinBox(self.verticalLayoutWidget))
+    def createSpinbox(self, n):
+        self.spinBoxesMax.append(self.SpinBox(self.verticalLayoutWidget))  # QtWidgets.QSpinBox(self.verticalLayoutWidget))
         self.spinBoxesMax[-1].setMinimumSize(QtCore.QSize(55, 0))
         self.spinBoxesMax[-1].setMinimum(-999999)
         self.spinBoxesMax[-1].setMaximum(999999)
@@ -461,7 +434,7 @@ class ImageLevelsWidget(QtWidgets.QWidget):
         self.spinBoxesMin[-1].setObjectName("spinBoxMin")
         self.gridLayout.addWidget(self.spinBoxesMin[-1], 1, n, 1, 1)
 
-    def createVerticalSlider(self,n):
+    def createVerticalSlider(self, n):
         self.verticalSlidersMax.append(QtWidgets.QSlider(self.verticalLayoutWidget))
         self.verticalSlidersMax[-1].setMinimum(1)
         self.verticalSlidersMax[-1].setMaximum(65535)
@@ -486,15 +459,15 @@ class ImageLevelsWidget(QtWidgets.QWidget):
         self.signal.close.emit()
         event.accept()
 
-    def setImage(self,image):
+    def setImage(self, image):
         self.images = image
+
 
 class testCanvas(pg.GraphicsWindow):
     def __init__(self):
-
         super().__init__()
-        self.resize(300,600)
-        self.move(300,300)
+        self.resize(300, 600)
+        self.move(300, 300)
         self.initUI()
 
         # self.canvas1.figure.add_subplot(111)
@@ -503,7 +476,6 @@ class testCanvas(pg.GraphicsWindow):
         self.show()
 
     def initUI(self):
-
         self.layout = QtWidgets.QGridLayout()
         self.layout.setSpacing(10)
         self.plot1 = self.addPlot()
@@ -522,7 +494,7 @@ class testCanvas(pg.GraphicsWindow):
         self.activateWindow()
 
 
-if __name__ == '__main__' :
+if __name__ == '__main__':
     app = QtWidgets.QApplication([])
     canvas = testCanvas()
     app.exec_()

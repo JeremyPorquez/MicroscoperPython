@@ -12,10 +12,10 @@ except :
 
 from threading import Thread
 import multiprocessing
-import Devices.TiffWriter as tf
+import microscoper.Devices.TiffWriter as tf
 
-from MMath.CMath import updateArray, cupdateArray, nupdateArray, nmeanArray
-from Devices.Sync import sync_parameters
+from microscoper.MMath.Math import updateArray, cupdateArray, nupdateArray, nmeanArray
+from microscoper.Devices.Sync import sync_parameters
 
 def get_number_of_channels(channel='Dev1/ai0:2'):
     if 'ai' in channel : chType = 'ai'

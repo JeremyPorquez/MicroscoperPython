@@ -10,19 +10,23 @@ import ctypes
 
 import numpy as np
 
+
 def getNumberOfChannels(channel='Dev1/ai0:2'):
-    if 'ai' in channel : chType = 'ai'
-    else : chType = 'ao'
-    try :
+    if 'ai' in channel:
+        chType = 'ai'
+    else:
+        chType = 'ao'
+    try:
         upper = int(channel[channel.find(":") + 1:])
-        lower = int(channel[channel.find(chType)+2:channel.find(":")])
+        lower = int(channel[channel.find(chType) + 2:channel.find(":")])
         number_of_channels = upper - lower + 1
-    except :
+    except:
         number_of_channels = 1
     return number_of_channels
 
+
 class NetworkDevice(object):
-    def __init__(self, parent = None, deviceName = "thorlabsdds220", parentName = "microscoper",
+    def __init__(self, parent=None, deviceName="thorlabsdds220", parentName="microscoper",
                  varName="networkDevice", verbose=False, timeout=15):
         """
         Creates a networked device.
@@ -32,7 +36,7 @@ class NetworkDevice(object):
         """
 
         self.parent = parent
-        if not hasattr(self.parent,"connection"):
+        if not hasattr(self.parent, "connection"):
             raise Exception('parent must have connection attribute of class ClientObject')
         self.deviceName = deviceName
         self.parentName = parentName
@@ -40,26 +44,25 @@ class NetworkDevice(object):
         self.verbose = verbose
         self.timeout = timeout
 
-    def sendCommand(self,command="moveAbs(25,1)"):
+    def sendCommand(self, command="moveAbs(25,1)"):
         '''A command template'''
         self.parent.connection.sendConnectionMessage(f"{self.deviceName}.{command}")
 
-
-    def sendQuery(self,query="currentPosition",targetVar="delayStagePosition"):
+    def sendQuery(self, query="currentPosition", targetVar="delayStagePosition"):
         '''A query template'''
         localObject = eval("self.parent.{}".format(self.varName))
-        if not hasattr(localObject,targetVar):
+        if not hasattr(localObject, targetVar):
             setattr(localObject, targetVar, None)
 
         response = self.parent.connection.askForResponse(receiver=self.deviceName,
                                                          sender=self.parentName,
                                                          question="{}".format(query),
-                                                         target="{}.{}".format(self.varName,targetVar),
+                                                         target="{}.{}".format(self.varName, targetVar),
                                                          wait=True,
                                                          verbose=self.verbose,
                                                          timeout=self.timeout,
                                                          )
-        if response is 1: ## has timedout
+        if response is 1:  ## has timedout
             return None
         else:
 
@@ -70,8 +73,8 @@ class NetworkDevice(object):
     def getPos(self):
         return self.sendQuery()
 
-    def move(self,absPosition = None, moveVel = None):
-        self.sendCommand("moveAbs({},{})".format(absPosition,moveVel))
+    def move(self, absPosition=None, moveVel=None):
+        self.sendCommand("moveAbs({},{})".format(absPosition, moveVel))
 
     def moveToStartPosition(self):
         self.sendCommand("moveToStartPosition()")
@@ -85,7 +88,7 @@ class NetworkDevice(object):
     def status(self):
         """ Returns True if the stage is not moving else False
         """
-        return not self.sendQuery("isMoving","isMoving")
+        return not self.sendQuery("isMoving", "isMoving")
 
     def stop(self):
         self.sendCommand("stop()")
@@ -103,13 +106,13 @@ class NetworkDevice(object):
         time.sleep(0.5)
         self.spectrometerSendQuery()
 
-    def spectrometerSave(self, fileName = None, xAxis = None):
+    def spectrometerSave(self, fileName=None, xAxis=None):
         if xAxis is None:
             xAxis = lambda: None
         xAxis = xAxis[0]
         if fileName is not '':
             self.sendCommand("save(filename=r'%s',label='%.3f',append=True)"
-                % (fileName, xAxis()))
+                             % (fileName, xAxis()))
         time.sleep(0.1)
         self.spectrometerSendQuery()
 
@@ -119,7 +122,6 @@ class NetworkDevice(object):
                 self.parent.connection.sendConnectionMessage('spectrometer.fileLoaded = False')
         else:
             raise ValueError('self.parent must be set')
-
 
 
 class Spectrometer(NetworkDevice):
@@ -133,13 +135,13 @@ class Spectrometer(NetworkDevice):
         self.sendCommand("spectrometer.plot()")
         time.sleep(0.5)
 
-    def save(self, fileName = None, xAxis = None):
+    def save(self, fileName=None, xAxis=None):
         if xAxis is None:
             xAxis = lambda: None
         xAxis = xAxis[0]
         if fileName is not '':
             self.sendCommand("save(filename=r'%s',label='%.3f',append=True)"
-                % (fileName, xAxis()))
+                             % (fileName, xAxis()))
         time.sleep(0.1)
 
     def endScan(self):
@@ -149,14 +151,15 @@ class Spectrometer(NetworkDevice):
         else:
             raise ValueError('self.parent must be set')
 
-    def sendQuery(self,query="scanning",targetVar="scanning"):
+    def sendQuery(self, query="scanning", targetVar="scanning"):
         return super().sendQuery(query, targetVar)
+
 
 class MicroscopeDetector(object):
     def __init__(self, widgets=None, model="1208"):
         ''' widget = array of PyQT widgets
             define slider widgets first before preset widgets'''
-        self.PMT = PyMCC.Device(boardNumber=0,model=model,name="PMT")
+        self.PMT = PyMCC.Device(boardNumber=0, model=model, name="PMT")
         self.TPEF = 0
         self.SHG = 1
         self.CARS = 2
@@ -177,7 +180,7 @@ class MicroscopeDetector(object):
         self.setPMTsZero()
 
     def test(self):
-        self.PMT.set_voltage(1,self.TPEF)
+        self.PMT.set_voltage(1, self.TPEF)
         self.PMT.set_voltage(1, self.SHG)
         self.PMT.set_voltage(1.0, self.CARS)
 
@@ -194,167 +197,175 @@ class MicroscopeDetector(object):
         self.statusWidget.setText('PMT Status : Off')
 
     def stop(self):
-        self.PMT.set_voltage(0,self.TPEF)
+        self.PMT.set_voltage(0, self.TPEF)
         self.PMT.set_voltage(0, self.SHG)
         self.PMT.set_voltage(0, self.CARS)
         self.PMT.set_voltage(0, self.Tr)
 
-    def __defValuePresetFunction(self,n,widget):
+    def __defValuePresetFunction(self, n, widget):
         value = widget.text()
         # value = eval("self.PresetWidget%s.text()" % n)
         if 'zero' in value.lower(): value = 0
         value = int(value)
-        def valuePresetFunction(execute=True,slider=True):
+
+        def valuePresetFunction(execute=True, slider=True):
             if slider:
-                try : self.sliderWidgets[n].setValue(value)
-                except : print('No slider widget defined. Define slider widget first if available.')
-                try : self.labelWidgets[n].setText("%i"%(value))
-                except : print('No text indicator widget defined. Define text widget first if available.')
-            voltage = value/1000.
-            if execute :
+                try:
+                    self.sliderWidgets[n].setValue(value)
+                except:
+                    print('No slider widget defined. Define slider widget first if available.')
+                try:
+                    self.labelWidgets[n].setText("%i" % (value))
+                except:
+                    print('No text indicator widget defined. Define text widget first if available.')
+            voltage = value / 1000.
+            if execute:
                 self.PMT.set_voltage(voltage, int(n))
+
         return valuePresetFunction
 
-    def __defSetPMTFunction(self,n,widget):
+    def __defSetPMTFunction(self, n, widget):
         def setPMTFunction(execute=False):
             value = widget.value()
-            voltage = value/1000.
-            self.labelWidgets[n].setText('%i'%(value))
-            if execute :
+            voltage = value / 1000.
+            self.labelWidgets[n].setText('%i' % (value))
+            if execute:
                 self.PMT.set_voltage(voltage, n)
+
         return setPMTFunction
 
-    def __defInitPMTFunction(self,n,widget):
+    def __defInitPMTFunction(self, n, widget):
         def initPMTFunction(execute=True):
             value = widget.value()
-            voltage = value/1000.
-            if execute :
+            voltage = value / 1000.
+            if execute:
                 self.PMT.set_voltage(voltage, n)
+
         return initPMTFunction
 
-
-    def __hasNumbers(self,inputString):
+    def __hasNumbers(self, inputString):
         return any(char.isdigit() for char in inputString)
 
-    def __getNumber(self,inputString):
+    def __getNumber(self, inputString):
         for char in inputString:
             if char.isdigit():
                 return int(char)
 
-    def __setWidgets(self,widgets):
+    def __setWidgets(self, widgets):
         for widget in widgets:
             widgetName = widget.objectName().lower()
-            if 'slider' in widgetName :
-                if self.__hasNumbers(widgetName) :
+            if 'slider' in widgetName:
+                if self.__hasNumbers(widgetName):
                     n = self.__getNumber(widgetName)
                     self.sliderWidgets.append(widget)
-                    self.setPMTsSliderActions.append(self.__defSetPMTFunction(n,widget))
-                    self.setPMTsInitActions.append(self.__defInitPMTFunction(n,widget))
-            if 'label' in widgetName :
-                if self.__hasNumbers(widgetName) :
+                    self.setPMTsSliderActions.append(self.__defSetPMTFunction(n, widget))
+                    self.setPMTsInitActions.append(self.__defInitPMTFunction(n, widget))
+            if 'label' in widgetName:
+                if self.__hasNumbers(widgetName):
                     n = self.__getNumber(widgetName)
                     self.labelWidgets.append(widget)
-            if 'zero' in widgetName :
-                if self.__hasNumbers(widgetName) :
+            if 'zero' in widgetName:
+                if self.__hasNumbers(widgetName):
                     n = self.__getNumber(widgetName)
-                    self.setPMTsZeroActions.append(self.__defValuePresetFunction(n,widget))
+                    self.setPMTsZeroActions.append(self.__defValuePresetFunction(n, widget))
             if 'preset' in widgetName:
                 if self.__hasNumbers(widgetName):
                     n = self.__getNumber(widgetName)
-                    self.setPMTsPresetActions.append(self.__defValuePresetFunction(n,widget))
+                    self.setPMTsPresetActions.append(self.__defValuePresetFunction(n, widget))
             if 'status' in widgetName:
-                    self.statusWidget = widget
-            print('%s Stage widget connected.'%widget.objectName())
+                self.statusWidget = widget
+            print('%s Stage widget connected.' % widget.objectName())
+
 
 class MicroscopeShutter(object):
-    def __makeFunctionChangeName(self,widget):
+    def __makeFunctionChangeName(self, widget):
         originalText = widget.text()
+
         def newFunction(value=True):
-            if value == True :
+            if value == True:
                 widget.setText(originalText + ' is open')
-            else :
+            else:
                 widget.setText(originalText + ' closed')
+
         return newFunction
 
-    def __setWidgets(self,widgets):
+    def __setWidgets(self, widgets):
         for widget in widgets:
             widgetName = widget.objectName().lower()
-            if 'pump' in widgetName :
+            if 'pump' in widgetName:
                 self.pumpChangeText = self.__makeFunctionChangeName(widget)
                 if self.Pump_shutter.get_digital_in() == 0:
                     widget.setText(widget.text() + ' is open')
                     self.pump = True
-                else :
+                else:
                     widget.setText(widget.text() + ' closed')
                     self.pump = False
-            if 'stokes' in widgetName :
+            if 'stokes' in widgetName:
                 # widget.setText(widget.text() + ' closed')
                 # self.stokes = False
                 self.stokesChangeText = self.__makeFunctionChangeName(widget)
                 if self.Stokes_shutter.get_digital_in() == 0:
                     widget.setText(widget.text() + ' is open')
                     self.stokes = True
-                else :
+                else:
                     widget.setText(widget.text() + ' closed')
                     self.stokes = False
 
-    def __init__(self,widgets=None):
-        self.Stokes_shutter = PyMCC.Device(model="3101",name='Stokes shutter')
-        self.Pump_shutter = PyMCC.Device(model="3101",name='Pump shutter')
+    def __init__(self, widgets=None):
+        self.Stokes_shutter = PyMCC.Device(model="3101", name='Stokes shutter')
+        self.Pump_shutter = PyMCC.Device(model="3101", name='Pump shutter')
         self.Microscope_shutter = Digital_output("Dev1/port0/line7")
         self.Microscope_shutter_close()
         self.Pump_shutter_close()
         self.Stokes_shutter_close()
 
-        if widgets is not None :
+        if widgets is not None:
             self.__setWidgets(widgets)
-
 
     def Pump_shutter_close(self):
         print('Pump shutter close')
-        self.Pump_shutter.set_digital_out(value=1,port=1)
+        self.Pump_shutter.set_digital_out(value=1, port=1)
 
     def Pump_shutter_open(self):
         print('Pump shutter open')
-        self.Pump_shutter.set_digital_out(value=0,port=1)
+        self.Pump_shutter.set_digital_out(value=0, port=1)
 
     def Stokes_shutter_close(self):
         print('Stokes shutter close')
-        self.Stokes_shutter.set_digital_out(1,port=2)
+        self.Stokes_shutter.set_digital_out(1, port=2)
 
     def Stokes_shutter_open(self):
         print('Stokes shutter open')
-        self.Stokes_shutter.set_digital_out(0,port=2)
+        self.Stokes_shutter.set_digital_out(0, port=2)
 
     def Microscope_shutter_close(self):
-        self.Microscope_shutter.write(np.array([255],dtype=np.uint8))
+        self.Microscope_shutter.write(np.array([255], dtype=np.uint8))
         # self.Microscope_shutter.close()
 
     def Microscope_shutter_open(self):
-        self.Microscope_shutter.write(np.array([0],dtype=np.uint8))
+        self.Microscope_shutter.write(np.array([0], dtype=np.uint8))
         # self.Microscope_shutter.close()
 
     def Set_PumpShutter(self):
         self.pump = not self.pump
-        if self.pump :
+        if self.pump:
             self.Pump_shutter_open()
-        else :
+        else:
             self.Pump_shutter_close()
-        try :
+        try:
             self.pumpChangeText(self.pump)
-        except :
+        except:
             pass
-
 
     def Set_StokesShutter(self):
         self.stokes = not self.stokes
-        if self.stokes :
+        if self.stokes:
             self.Stokes_shutter_open()
-        else :
+        else:
             self.Stokes_shutter_close()
-        try :
+        try:
             self.stokesChangeText(self.stokes)
-        except :
+        except:
             pass
 
 
@@ -372,10 +383,10 @@ class Microscope(object):
 
     def __checkExists(self):
         if os.name == "nt":
-            handle = ctypes.windll.user32.FindWindowW(None, "Microscoper 2017")     # Checks if the app is already running
+            handle = ctypes.windll.user32.FindWindowW(None, "Microscoper 2017")  # Checks if the app is already running
             if handle != 0:
-                ctypes.windll.user32.ShowWindow(handle, 10)                         # If the app exists, move window to top
-                exit(0)                                                             # Close the python program
+                ctypes.windll.user32.ShowWindow(handle, 10)  # If the app exists, move window to top
+                exit(0)  # Close the python program
 
     def maximizeWindows(self):
         handles = []
@@ -417,7 +428,7 @@ class Microscope(object):
             "scan x offset": "0",
             "scan y offset": "0",
             "calibration file": "",
-            "verbose":"0",
+            "verbose": "0",
         }
 
         for i in range(0, getNumberOfChannels(self.settings["input channels"])):
@@ -461,7 +472,7 @@ class Microscope(object):
 
             self.imageMaximums = []
             self.imageMinimums = []
-            for i in range(0,getNumberOfChannels(self.settings["input channels"])):
+            for i in range(0, getNumberOfChannels(self.settings["input channels"])):
                 max = float(config['Settings']['Image Maximums %i' % i])
                 min = float(config['Settings']['Image Minimums %i' % i])
                 if max == min:
@@ -482,7 +493,6 @@ class Microscope(object):
             make_default_ini()
             read_ini()
 
-
     def saveConfig(self):
         config = configparser.ConfigParser()
         config["Settings"] = {}
@@ -500,6 +510,7 @@ class Microscope(object):
 
 if __name__ == "__main__":
     import time
+
     s = MicroscopeShutter()
     # s.Pump_shutter_open()
     s.Stokes_shutter_open()
@@ -507,4 +518,4 @@ if __name__ == "__main__":
     # s.Pump_shutter_close()
     s.Stokes_shutter_close()
     # s.Microscope_shutter_close()
-  # s.Stokes_shutter_open()
+# s.Stokes_shutter_open()

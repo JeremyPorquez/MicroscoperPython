@@ -138,7 +138,7 @@ class FocusController():
             "move preset2" : "1000",
             "move preset3" : "4800",
             "move increments" : "5",
-            "upper limit" : "6000",
+            "upper limit" : "10000",
             "lower limit" : "0",
         }
 

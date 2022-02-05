@@ -31,9 +31,9 @@ class Device(object):
         self.name = name
         print("MCC Analog output model %s %s"%(model,name))
         if sys.maxsize > 2 ** 32:
-            dllname = os.path.join(os.path.dirname(__file__), r'dlls\cbw64.dll')
+            dllname = os.path.join(os.path.dirname(__file__), r'cbw64.dll')
         else:
-            dllname = os.path.join(os.path.dirname(__file__), r'dlls\cbw32.dll')
+            dllname = os.path.join(os.path.dirname(__file__), r'cbw32.dll')
         try :
             self.dll = ctypes.windll.LoadLibrary(dllname)
             self.deviceLoaded = True
@@ -123,3 +123,7 @@ class Device(object):
             print(self.dll.cbDBitOut(self.boardNumber, PortType, ctypes.c_int(1), ctypes.c_short(1)))
             print(self.dll.cbDBitOut(self.boardNumber, PortType, ctypes.c_int(2), ctypes.c_short(1)))
             time.sleep(2)
+
+if __name__ == "__main__":
+    device = Device(model="1208")
+    device.test_ao()

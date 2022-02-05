@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'microscoper.ui'
+# Form implementation generated from reading ui file 'Microscoper.ui'
 #
 # Created by: PyQt5 UI code generator 5.12.1
 #
@@ -256,14 +256,10 @@ class Ui_Microscoper(object):
         self.menubar.setObjectName("menubar")
         self.menuFile = QtWidgets.QMenu(self.menubar)
         self.menuFile.setObjectName("menuFile")
-        self.menuHelp = QtWidgets.QMenu(self.menubar)
-        self.menuHelp.setObjectName("menuHelp")
         self.menuSettings = QtWidgets.QMenu(self.menubar)
         self.menuSettings.setObjectName("menuSettings")
         self.menuWindow = QtWidgets.QMenu(self.menubar)
         self.menuWindow.setObjectName("menuWindow")
-        self.menuRemote = QtWidgets.QMenu(self.menubar)
-        self.menuRemote.setObjectName("menuRemote")
         Microscoper.setMenuBar(self.menubar)
         self.statusbar = QtWidgets.QStatusBar(Microscoper)
         self.statusbar.setObjectName("statusbar")
@@ -286,18 +282,12 @@ class Ui_Microscoper(object):
         self.action_Connect.setObjectName("action_Connect")
         self.action_Disconnect = QtWidgets.QAction(Microscoper)
         self.action_Disconnect.setObjectName("action_Disconnect")
-        self.menuFile.addAction(self.action_Open)
         self.menuFile.addAction(self.action_Quit)
-        self.menuHelp.addAction(self.action_About)
         self.menuSettings.addAction(self.action_setImageLevels)
         self.menuWindow.addAction(self.actionBring_all_to_front)
-        self.menuRemote.addAction(self.action_Connect)
-        self.menuRemote.addAction(self.action_Disconnect)
         self.menubar.addAction(self.menuFile.menuAction())
         self.menubar.addAction(self.menuSettings.menuAction())
-        self.menubar.addAction(self.menuRemote.menuAction())
         self.menubar.addAction(self.menuWindow.menuAction())
-        self.menubar.addAction(self.menuHelp.menuAction())
 
         self.retranslateUi(Microscoper)
         QtCore.QMetaObject.connectSlotsByName(Microscoper)
@@ -346,10 +336,8 @@ class Ui_Microscoper(object):
         self.WavenumberText.setText(_translate("Microscoper", "0 cm-1"))
         self.zeroOffsetButton.setText(_translate("Microscoper", "Zero"))
         self.menuFile.setTitle(_translate("Microscoper", "File"))
-        self.menuHelp.setTitle(_translate("Microscoper", "Help"))
         self.menuSettings.setTitle(_translate("Microscoper", "Settings"))
         self.menuWindow.setTitle(_translate("Microscoper", "Window"))
-        self.menuRemote.setTitle(_translate("Microscoper", "Remote"))
         self.action_Quit.setText(_translate("Microscoper", "&Quit"))
         self.action_Open.setText(_translate("Microscoper", "&Open TIFF"))
         self.action_About.setText(_translate("Microscoper", "&About"))

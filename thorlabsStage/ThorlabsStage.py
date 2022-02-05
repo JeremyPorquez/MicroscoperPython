@@ -7,19 +7,32 @@ from MNetwork.Connections import ClientObject
 from Dependencies.PyAPT import APTMotor
 from Dependencies.Device import BaseDevice
 
-class CustomMainWindow(QtWidgets.QMainWindow):
+class CustomWidget(QtWidgets.QWidget):
     def __init__(self,parent=None):
-        super().__init__()
         self.parent = parent
+        if parent is not None:
+            super().__init__(self.parent)
+        else:
+            super().__init__()
 
     def closeEvent(self, event):
-        self.parent.quit()
+        if hasattr(self.parent, "quit"):
+            self.parent.quit()
+        event.accept()
+
+class CustomMainWindow(QtWidgets.QMainWindow):
+    def __init__(self,parent=None):
+        self.parent = parent
+        super().__init__()
+
+    def closeEvent(self, event):
+        if hasattr(self.parent, "quit"):
+            self.parent.quit()
         event.accept()
 
 class ThorlabsStage(BaseDevice):
     settings = None
     motorLoaded = False
-    ini_file = os.path.dirname(os.path.realpath(__file__)) + '/ThorlabsStage.ini'
 
     def __checkExists(self):
         if os.name == "nt":
@@ -45,8 +58,24 @@ class ThorlabsStage(BaseDevice):
                 pass
             signal.connect(function)
 
-    def __init__(self,verbose=False,visible=True):
+    def __init__(self,verbose=False,visible=True,ini=None,parent=None):
         BaseDevice.__init__(self)
+        basepath = os.path.dirname(os.path.realpath(__file__))
+
+        if ini is None:
+            self.ini_file = os.path.join(basepath,'ThorlabsStage.ini')
+        else:
+            if os.path.exists(ini):
+                self.ini_file = ini
+            elif os.path.exists(basepath + ini):
+                self.ini_file = os.path.join(basepath,ini)
+
+        if parent is None:
+            self.parent = self
+        else:
+            self.parent = parent
+
+
         self.loadConfig()
 
         self.loadDevice(verbose=verbose)
@@ -57,7 +86,7 @@ class ThorlabsStage(BaseDevice):
         self.updateUi()
         self.connectSignals()
 
-        self.threadThis(self.getPositionThread, (0.01))
+        self.threadThis(self.getPositionThread, (0.005))
         self.establishConnection()
 
         self.isMoving = False
@@ -65,6 +94,7 @@ class ThorlabsStage(BaseDevice):
 
     def defineDefaultSettings(self):
         self.settings = {
+            "title label" : "Thorlabs Stage",
             "connection port" : "10124",
             "serial number" : "94876470",
             "hwtype" : "31",
@@ -106,6 +136,7 @@ class ThorlabsStage(BaseDevice):
 
         def make_default_ini():
             self.defineDefaultSettings()
+            config["Settings"] = {}
             for key, value in self.settings.items():
                 config['Settings'][str(key)] = str(value)
 
@@ -143,7 +174,6 @@ class ThorlabsStage(BaseDevice):
                                   verbose=verbose)
             self.motorLoaded = True
             self.motor.aptdll.EnableEventDlg(False) ## Added 2017-10-03 : Prevents appearing of APT event dialog which causes 64 bit systems to crash
-            # self.currentPosition = self.getPos()
             print("Stage %s loaded."%(self.settings["serial number"]))
         except :
             self.motorLoaded = False
@@ -152,13 +182,14 @@ class ThorlabsStage(BaseDevice):
 
     def setupUi(self, visible=True):
         self.ui = Ui_Thorlabs()
-        self.mainWindow = CustomMainWindow(parent=self)
-        self.mainWindow.setWindowIcon(QtGui.QIcon("ui/ThorlabsStage.png"))
-        self.ui.setupUi(self.mainWindow)
+        self.widget = CustomWidget(parent=self.parent)
+        self.ui.setupUi(self.widget)
+        self.ui.titleLabel.setText(self.settings["title label"])
         if visible:
-            self.mainWindow.setWindowTitle("Thorlabs Stage Controller v.2019.2.24")
-            self.mainWindow.show()
-            self.mainWindow.activateWindow()
+            self.widget.setWindowIcon(QtGui.QIcon("ui/ThorlabsStage.png"))
+            self.widget.setWindowTitle("Thorlabs Stage Controller v.2019.2.24")
+            self.widget.show()
+            self.widget.activateWindow()
 
     def connectUi(self):
         self.ui.buttonSetPorts.clicked.connect(self.setPorts)
@@ -168,10 +199,13 @@ class ThorlabsStage(BaseDevice):
         self.ui.moveButton3.clicked.connect(lambda: self.moveAbs(self.ui.moveSpinbox3.value()))
         self.ui.upButton.clicked.connect(lambda: self.moveRel(self.ui.incSpinbox.value()))
         self.ui.downButton.clicked.connect(lambda: self.moveRel(-self.ui.incSpinbox.value()))
-        self.ui.action_Quit.triggered.connect(self.quit)
         self.ui.moveSpeedSpinbox.valueChanged.connect(lambda: self.setSpeed(self.ui.moveSpeedSpinbox.value()))
         self.ui.scanButton.clicked.connect(lambda: self.initScan())
         self.ui.stopButton.clicked.connect(self.stop)
+
+        # self.ui.moveSpinbox1.valueChanged.connect(self.saveConfig)
+        # self.ui.moveSpinbox2.valueChanged.connect(self.saveConfig)
+        # self.ui.moveSpinbox3.valueChanged.connect(self.saveConfig)
 
     def connectSignals(self):
         self.signal = self.Signal()
@@ -213,6 +247,18 @@ class ThorlabsStage(BaseDevice):
         self.ui.lcdNumber.display("%.3f" % currentPosition)
         return currentPosition
 
+    def getStartPos(self):
+        """
+        Returns the start of the scan position.
+        """
+        return self.ui.startPositionSpinbox.value()
+
+    def getEndPos(self):
+        """
+        Returns the end of the scan position.
+        """
+        return self.ui.endPositionSpinbox.value()
+
     def moveAbs(self,absPosition = None, moveVel = None):
         """
         Moves stage to absolute position. When moveVel is not defined, moveVel is set to 10
@@ -238,7 +284,7 @@ class ThorlabsStage(BaseDevice):
 
     def moveRel(self, relativeDistance = None, moveVel = None):
         if relativeDistance is None:
-            relativeDistance = 0
+            relativeDistance = self.ui.incSpinbox.value()
         if moveVel is None:
             moveVel = 10
         def move():
@@ -246,8 +292,8 @@ class ThorlabsStage(BaseDevice):
                 self.softStop()
             self.isMoving = True
             self.threadThis(lambda: self.motor.mcRel(relativeDistance, moveVel=moveVel))
-            while (abs(self.currentPosition - float(self.ui.startPositionSpinbox.value())) > 1e-5) & (self.isMoving):
-                time.sleep(0.001)
+            # while (abs(self.currentPosition - float(self.ui.startPositionSpinbox.value())) > 1e-5) & (self.isMoving):
+            #     time.sleep(0.001)
             self.isMoving = False
 
         if self.motorLoaded :
@@ -329,12 +375,102 @@ class ThorlabsStage(BaseDevice):
         self.connection.stopClientConnection()
         self.clear()
         self.saveConfig()
-        self.mainWindow.close()
+        self.widget.close()
+
+
+class ThorlabsBBD203(object):
+
+    settings = {}
+    basepath = os.path.dirname(os.path.realpath(__file__))
+    inifilename = "ThorlabsStage.ini"
+    ini_file = os.path.join(basepath,inifilename)
+
+    def __init__(self):
+        self.loadConfig()
+        self.mainWindow = CustomMainWindow(parent=self)     ## generate mainwindow ui
+        self.centralWidget = QtWidgets.QWidget(self.mainWindow)
+        self.centralWidget.resize(1200, 350)
+        self.setupDevices()
+        self.setupUi()
+
+    def setupDevices(self):
+        self.devices = []
+        for device, iniFile in self.settings.items():
+            self.devices.append(ThorlabsStage(visible=False,
+                                              parent=self.centralWidget,
+                                              ini=iniFile))
+
+    def setupUi(self):
+        self.layout = QtWidgets.QGridLayout(self.centralWidget)
+        for idx, device in enumerate(self.devices):
+            self.layout.addWidget(device.widget,0, idx, 1, 1)
+        self.layout.setContentsMargins(0, 0, 0, 0)
+        # self.mainWindow.setLayout(self.layout)
+        self.mainWindow.resize(len(self.devices)*400,350)
+        self.mainWindow.setWindowIcon(QtGui.QIcon("ui/ThorlabsStage.png"))
+        self.mainWindow.setWindowTitle("Thorlabs Stage Controller v.2019.9.20")
+        self.mainWindow.show()
+        self.mainWindow.activateWindow()
+
+    def quit(self):
+        for device in self.devices:
+            device.quit()
+
+
+    ### Configuration section ###
+    #############################
+
+    def defineDefaultSettings(self):
+        self.settings = {
+            "device1" : "ThorlabsStage1.ini",
+            "device2" : "ThorlabsStage2.ini",
+            "device3" : "ThorlabsStage3.ini",
+        }
+
+    def loadConfig(self):
+
+        config = configparser.ConfigParser()
+
+        def make_default_ini():
+            self.defineDefaultSettings()
+            config["Settings"] = {}
+            for key, value in self.settings.items():
+                config['Settings'][str(key)] = str(value)
+            self.saveConfig()
+
+        def read_ini():
+            config.read(self.ini_file)
+            configSettings = list(config.items("Settings"))
+
+            for key, value in configSettings:
+                self.settings[key] = value
+
+        try:
+            read_ini()
+        except:
+            make_default_ini()
+            read_ini()
+
+    def saveConfig(self):
+        config = configparser.ConfigParser()
+
+        config["Settings"] = {}
+        for key, value in self.settings.items():
+            config['Settings'][str(key)] = str(value)
+
+        with open(self.ini_file, 'w') as configfile:
+            config.write(configfile)
+
+    ### End Configuration section ###
+    #################################
+
+
 
 if __name__ == "__main__":
     import ctypes
     qapp = QtWidgets.QApplication([])
-    app = ThorlabsStage(visible=True)
+    #app = ThorlabsStage(visible=True)
+    app = ThorlabsBBD203()
     myappid = u"ThorlabsStage BBD Series"  # arbitrary string
     if os.name == "nt":
         ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID(myappid)

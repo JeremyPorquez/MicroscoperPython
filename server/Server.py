@@ -12,6 +12,7 @@ import configparser
 import os
 import queue
 import time
+import socket
 
 class AuthKey(object):
     key = os.urandom(32)
@@ -23,7 +24,7 @@ class Server(ClientObject):
 
     errorPrinted = False
 
-    def __init__(self,address,port,name,parent,verbose=True):
+    def __init__(self,address,port,name,parent,verbose=False):
         self.connection = ClientObject(parent=self)
         self.address = address
         self.port = port
@@ -57,7 +58,7 @@ class Server(ClientObject):
                         if not self.command:                            # Receive nothing? client closed connection,
                             self.serverConnection.close()               # Close the connection and exit loop
                             break
-                        print(self.command)
+                        if self.verbose : print("from %s : %s"% (self.name, self.command))
                         receiver = self.getReceiver(self.command)
                         command = self.getCommand(self.command)
                         for server in self.parent.servers:                  # disseminate command to other apps
@@ -65,28 +66,39 @@ class Server(ClientObject):
                                 self.commandQueue.put_nowait(self.command)
                                 if self.verbose:
                                     print("Queueing command message, %s, to %s"%(self.command,receiver))
-                                break
+                                # return 0
                             if server.name == receiver :                    # checks whether the other app is the appropriate receiver
                                 server.serverConnection.send("self%s"%command)
                                 if self.verbose:
                                     print("Transmitting message, %s, to %s"%(self.command,receiver))
-                                break
-            except Exception as e:
-                if not self.errorPrinted:
-                    print(self.name, 'connection lost with error message :', e)
-                    self.errorPrinted = True
-                    self.serverConnection.close()
-                time.sleep(1)
+                                # return 1
+            except ConnectionResetError:
+                # self.serverConnection.close()
+                self.listener.close()
+                print(self.name, 'connection lost. Reconnecting..')
+                self.startListener()
+            except AttributeError as e:
+                print("Error in Server.listen(): %s%s : %s"%(receiver, command, e))
+
+
+            #     if self.autoconnect:
+            #         self.restart()
+            # except Exception as e:
+            #     if not self.errorPrinted:
+            #         print(self.name, 'connection lost with error message :', e)
+            #         self.errorPrinted = True
+            #         self.serverConnection.close()
+            #     time.sleep(1)
             time.sleep(0.1)
 
 
-    def restart(self):
-        self.close()
-        for server in self.parent.servers:
-            if server.name == "server":
-                parentcwd = self.parent.cwd
-                server.serverConnection.send("self.xit()")
-                os.system('"' + os.path.join(parentcwd, "Server.bat") + '"')
+    # def restart(self):
+    #     self.close()
+    #     for server in self.parent.servers:
+    #         if server.name == "server":
+    #             parentcwd = self.parent.cwd
+    #             server.serverConnection.send("self.xit()")
+    #             os.system('"' + os.path.join(parentcwd, "Server.bat") + '"')
 
     def getReceiver(self,message):
         receiver = message[:message.find(".")]
@@ -117,11 +129,6 @@ class Server(ClientObject):
     def close(self):
         print("Connection %s closed."%self.name)
         self.isConnected = False
-
-        # self.listener.close()
-        # self.listener._listener._socket.close()
-        # self.listener._listener._socket.shutdown(socket.SHUT_RDWR)
-        # self.listener.shutdown()
 
     def stop(self):
         self.close()
@@ -154,7 +161,7 @@ class MainServer(object):
 
     def __checkExists(self):
         if os.name == "nt":
-            handle = ctypes.windll.user32.FindWindowW(None, "Microscoper Server 2017")
+            handle = ctypes.windll.user32.FindWindowW(None, "Microscoper Server 2019")
             if handle != 0:
                 ctypes.windll.user32.ShowWindow(handle, 10)
                 exit(0)
@@ -181,12 +188,14 @@ class MainServer(object):
     def setupUi(self):
         self.ui.setupUi(self.mainWindow)
         self.ui.sendButtonWidget.clicked.connect(lambda: self.sendServerMessage(port=int(self.ui.portNumber.toPlainText()),
-                                                                                message=self.ui.textWidgetSend.toPlainText()))
+                                                                                message=self.ui.textWidgetSend.toPlainText(),
+                                                                                verbose=False)
+                                                                                )
         self.ui.portComboBox.currentIndexChanged.connect(self.updateUi)
         self.ui.portNumber.setPlainText(self.configPorts[0][1])
         self.ui.textWidgetSend.setPlainText(self.configMessages[0][1])
-        self.ui.localAddressTextWidget.setPlainText(self.configAddress)
         self.ui.portComboBox.addItems([self.configPorts[i][0] for i in range(0, len(self.configPorts))])
+        self.ui.action_Quit.triggered.connect(self.quit)
         self.loadScriptButtonWidgets = []
         self.loadScriptButtonWidgets.append(self.ui.loadScriptButtonWidget1)
         self.loadScriptButtonWidgets.append(self.ui.loadScriptButtonWidget2)
@@ -275,30 +284,36 @@ class MainServer(object):
         if serverType == None :
             The function starts the server connection at all ports, else only starts at the serverType.
         '''
-        localAddress = self.ui.localAddressTextWidget.toPlainText()
-        self.serverPort = 10119
 
         self.servers = []
         ## self.connections is an array contains (port number, server type) of type tuple.
 
+        self.serverAddresses = []
+        for name, address in self.configAddresses:
+            self.serverAddresses.append((name, address))
+
         self.serverConnections = []
         for name, port in self.configPorts:
             self.serverConnections.append((name, port))
-        self.serverConnections.append(("server", self.serverPort))
+            if name.lower() == "server":
+                self.serverPort = port
 
-        if serverType is None :
-            for name, port in self.serverConnections :
-                self.startServer(address=localAddress, port=int(port), serverType=name)
+        if serverType is None:
+            for index, ((name, address), (name2, port)) in enumerate(zip(sorted(self.serverAddresses),sorted(self.serverConnections))):
+                if name == name2:
+                    self.startServer(address=address, port=int(port), serverType=name)
         else :
-            for name, port in self.serverConnections : # loop through to get port number
-                if serverType.lower() == name.lower():
-                    self.startServer(address=localAddress, port=int(port), serverType=name)
+            for index, ((name, address), (name2, port)) in enumerate(zip(sorted(self.serverAddresses), sorted(self.serverConnections))):
+            # for name, port in self.serverConnections : # loop through to get port number
+                if name == name2:
+                    if serverType.lower() == name.lower():
+                        self.startServer(address=address, port=int(port), serverType=name)
 
 
 
     def startServer(self, address="127.0.0.1", port=None, serverType=None):
         ## Start Listeners
-        server = Server(address, port, name=serverType,parent=self,verbose=False)
+        server = Server(address, port, name=serverType,parent=self,verbose=self.verbose)
         server.autoconnect = True
         self.servers.append(server)
 
@@ -348,20 +363,39 @@ class MainServer(object):
         for server in self.servers:
             server.close()
 
-    def xit(self):
-        self.close()
+    # def xit(self):
+    #     self.close()
+
+    def quit(self):
+        self.connection.stopClientConnection()
+        self.running = False
+        self.saveConfig()
+        self.mainWindow.close()
 
     def closeEvent(self, event):
         self.saveConfig()
         self.terminateConnections()
 
     def defineDefaultSettings(self):
+        self.configAddresses = {
+            "Server": "127.0.0.1",
+            "Microscoper": "127.0.0.1",
+            "Spectrometer": " 127.0.0.1",
+            "Rotation Stage": "127.0.0.1",
+            "Thorlabsdds220": "127.0.0.1",
+            "focusController": "127.0.0.1",
+            "stagex": "127.0.0.1",
+            "stagey": "127.0.0.1",
+        }
         self.configPorts = {
+            "Server": "10119",
             "Microscoper": "10120",
             "Spectrometer": " 10121",
             "Rotation Stage": "10122",
             "Thorlabsdds220": "10123",
             "focusController": "10124",
+            "stagex": "10126",
+            "stagey": "10127",
         }
         self.configMessages = {
             "Microscoper": "none",
@@ -378,26 +412,31 @@ class MainServer(object):
         config = configparser.ConfigParser()
         def make_default_ini():
             self.defineDefaultSettings()
-            config["Address"] = {}
+            config["Addresses"] = {}
             config["Ports"] = {}
             config["Messages"] = {}
-            config["Address"]["local"] = "127.0.0.1"
+            config["Scripts"] = {}
+            config["Settings"] = {}
+            for key, value in self.configAddresses.items():
+                config["Addresses"][str(key)] = str(value)
             for key, value in self.configPorts.items():
                 config["Ports"][str(key)] = str(value)
             for key, value in self.configMessages.items():
                 config["Messages"][str(key)] = str(value)
-            for key, value in self.configScripts.items():
-                config["Scripts"][str(key)] = str(value)
+            for key, value in self.configSettings.items():
+                config["Settings"][str(key)] = str(value)
             with open(self.ini_file, 'w') as configfile:
                 config.write(configfile)
 
         def read_ini():
             self.defineDefaultSettings()
             config.read(self.ini_file)
-            self.configAddress = config["Address"]["Local"]
+            self.configAddresses = list(config.items("Addresses"))
+            self.configSettings = list(config.items("Settings"))
             self.configPorts = list(config.items("Ports"))
             self.configMessages = list(config.items("Messages"))
             self.configScripts = [list(config.items("Scripts"))[i][1] for i in range(0,len(config.items("Scripts")))]
+            self.verbose = bool(int(config["Settings"]["verbose"]))
 
         try:
             read_ini()
@@ -408,17 +447,21 @@ class MainServer(object):
     def saveConfig(self):
         self.updateUiVariables()
         config = configparser.ConfigParser()
-        config['Address'] = {}
-        config['Address']['Local'] = self.ui.localAddressTextWidget.toPlainText()
+        config['Addresses'] = {}
         config['Ports'] = {}
         config['Messages'] = {}
         config['Scripts'] = {}
+        config['Settings'] = {}
+        for key, value in self.configAddresses:
+            config['Addresses'][str(key)] = str(value)
         for key, value in self.configPorts:
             config['Ports'][str(key)] = str(value)
         for key, value in self.configMessages:
             config["Messages"][str(key)] = str(value)
         for index, value in enumerate(self.configScripts):
             config["Scripts"][str(index)] = str(value)
+        for index, value in self.configSettings:
+            config["Settings"][str(index)] = str(value)
         with open(self.ini_file, 'w') as configfile:
             config.write(configfile)
 

@@ -2,7 +2,8 @@ import time
 import os
 import configparser
 from threading import Thread
-from Devices.AnalogDigitalOut import AnalogDigital_output_MCC, Digital_output, Analog_output
+import PyMCC
+from Devices.AnalogDigitalOut import Digital_output, Analog_output
 from Devices.AnalogIn import AnalogInput
 from MNetwork.Connections import ClientObject
 import ctypes
@@ -22,7 +23,7 @@ def getNumberOfChannels(channel='Dev1/ai0:2'):
 
 class NetworkDevice(object):
     def __init__(self, parent = None, deviceName = "thorlabsdds220", parentName = "microscoper",
-                 varName="networkDevice", verbose=False):
+                 varName="networkDevice", verbose=False, timeout=15):
         """
         Creates a networked device.
         :param deviceName: Should be the same as deviceName in the server.ini file.
@@ -37,6 +38,7 @@ class NetworkDevice(object):
         self.parentName = parentName
         self.varName = varName
         self.verbose = verbose
+        self.timeout = timeout
 
     def sendCommand(self,command="moveAbs(25,1)"):
         '''A command template'''
@@ -45,16 +47,25 @@ class NetworkDevice(object):
 
     def sendQuery(self,query="currentPosition",targetVar="delayStagePosition"):
         '''A query template'''
-        self.parent.connection.askForResponse(receiver=self.deviceName,
-                                              sender=self.parentName,
-                                              question=f"{query}",
-                                              target=f"{self.varName}.{targetVar}",
-                                              wait=True,
-                                              verbose=self.verbose
-                                              )
+        localObject = eval("self.parent.{}".format(self.varName))
+        if not hasattr(localObject,targetVar):
+            setattr(localObject, targetVar, None)
 
-        ## if varName is device, this returns self.parent.device.delayStagePosition
-        return getattr(eval("self.parent.{}".format(self.varName)), targetVar)
+        response = self.parent.connection.askForResponse(receiver=self.deviceName,
+                                                         sender=self.parentName,
+                                                         question="{}".format(query),
+                                                         target="{}.{}".format(self.varName,targetVar),
+                                                         wait=True,
+                                                         verbose=self.verbose,
+                                                         timeout=self.timeout,
+                                                         )
+        if response is 1: ## has timedout
+            return None
+        else:
+
+            ## if varName is device, this returns self.parent.device.delayStagePosition
+            ## return getattr(eval("self.parent.{}".format(self.varName)), targetVar)
+            return getattr(localObject, targetVar)
 
     def getPos(self):
         return self.sendQuery()
@@ -79,12 +90,73 @@ class NetworkDevice(object):
     def stop(self):
         self.sendCommand("stop()")
 
+    def spectrometerInit(self):
+        self.sendCommand('stopContinuousScan()')
+
+    def spectrometerSendQuery(self):
+        self.parent.connection.askForResponse(receiver="spectrometer", sender="microscoper")
+
+    def spectrometerScan(self):
+        time.sleep(1)
+        self.sendCommand("spectrometer.scan(background_subtract=False)")
+        self.sendCommand("spectrometer.plot()")
+        time.sleep(0.5)
+        self.spectrometerSendQuery()
+
+    def spectrometerSave(self, fileName = None, xAxis = None):
+        if xAxis is None:
+            xAxis = lambda: None
+        xAxis = xAxis[0]
+        if fileName is not '':
+            self.sendCommand("save(filename=r'%s',label='%.3f',append=True)"
+                % (fileName, xAxis()))
+        time.sleep(0.1)
+        self.spectrometerSendQuery()
+
+    def spectrometerEndScan(self):
+        if self.parent is not None:
+            if self.parent.scanDetector == "Spectrometer":
+                self.parent.connection.sendConnectionMessage('spectrometer.fileLoaded = False')
+        else:
+            raise ValueError('self.parent must be set')
+
+
+
+class Spectrometer(NetworkDevice):
+    def __init__(self, parent=None, deviceName="spectrometer", parentName="microscoper",
+                 varName="networkDevice", verbose=False):
+        super().__init__(parent=parent, deviceName=deviceName, parentName=parentName, varName=varName, verbose=verbose)
+
+    def scan(self):
+        time.sleep(1)
+        self.sendCommand("spectrometer.scan(background_subtract=False")
+        self.sendCommand("spectrometer.plot()")
+        time.sleep(0.5)
+
+    def save(self, fileName = None, xAxis = None):
+        if xAxis is None:
+            xAxis = lambda: None
+        xAxis = xAxis[0]
+        if fileName is not '':
+            self.sendCommand("save(filename=r'%s',label='%.3f',append=True)"
+                % (fileName, xAxis()))
+        time.sleep(0.1)
+
+    def endScan(self):
+        if self.parent is not None:
+            if self.parent.scanDetector == "Spectrometer":
+                self.parent.connection.sendConnectionMessage('spectrometer.fileLoaded = False')
+        else:
+            raise ValueError('self.parent must be set')
+
+    def sendQuery(self,query="scanning",targetVar="scanning"):
+        return super().sendQuery(query, targetVar)
 
 class MicroscopeDetector(object):
-    def __init__(self, widgets=None, model="3101"):
+    def __init__(self, widgets=None, model="1208"):
         ''' widget = array of PyQT widgets
             define slider widgets first before preset widgets'''
-        self.PMT = AnalogDigital_output_MCC(boardNumber=0,model=model,name="PMT")
+        self.PMT = PyMCC.Device(boardNumber=0,model=model,name="PMT")
         self.TPEF = 0
         self.SHG = 1
         self.CARS = 2
@@ -227,8 +299,8 @@ class MicroscopeShutter(object):
                     self.stokes = False
 
     def __init__(self,widgets=None):
-        self.Stokes_shutter = AnalogDigital_output_MCC(model="3101",name='Stokes shutter')
-        self.Pump_shutter = AnalogDigital_output_MCC(model="3101",name='Pump shutter')
+        self.Stokes_shutter = PyMCC.Device(model="3101",name='Stokes shutter')
+        self.Pump_shutter = PyMCC.Device(model="3101",name='Pump shutter')
         self.Microscope_shutter = Digital_output("Dev1/port0/line7")
         self.Microscope_shutter_close()
         self.Pump_shutter_close()
@@ -293,6 +365,7 @@ class Microscope(object):
     settings = None
     extensionApps = None
     devices = None
+    verbose = True
 
     def __init__(self):
         self.defineDefaultSettings()
@@ -307,9 +380,10 @@ class Microscope(object):
     def maximizeWindows(self):
         handles = []
         if os.name == "nt":
-            for appWindowName in self.extensionApps:
+            for key, appWindowName in self.extensionApps.items():
                 handle = ctypes.windll.user32.FindWindowW(None, appWindowName)
-                ctypes.windll.user32.ShowWindow(handle, 10)
+                # ctypes.windll.user32.ShowWindow(handle, 10)
+                ctypes.windll.user32.SetForegroundWindow(handle)
 
     def defineDefaultSettings(self):
         self.settings = {
@@ -342,6 +416,8 @@ class Microscope(object):
             "connection port": "10230",
             "scan x offset": "0",
             "scan y offset": "0",
+            "calibration file": "",
+            "verbose":"0",
         }
 
         for i in range(0, getNumberOfChannels(self.settings["input channels"])):
@@ -350,7 +426,9 @@ class Microscope(object):
             self.settings["Image Minimums %i" % i] = "0"
 
         self.deviceList = {
-            "linearstage" : "odl220",
+        }
+
+        self.extensionApps = {
         }
 
     def loadConfig(self):
@@ -373,9 +451,13 @@ class Microscope(object):
             self.defineDefaultSettings()
             config.read(self.ini_file)
             configSettings = list(config.items("Settings"))
+            extensionApps = list(config.items("Extension apps"))
 
             for key, value in configSettings:
                 self.settings[key] = value
+
+            for key, value in extensionApps:
+                self.extensionApps[key] = value
 
             self.imageMaximums = []
             self.imageMinimums = []
@@ -386,6 +468,8 @@ class Microscope(object):
                     max += 1
                 self.imageMaximums.append(max)
                 self.imageMinimums.append(min)
+
+            self.verbose = bool(int(config["Settings"]["verbose"]))
 
             devices = list(config.items("Devices"))
 
@@ -408,6 +492,8 @@ class Microscope(object):
             config['Settings'][str(key)] = str(value)
         for key, value in self.deviceList.items():
             config['Devices'][str(key)] = str(value)
+        for key, value in self.extensionApps.items():
+            config['Extension apps'][str(key)] = str(value)
         with open(self.ini_file, 'w') as configfile:
             config.write(configfile)
 

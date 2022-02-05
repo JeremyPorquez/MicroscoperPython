@@ -19,41 +19,52 @@ else :
 class Microscope(MicroscoperComponents.Microscope):
 
     def toWavenumber(self):
-        try : wavenumber = eval(
-            self.stageCalibrationFormulaString.replace("x", self.ui.currentLStagePositionText.text()))
+        try :
+            wavenumber = float(self.ui.WavenumberText.text()[:-5])
         except :
             wavenumber = 0
         return wavenumber
 
-    def displayWavenumber(self):
+    def displayCalibration(self):
         self.displayingCalibration = False
-        self.calibrationFile = self.ui.CalibrationFilenameText.text()
-        try:
-            calibrationFile = open(self.calibrationFile, "r")
-            self.stageCalibrationFormulaString = calibrationFile.read()
 
-            def calculate():
-                while self.displayingCalibration:
-                    wavenumber = eval(
-                        self.stageCalibrationFormulaString.replace("x", self.ui.currentLStagePositionText.text()))
-                    self.ui.WavenumberText.setText('%i cm-1' % wavenumber)
-                    time.sleep(0.1)
+        def calculate():
+            while True:
+                try :
+                    self.calibrationFile = self.ui.calibrationFilenameText.text()
+                    calibrationFile = open(self.calibrationFile, "r")
+                    self.stageCalibrationFormulaString = calibrationFile.read()
+                    self.displayingCalibration = True
+                    while self.displayingCalibration:
+                        pos = self.devices["delaystage"].getPos()
+                        if not type(self.devices["delaystage"].delayStagePosition) == type("a"):
+                            pos = str(pos)
+                        wavenumber = eval(
+                            self.stageCalibrationFormulaString.replace("x", pos))
+                        self.ui.WavenumberText.setText('%i cm-1' % wavenumber)
+                        time.sleep(0.01)
+                except :
+                    self.ui.WavenumberText.setText("Invalid calibration file.")
+                    self.displayingCalibration = False
+                    time.sleep(0.5)
+                    # self.displayCalibration() ## try reconnecting
+        self.calcThread = Thread(target=calculate)
+        self.calcThread.daemon = True
+        self.calcThread.start()
 
-            self.displayingCalibration = True
-            calcThread = Thread(target=calculate)
-            calcThread.daemon = True
-            calcThread.start()
+        # except:
+        #     self.displayingCalibration = False
+        #     # self.ui.WavenumberText.setText("Invalid calibration file.")
+        #     # self.displayingCalibration = False
 
-        except:
-            pass
+    def getCalibrationFile(self):
+        self.calibrationFile = QtWidgets.QFileDialog.getOpenFileName()[0]
+        self.ui.calibrationFilenameText.setText(self.calibrationFile)
+        self.displayCalibration()
+
 
     def getSaveFile(self):
         self.ui.directoryText.setText(QtWidgets.QFileDialog.getExistingDirectory())
-
-    # def __getCalibrationFile(self):
-    #     self.calibrationFile = QtWidgets.QFileDialog.getOpenFileName()[0]
-    #     self.ui.CalibrationFilenameText.setText(self.calibrationFile)
-    #     self.__displayCalibration()
 
     class Signal(QtCore.QObject):
         scanInitSignal = QtCore.pyqtSignal()
@@ -72,19 +83,15 @@ class Microscope(MicroscoperComponents.Microscope):
         self.__checkExists()
         self.loadConfig()
 
-        self.connection = ClientObject(parent=self)
+        self.connection = ClientObject(parent=self, verbose=self.verbose)
         self.setupUi()
         self.setupDevices()
-        self.setupStage()
 
         self.updateUi()
         self.connectUi()
         self.connectSignals()
 
         # #Initiates inheritance
-
-        self.verbose = True
-
         self.mainWindow.setEnabled(False)
 
 
@@ -102,6 +109,7 @@ class Microscope(MicroscoperComponents.Microscope):
                                                     polarityWidgets=self.pmtPolarityWidgets)
 
         self.connection.autoConnect(self.settings["connection port"])
+        self.setupStage()
 
     def setupScanList(self):
         scanFilePath = os.path.join(self.cwd,"Microscoper_app_scanList.csv")
@@ -146,27 +154,23 @@ class Microscope(MicroscoperComponents.Microscope):
 
         self.pmtPolarityWidgets = [self.ui.pmtInvert1, self.ui.pmtInvert2, self.ui.pmtInvert3, self.ui.pmtInvert4]
         self.shutterWidgets = [self.ui.pumpShutterButton, self.ui.stokesShutterButton]
-        self.detectors = MicroscoperComponents.MicroscopeDetector(widgets=self.pmtWidgets,model="3101")       # Setup components
+        self.detectors = MicroscoperComponents.MicroscopeDetector(widgets=self.pmtWidgets,model="1208")       # Setup components
         self.shutter = MicroscoperComponents.MicroscopeShutter(widgets=self.shutterWidgets)
 
     def setupStage(self):
         self.devices = {}
         for key, value in self.deviceList.items():
-            self.devices[str(key)] = MicroscoperComponents.NetworkDevice(parent=self, deviceName=value, parentName = "microscoper", varName = "devices['%s']"%key)
-        # self.linearStage = MicroscoperComponents.NetworkDevice(parent=self, deviceName="odl220", parentName = "microscoper", varName = "linearStage")
-        # self.LinearStage = MicroscoperComponents.LStage(serialNumber=94839332, widgets=self.linearStageWidgets,name='linear stage')
-        # self.xStage = MicroscoperComponents.LStage(serialNumber=94839334, widgets=self.xStageWidgets,name='x stage')
-        # self.yStage = MicroscoperComponents.LStage(serialNumber=94839333, widgets=self.yStageWidgets,name='y stage')
-        # if sixfourbit: self.zStage = MicroscoperComponents.ZStage(widgets=self.zStageWidgets)
-        # try:
-        #     if sixfourbit : self.zStage = MicroscoperComponents.ZStage(widgets=self.zStageWidgets)
-        # except:
-        #     self.zStage = None
-        #     print('Failed to initialize focus controller.')
+            self.devices[str(key)] = MicroscoperComponents.NetworkDevice(parent=self, deviceName=value,
+                                                                         parentName = "microscoper",
+                                                                         varName = "devices['%s']"%key,
+                                                                         timeout=1,
+                                                                         verbose=False)
+        self.setupCalibration()
 
-        # if self.ui.CalibrationFilenameText.text() is not '':            # show calibration text
-        #     try : self.__displayCalibration()
-        #     except : pass
+    def setupCalibration(self):
+        if "delaystage" in self.devices:
+            self.devices["delaystage"].getPos()
+            self.displayCalibration()
 
     def updateUi(self):
         self.ui.zoomWidget.setValue(int(self.settings["zoom"]))
@@ -176,18 +180,7 @@ class Microscope(MicroscoperComponents.Microscope):
         self.ui.filenameText.setText(self.settings["filename"])
         self.ui.directoryText.setText(self.settings["directory"])
         self.ui.scansToAverage.setValue(int(self.settings["frames to average"]))
-        # self.ui.LStageStart.setValue(float(self.settings["delay start position"]))
-        # self.ui.LStageEnd.setValue(float(self.settings["delay end position"]))
-        # self.ui.LStageMove.setValue(float(self.settings["delay increments"]))
-        # self.ui.ZStageStart.setValue(float(self.settings["focus start position"]))
-        # self.ui.ZStageEnd.setValue(float(self.settings["focus end position"]))
-        # self.ui.ZStageMove.setValue(float(self.settings["focus increments"]))
-        # self.ui.LstagePresetWidget1.setValue(float(self.settings["delay preset1"]))
-        # self.ui.LstagePresetWidget2.setValue(float(self.settings["delay preset2"]))
-        # self.ui.LstagePresetWidget3.setValue(float(self.settings["delay preset3"]))
-        # self.ui.xStagePresetWidget1.setValue(float(self.settings["stage x target"]))
-        # self.ui.yStagePresetWidget1.setValue(float(self.settings["stage y target"]))
-        # self.ui.zStagePresetWidget1.setValue(float(self.settings["stage z target"]))
+        self.ui.calibrationFilenameText.setText(self.settings["calibration file"])
 
 
     def updateUiVariables(self):
@@ -197,21 +190,8 @@ class Microscope(MicroscoperComponents.Microscope):
         self.settings["fill fraction"] = str(self.ui.fillFractionWidget.value())
         self.settings["filename"] = self.ui.filenameText.text()
         self.settings["directory"] = self.ui.directoryText.text()
-
-
-        # self.settings["delay start position"] = str(self.ui.LStageStart.value())
-        # self.settings["delay end position"] = str(self.ui.LStageEnd.value())
-        # self.settings["delay increments"] = str(self.ui.LStageMove.value())
-        # self.settings["focus start position"] = str(self.ui.ZStageStart.value())
-        # self.settings["focus end position"] = str(self.ui.ZStageEnd.value())
-        # self.settings["focus increments"] = str(self.ui.ZStageMove.value())
-        # self.settings["delay preset1"] = str(self.ui.LstagePresetWidget1.value())
-        # self.settings["delay preset2"] = str(self.ui.LstagePresetWidget2.value())
-        # self.settings["delay preset3"] = str(self.ui.LstagePresetWidget3.value())
-        # self.settings["stage x target"] = str(self.ui.xStagePresetWidget1.value())
-        # self.settings["stage y target"] = str(self.ui.yStagePresetWidget1.value())
-        # self.settings["stage z target"] = str(self.ui.zStagePresetWidget1.value())
         self.settings["frames to average"] = str(int(self.ui.scansToAverage.value()))
+        self.settings["calibration file"] = self.ui.calibrationFilenameText.text()
 
     def saveConfig(self):
         self.updateUiVariables()
@@ -220,6 +200,7 @@ class Microscope(MicroscoperComponents.Microscope):
     def setupMenuActions(self):
         self.ui.action_setImageLevels.triggered.connect(self.displayCreateImageLevelsWindow)
         self.ui.actionBring_all_to_front.triggered.connect(self.maximizeWindows)
+        self.ui.action_Quit.triggered.connect(self.mainWindow.close)
 
     def setupButtonActions(self):
         self.ui.PMTPreset0.clicked.connect(lambda: self.detectors.setPMTsPresetActions[0](self.acquiring))
@@ -243,21 +224,14 @@ class Microscope(MicroscoperComponents.Microscope):
         self.ui.browseButton.clicked.connect(lambda : self.ui.directoryText.setText(QtWidgets.QFileDialog.getExistingDirectory())
 )
 
-        # self.ui.browseCalibrationButton.clicked.connect(self.__getCalibrationFile)
+        self.ui.browseCalibrationButton.clicked.connect(self.getCalibrationFile)
 
-        # self.ui.LstagePresetButton1.clicked.connect(self.LinearStage.movePresetFunction[1]) #from class LSTAGE
-        # self.ui.LstagePresetButton2.clicked.connect(self.LinearStage.movePresetFunction[2])
-        # self.ui.LstagePresetButton3.clicked.connect(self.LinearStage.movePresetFunction[3])
-        # self.ui.upButton.clicked.connect(lambda: self.yStage.MoveDir("Up", self.ui.microcopeOffsetRadio.isChecked()))
         self.ui.upButton.clicked.connect(lambda: self.changeRasterOffset("Up",self.ui.galvoOffsetRadio.isChecked()))
         self.ui.upButton.clicked.connect(self.acquireSoftRestart)
-        # self.ui.downButton.clicked.connect(lambda: self.yStage.MoveDir("Down",self.ui.microcopeOffsetRadio.isChecked()))
         self.ui.downButton.clicked.connect(lambda: self.changeRasterOffset("Down", self.ui.galvoOffsetRadio.isChecked()))
         self.ui.downButton.clicked.connect(self.acquireSoftRestart)
-        # self.ui.leftButton.clicked.connect(lambda: self.xStage.MoveDir("Left",self.ui.microcopeOffsetRadio.isChecked()))
         self.ui.leftButton.clicked.connect(lambda: self.changeRasterOffset("Left", self.ui.galvoOffsetRadio.isChecked()))
         self.ui.leftButton.clicked.connect(self.acquireSoftRestart)
-        # self.ui.rightButton.clicked.connect(lambda: self.xStage.MoveDir("Right",self.ui.microcopeOffsetRadio.isChecked()))
         self.ui.rightButton.clicked.connect(lambda: self.changeRasterOffset("Right",self.ui.galvoOffsetRadio.isChecked()))
         self.ui.rightButton.clicked.connect(self.acquireSoftRestart)
         self.ui.zeroOffsetButton.clicked.connect(lambda: self.changeRasterOffset("zero",self.ui.galvoOffsetRadio.isChecked()))
@@ -266,18 +240,13 @@ class Microscope(MicroscoperComponents.Microscope):
         self.ui.zoomWidget.valueChanged.connect(self.acquireSoftRestart)
         self.ui.dwellTime.valueChanged.connect(self.acquireSoftRestart)
         self.ui.resolutionWidget.valueChanged.connect(self.acquireSoftRestart)
-        # self.ui.resolutionWidget.valueChanged.connect(changeResolutionSteps)
 
         self.ui.fillFractionWidget.valueChanged.connect(self.acquireSoftRestart)
         self.ui.microcopeOffsetRadio.clicked.connect(self.changeDOffsetLabel)
         self.ui.galvoOffsetRadio.clicked.connect(self.changeDOffsetLabel)
-        # self.ui.stageReadRadioNormal.clicked.connect(self.changeStageRead)
-        # self.ui.stageReadRadioCalibrated.clicked.connect(self.changeStageRead)
-        # self.ui.xPresetButton1.clicked.connect(self.xStage.movePresetFunction[1])
-        # self.ui.yPresetButton1.clicked.connect(self.yStage.movePresetFunction[1])
-        # if self.zStage is not None:
-        #     self.ui.zPresetButton1.clicked.connect(self.zStage.movePresetFunction[1])
+
         self.ui.scanTypeWidget.currentIndexChanged.connect(self.changeScanTypeWidget)
+        self.ui.calibrationFilenameText.textChanged.connect(self.saveConfig)
         self.ui.filenameText.textChanged.connect(self.saveConfig)
         self.ui.directoryText.textChanged.connect(self.saveConfig)
         self.ui.resolutionWidget.valueChanged.connect(self.saveConfig)
@@ -309,10 +278,19 @@ class Microscope(MicroscoperComponents.Microscope):
         return x, y
 
     def initStage(self):
-        if ("linearstage" in self.scanStage.lower()) & ("continuous" in self.scanMove.lower()):
-            self.devices["delaystage"].initScan("continuous")
-            while not self.devices["delaystage"].status():
-                time.sleep(0.1)
+        if ("linearstage" in self.scanStage.lower()):
+            if ("continuous" in self.scanMove.lower()):
+                self.devices["delaystage"].initScan("continuous")
+                while not self.devices["delaystage"].status():
+                    time.sleep(0.1)
+            elif ("discrete" in self.scanMove.lower()):
+                self.devices["delaystage"].initScan("discrete")
+                while not self.devices["delaystage"].status():
+                    time.sleep(0.1)
+
+    def initSpectrometer(self):
+        if self.scanDetector == "Spectrometer":
+            self.devices["spectrometer"].spectrometerInit()
 
 
     def initAnalogOutput(self):
@@ -433,11 +411,15 @@ class Microscope(MicroscoperComponents.Microscope):
             self.saveFilename = ""
 
     def initSetupHorizontalAxis(self):
-        if self.scanMove == "None": self.xAxis = 'Default'
-        elif self.scanMove == 'Continuous':
-            self.xAxis = self.devices["linearstage"].getPos# , self.toWavenumber
+        if self.scanMove == 'Continuous':
+            self.xAxis = [self.devices["delaystage"].getPos]
+            if self.displayingCalibration:
+                self.xAxis.append(self.toWavenumber)
         elif self.scanMove in ["Discrete", "Grab"]:
-            if self.scanStage == "LinearStage" : self.xAxis = self.devices["linearstage"].getPos, self.toWavenumber()
+            if self.scanStage == "LinearStage" :
+                self.xAxis = [self.devices["delaystage"].getPos]
+                if self.displayingCalibration:
+                    self.xAxis.append(self.toWavenumber)
         else : self.xAxis = 'Default'
 
     def changeDOffsetLabel(self):
@@ -552,6 +534,13 @@ class Microscope(MicroscoperComponents.Microscope):
             self.acquireStop()
 
     def acquire(self):
+        # self.devices["spectrometer"].spectrometerSendQuery()
+        # self.connection.askForResponse(receiver="spectrometer", sender="microscoper", timeout=15)
+        # print(self.connection.connectionIsWaitingForResponse)
+        # self.connection.askForResponse(receiver="thorlabsdds220", sender="microscoper", timeout=15)
+        # print(self.connection.connectionIsWaitingForResponse)
+        # self.devices["spectrometer"].spectrometerScan()
+        # self.devices["delaystage"].status()
         self.acquireInit()
         self.acquireStart()
 
@@ -568,6 +557,7 @@ class Microscope(MicroscoperComponents.Microscope):
 
 
         self.initStage()
+        self.initSpectrometer()
         self.initMetadata()
         self.initSavefile()
 
@@ -594,6 +584,13 @@ class Microscope(MicroscoperComponents.Microscope):
         if self.scanDetector == "PMT":
             self.ai.start()
             self.display.start()
+        elif self.scanDetector == "Spectrometer":
+            self.devices["spectrometer"].spectrometerScan()
+            if self.ui.saveCheckBox.isChecked():
+                if self.settings["directory"] is not '':
+                    fileName = os.path.join(self.settings["directory"], self.settings["filename"])
+                    xAxis = self.xAxis
+                self.devices["spectrometer"].spectrometerSave(fileName,xAxis)
         self.detectScanStatusThread = Thread(target=self.detectScanStatus)
         self.detectScanStatusThread.start()
 
@@ -617,6 +614,13 @@ class Microscope(MicroscoperComponents.Microscope):
 
         if self.scanDetector == "PMT":
             self.ai.start()
+        elif self.scanDetector == "Spectrometer":
+            self.devices["spectrometer"].spectrometerScan()
+            if self.ui.saveCheckBox.isChecked():
+                if self.settings["directory"] is not '':
+                    fileName = os.path.join(self.settings["directory"], self.settings["filename"])
+                    xAxis = self.xAxis
+                self.devices["spectrometer"].spectrometerSave(fileName,xAxis)
 
 
     def acquireSoftStop(self):
@@ -674,12 +678,13 @@ class Microscope(MicroscoperComponents.Microscope):
             self.acquireStop()
             self.initStage()
 
-        def stageDiscreteUntilEnds(): ## todo: fix discreteUntilEnds
-            while (self.LinearStage.currentPosition < self.LinearStage.endScanPosition) and (not self.scanStatusThreadInterrupt):
+        def stageDiscreteUntilEnds():
+            self.devices["delaystage"].sendQuery("ui.endPositionSpinbox.value()", "endPos")
+            while (self.devices["delaystage"].getPos() < self.devices["delaystage"].endPos) and (not self.scanStatusThreadInterrupt):
                 if not self.ai.reading:
                     self.acquireSoftStop()
-                    self.LinearStage.MoveAbs(self.LinearStage.currentPosition+self.LinearStage.MoveDef.value())
-                    while not self.LinearStage.positionStageOK:
+                    self.devices["delaystage"].sendCommand("moveRel()")
+                    while not self.devices["delaystage"].status():
                         time.sleep(0.1)
                     time.sleep(1)
                     self.acquireSoftStart()
@@ -718,28 +723,12 @@ class Microscope(MicroscoperComponents.Microscope):
         if self.scanMove == "None": stageDefault()
         if self.scanMove == "Continuous": stageContinuousUntilEnds()
         if self.scanMove == "Discrete":
-            self.stageStartPosition = self.ui.LStageStart.value()
-            self.stageMoveIndex = 1
+            # self.stageStartPosition = self.ui.LStageStart.value()
+            # self.stageMoveIndex = 1
             if self.scanStage == "LinearStage": stageDiscreteUntilEnds()
             if self.scanStage == "zStage": zDiscreteUntilEnds()
         if self.scanMove == "Grab":
             grab()
-
-
-    def initSpectrometer(self):
-        if self.scanDetector == "Spectrometer":
-            if self.spectrometer is None :
-                self.openSpectrometer()
-            self.connection.sendConnectionMessage('spectrometer.stopContinuousScan()')
-
-    def spectrometerScan(self):
-        self.spectrometer.scan()
-        if self.ui.saveCheckBox.isChecked():
-            if self.saveDirectory is not '':
-                fileName = os.path.join(self.ui.DirectoryText.text(), self.saveFilename)
-                xAxis = self.xAxis
-                self.spectrometer.save(fileName=fileName, xAxis=xAxis)
-        self.connection.askForResponse(receiver="spectrometer",sender="main",timeout=5)
 
     def close(self, event):
         if self.mainWindow.isEnabled():
@@ -750,21 +739,11 @@ class Microscope(MicroscoperComponents.Microscope):
                 self.display.close()
             if self.imageLevels is not None:
                 self.imageLevels.close()
-            # self.linearStage.stageUpdate = False
-            # self.xStage.stageUpdate = False
-            # self.yStage.stageUpdate = False
-            # self.LinearStage.Clear()
-            # self.xStage.Clear()
-            # self.yStage.Clear()
-            # if sixfourbit : self.zStage.Clear()
-            # self.ai.terminate()
             self.saveConfig()
             self.connection.stopClientConnection()
-            # self.mainWindow.close()
         if self.mainWindow.isEnabled():
             event.accept()
         else : event.ignore()
-        # self.defaultCloseEvent(event)
 
 if __name__ == "__main__":
     import ctypes

@@ -119,7 +119,7 @@ class Display2D(pg.GraphicsWindow):
     reading = False
     fps = 30.
     simulate = False
-    __title = "Microscoper Display 2017"
+    __title = "Microscoper Display 2019.9.23"
 
     class Signal(QtCore.QObject):
         close = QtCore.pyqtSignal()
@@ -129,7 +129,7 @@ class Display2D(pg.GraphicsWindow):
         while self.displaying:
             if self.simulate:
                 self.simulate_image()
-                self.image.setImage(self.imageData*1.5)
+                self.image.setImage(self.imageData)
             else:
                 self.signal.update.emit()
             time.sleep(1. / self.fps)
@@ -204,10 +204,9 @@ class Display2D(pg.GraphicsWindow):
         self.layout = QtWidgets.QGridLayout()
         self.layout.setContentsMargins(0, 0, 0, 0)
         self.layout.setSizeConstraint(QtWidgets.QLayout.SetDefaultConstraint)
-        self.layout.setRowStretch(0, 3) 
+        self.layout.setRowStretch(0, 3)
         self.layout.setRowStretch(1, 1)
-         self.layout.setRowStretch(2, 1)
-
+        self.layout.setRowStretch(2, 1)
         self.setLayout(self.layout)
         self.imgFormat = QtGui.QImage.Format_ARGB32
 
@@ -227,14 +226,12 @@ class Display2D(pg.GraphicsWindow):
                 self.layout.addWidget(img, 0, i, 3, 1)
 
 
-            # Add image intensity label widgets                                             Updated 2019-09-06
             self.intensityWidgets = []
             for i in range(0, self.imageData.__len__()):
                 intensityLabel = QtWidgets.QLabel()
                 intensityLabel.setStyleSheet('color: yellow')
                 intensityLabel.setText(f"Channel {i}")
-                sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum,
-                                                   QtWidgets.QSizePolicy.Minimum)
+                sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
                 sizePolicy.setHorizontalStretch(0)
                 sizePolicy.setVerticalStretch(0)
                 sizePolicy.setHeightForWidth(intensityLabel.sizePolicy().horizontalStretch())
@@ -244,6 +241,7 @@ class Display2D(pg.GraphicsWindow):
                 ## intensityLabel can be accessed through self.intensityWidgets
                 ## the intensityLabel can be updated through the syntax
                 ##      self.intensityWidgets[i].setText("myTextHere")
+
 
             # Add intensity plots layout
             self.plots = []
@@ -270,6 +268,8 @@ class Display2D(pg.GraphicsWindow):
         for i in range(0, self.imageData.__len__()):
             # Update display
             self.img_handle[i].display(self.imageData[i].T, levels=[self.imageMinimums[i],self.imageMaximums[i]])
+            # self.img_handle[i].display(self.imageData[i].T,
+            #                            levels=[self.imageMinimums[i], np.mean(self.imageData[i]*1.2)])
             averageIntensity = np.mean(self.imageData[i])
             self.intensityWidgets[i].setText(f"{averageIntensity}")
 

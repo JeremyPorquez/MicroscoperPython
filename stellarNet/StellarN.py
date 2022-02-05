@@ -14,9 +14,9 @@ from multiprocessing.pool import ThreadPool
 from scipy.optimize import curve_fit
 from matplotlib.figure import Figure
 import numpy as np
-from Network.Connections import clientObject
+from MNetwork.Connections import ClientObject
 from Gui.Spectrometer_gui import Ui_Spectrometer
-from Math import gaussianFunction
+from MMath import gaussianFunction
 
 
 
@@ -353,7 +353,7 @@ class SpectrometerWidget(MplCanvas, PyStellarNet):
 
                     A = 30000+10000*i + np.random.random()*10
                     self.intensities[i] = gaussianFunction(self.wavelengths[0],
-                                                           A=A,x0=x0,sigma=sigma)
+                                                           A=A,x0=x0,sigma=sigma) + 2000*np.random.random(self.wavelengths[0].size)
                     if self.mode == 'Raman':
                         x0 = 1.e7/x0 - self.RamanOffset
                         sigma = 100 + 100 * i
@@ -393,27 +393,27 @@ class SpectrometerWidget(MplCanvas, PyStellarNet):
     def startContinuousScan(self):
         def threadscan():
             while self.scanning:
-                # try :
-                time.sleep(self.integration_time / 1000.)
-                self.scan(background_subtract=self.backgroundLoaded)
-                self.plot()
-                # except Exception as e:
-                #     print(e)
+                try :
+                    time.sleep(self.integration_time / 1000.)
+                    self.scan(background_subtract=self.backgroundLoaded)
+                    self.plot()
+                except Exception as e:
+                    print("Error in startContinuousScan : ", e)
 
         if self.scanThread is not None :
-            if self.scanThread.is_alive() :
-                self.stopContinuousScan()
+            self.scanning = False
+            # if self.scanThread.is_alive() :
+            self.stopContinuousScan()
         self.scanning = True
         self.scanThread = Thread(target=threadscan)
-        # self.scanThread.daemon = True
         self.scanThread.start()
 
     def stopContinuousScan(self):
         self.realTimeFit = False
         self.scanning = False
         if self.scanThread is not None :
-            while self.scanThread.is_alive():
-                time.sleep(0.1)
+            # while self.scanThread.is_alive():
+            #     time.sleep(0.1)
             self.scanThread = None
 
     def fit(self, plotIndex = None,sigma=20):
@@ -540,13 +540,13 @@ class Spectrometer():
         appLoaded = QtCore.pyqtSignal()
 
     def __checkExists(self):
-        handle = ctypes.windll.user32.FindWindowW(None, "Spectrometer 2017")
+        handle = ctypes.windll.user32.FindWindowW(None, "Spectrometer 2019")
         if handle != 0:
             ctypes.windll.user32.ShowWindow(handle, 10)
             exit(0)
 
     def __init__(self):
-        self.connection = clientObject(parent=self)
+        self.connection = ClientObject(parent=self)
         self.signal = self.Signal()
         self.signal.appInit.emit()
 
@@ -595,13 +595,13 @@ class Spectrometer():
         self.mainWindow.signal.close.connect(self.fileQuit)
 
         self.mainWindow.show()
-        self.mainWindow.setWindowTitle("Spectrometer 2017")
+        self.mainWindow.setWindowTitle("Spectrometer 2019")
         screen = QtWidgets.QDesktopWidget().screenGeometry()
         self.mainWindow.move(screen.width()-751, 0)
         self.mainWindow.activateWindow()
 
         self.setScan()
-        self.connection.autoConnect(self.connectionPort)
+        self.connection.autoConnect(connectionPort=self.connectionPort,address=self.connectionAddress)
         self.signal.close.connect(self.fileQuit)
         self.signal.appLoaded.emit()
 
@@ -882,6 +882,10 @@ class Spectrometer():
                 QtWidgets.QFileDialog.getSaveFileName(options=QtWidgets.QFileDialog.DontConfirmOverwrite)
 
         if self.filename is not '':
+
+            if not os.path.exists(os.path.dirname(filename)):
+                os.makedirs(os.path.dirname(filename))
+
             csvFileExists = []
             for i, save in enumerate(self.spectrometer.plots):
                 csvFilename = "%s_%i.csv" % (self.filename, i)
@@ -930,12 +934,12 @@ class Spectrometer():
             self.ui.autoscaleButton.setText("Autoscale")
 
     def setLaserWavelength(self):
-        laserWavelength, accept = QtWidgets.QInputDialog.getText(self,
+        laserWavelength, accept = QtWidgets.QInputDialog.getText(self.mainWindow,
                                                  "Input Dialog : ",
                                                  "Set laser wavelength : ")
         if accept :
             try :
-                self.RamanOffset = 1.e7/float(laserWavelength)
+                self.spectrometer.RamanOffset = 1.e7/float(laserWavelength)
             except :
                 pass
         if self.spectrometer.mode == "Spectrometer": self.spectrometer.setSpectrometerMode()
@@ -965,6 +969,8 @@ class Spectrometer():
         self.spectrometer.stopContinuousScan()
         self.connection.stopClientConnection()
         self.save_ini()
+        self.mainWindow.close()
+
 
 
     def load_ini(self):
@@ -977,6 +983,7 @@ class Spectrometer():
             config['Settings']['Smoothing'] = '0'
             config['Settings']['Temperature compensation'] = 'False'
             config['Settings']['Port'] = '10121'
+            config['Settings']['Address'] = '127.0.0.1'
             config['Settings']['Stitch Channel 1'] = '1'
             config['Settings']['Stitch Channel 2'] = '2'
             config['Settings']['Stitch Wavelength'] = '900'
@@ -1002,6 +1009,7 @@ class Spectrometer():
             self.spectrometer.SNUpdate(self.scans_to_average,
                                        self.smoothing,
                                        self.temperature_compensation)
+            self.connectionAddress = config['Settings']['Address']
             self.connectionPort = int(config['Settings']['Port'])
             for i in range(0,self.spectrometer.device_count):
                 self.calibration_files[i] = config['Calibration']['Channel %i'%i]
@@ -1018,6 +1026,7 @@ class Spectrometer():
     def save_ini(self):
         config = configparser.ConfigParser()
         config['Settings'] = {}
+        config['Settings']['Address'] = str(self.connectionAddress)
         config['Settings']['Integration time'] = str(self.ui.integration_time_spinbox.value())
         config['Settings']['Scans to average'] = str(self.ui.scans_to_average_spinbox.value())
         config['Settings']['Smoothing'] = str(self.ui.smoothing_spinbox.value())

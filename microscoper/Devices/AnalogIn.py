@@ -101,7 +101,7 @@ class readProcess(multiprocessing.Process):
                     self.reading = False
                 # time.sleep(0)
             except Exception as e:
-                print(e)
+                print("Error in AnalogIn read() : ", e)
 
             # print('\t',self.data_line[0])
         # try:
@@ -131,6 +131,8 @@ class AnalogInput(object):
     voltage_max = 10
     timeout = 10
     max_timebase_frequency = 20e6
+    verbose = False
+    waitForLastFrame = False
 
     def __init__(self, parent=None, inputChannels = "Dev1/ai0:3", polarityWidgets = None):
         self.cwd = os.path.basename(os.path.realpath(__file__))
@@ -244,8 +246,8 @@ class AnalogInput(object):
 
 
     def start(self):
-        print('start')
         if self.verbose:
+            print('start')
             print("\tData length :\t\t\t%i" % self.data_line_length)
             print("\tSamples per pixel :\t\t%i" % self.samples_per_pixel)
             print("\tSamples to read per channel :\t%i" % self.samples_to_read_per_channel)

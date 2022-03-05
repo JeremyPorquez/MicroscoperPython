@@ -1,11 +1,8 @@
-import time
 import os
 import configparser
-from threading import Thread
-import PyMCC
-from Devices.AnalogDigitalOut import Digital_output, Analog_output
-from Devices.AnalogIn import AnalogInput
-from MNetwork.Connections import ClientObject
+from mcculw import ul
+from mcculw.enums import ULRange, DigitalPortType
+from Devices.AnalogDigitalOut import Digital_output
 import ctypes
 
 import numpy as np
@@ -155,11 +152,24 @@ class Spectrometer(NetworkDevice):
         return super().sendQuery(query, targetVar)
 
 
+class MCCDev:
+    def __init__(self):
+        self.board_num = 0
+
+    def set_voltage(self, voltage=0, channel=0):
+        ul.a_out(self.board_num, channel, ULRange.BIP1VOLTS, voltage)
+
+    def set_digital_out(self, value, port):
+        ul.d_bit_out(self.board_num, port_type=DigitalPortType.FIRSTPORTA, bit_num=port, bit_value=value)
+
+
 class MicroscopeDetector(object):
+    ao_range = ULRange.BIP1VOLTS
+
     def __init__(self, widgets=None, model="1208"):
         ''' widget = array of PyQT widgets
             define slider widgets first before preset widgets'''
-        self.PMT = PyMCC.Device(boardNumber=0, model=model, name="PMT")
+        self.PMT = MCCDev()
         self.TPEF = 0
         self.SHG = 1
         self.CARS = 2
@@ -277,7 +287,7 @@ class MicroscopeDetector(object):
             print('%s Stage widget connected.' % widget.objectName())
 
 
-class MicroscopeShutter(object):
+class Shutters(object):
     def __makeFunctionChangeName(self, widget):
         originalText = widget.text()
 
@@ -294,7 +304,7 @@ class MicroscopeShutter(object):
             widgetName = widget.objectName().lower()
             if 'pump' in widgetName:
                 self.pumpChangeText = self.__makeFunctionChangeName(widget)
-                if self.Pump_shutter.get_digital_in() == 0:
+                if self.pump_shutter.get_digital_in() == 0:
                     widget.setText(widget.text() + ' is open')
                     self.pump = True
                 else:
@@ -304,7 +314,7 @@ class MicroscopeShutter(object):
                 # widget.setText(widget.text() + ' closed')
                 # self.stokes = False
                 self.stokesChangeText = self.__makeFunctionChangeName(widget)
-                if self.Stokes_shutter.get_digital_in() == 0:
+                if self.stokes_shutter.get_digital_in() == 0:
                     widget.setText(widget.text() + ' is open')
                     self.stokes = True
                 else:
@@ -312,57 +322,59 @@ class MicroscopeShutter(object):
                     self.stokes = False
 
     def __init__(self, widgets=None):
-        self.Stokes_shutter = PyMCC.Device(model="3101", name='Stokes shutter')
-        self.Pump_shutter = PyMCC.Device(model="3101", name='Pump shutter')
-        self.Microscope_shutter = Digital_output("Dev1/port0/line7")
-        self.Microscope_shutter_close()
-        self.Pump_shutter_close()
-        self.Stokes_shutter_close()
+        self.stokes_shutter = MCCDev()
+        self.pump_shutter = MCCDev()
+        # self.stokes_shutter = MCCDev.Device(model="3101", name='Stokes shutter')
+        # self.pump_shutter = MCCDev.Device(model="3101", name='Pump shutter')
+        self.microscope_shutter = Digital_output("Dev1/port0/line7")
+        self.microscope_shutter_close()
+        self.pump_shutter_close()
+        self.stokes_shutter_close()
 
         if widgets is not None:
             self.__setWidgets(widgets)
 
-    def Pump_shutter_close(self):
+    def pump_shutter_close(self):
         print('Pump shutter close')
-        self.Pump_shutter.set_digital_out(value=1, port=1)
+        self.pump_shutter.set_digital_out(value=1, port=1)
 
-    def Pump_shutter_open(self):
+    def pump_shutter_open(self):
         print('Pump shutter open')
-        self.Pump_shutter.set_digital_out(value=0, port=1)
+        self.pump_shutter.set_digital_out(value=0, port=1)
 
-    def Stokes_shutter_close(self):
+    def stokes_shutter_close(self):
         print('Stokes shutter close')
-        self.Stokes_shutter.set_digital_out(1, port=2)
+        self.stokes_shutter.set_digital_out(1, port=2)
 
-    def Stokes_shutter_open(self):
+    def stokes_shutter_open(self):
         print('Stokes shutter open')
-        self.Stokes_shutter.set_digital_out(0, port=2)
+        self.stokes_shutter.set_digital_out(0, port=2)
 
-    def Microscope_shutter_close(self):
-        self.Microscope_shutter.write(np.array([255], dtype=np.uint8))
-        # self.Microscope_shutter.close()
+    def microscope_shutter_close(self):
+        self.microscope_shutter.write(np.array([255], dtype=np.uint8))
+        # self.microscope_shutter.close()
 
-    def Microscope_shutter_open(self):
-        self.Microscope_shutter.write(np.array([0], dtype=np.uint8))
-        # self.Microscope_shutter.close()
+    def microscope_shutter_open(self):
+        self.microscope_shutter.write(np.array([0], dtype=np.uint8))
+        # self.microscope_shutter.close()
 
-    def Set_PumpShutter(self):
+    def flip_pump_shutter(self):
         self.pump = not self.pump
         if self.pump:
-            self.Pump_shutter_open()
+            self.pump_shutter_open()
         else:
-            self.Pump_shutter_close()
+            self.pump_shutter_close()
         try:
             self.pumpChangeText(self.pump)
         except:
             pass
 
-    def Set_StokesShutter(self):
+    def flip_stokes_shutter(self):
         self.stokes = not self.stokes
         if self.stokes:
-            self.Stokes_shutter_open()
+            self.stokes_shutter_open()
         else:
-            self.Stokes_shutter_close()
+            self.stokes_shutter_close()
         try:
             self.stokesChangeText(self.stokes)
         except:
@@ -379,7 +391,7 @@ class Microscope(object):
     verbose = True
 
     def __init__(self):
-        self.defineDefaultSettings()
+        self.define_default_settings()
 
     def __checkExists(self):
         if os.name == "nt":
@@ -396,7 +408,7 @@ class Microscope(object):
                 # ctypes.windll.user32.ShowWindow(handle, 10)
                 ctypes.windll.user32.SetForegroundWindow(handle)
 
-    def defineDefaultSettings(self):
+    def define_default_settings(self):
         self.settings = {
             "filename": "Microscoper",
             "directory": "C:/Users/Jeremy/Desktop/Microscoper",
@@ -429,6 +441,7 @@ class Microscope(object):
             "scan y offset": "0",
             "calibration file": "",
             "verbose": "0",
+            "shutters enabled": "0",
         }
 
         for i in range(0, getNumberOfChannels(self.settings["input channels"])):
@@ -442,12 +455,12 @@ class Microscope(object):
         self.extensionApps = {
         }
 
-    def loadConfig(self):
+    def load_config(self):
 
         config = configparser.ConfigParser()
 
         def make_default_ini():
-            self.defineDefaultSettings()
+            self.define_default_settings()
             config["Settings"] = {}
             for key, value in self.settings.items():
                 config['Settings'][str(key)] = str(value)
@@ -459,7 +472,7 @@ class Microscope(object):
                 config.write(configfile)
 
         def read_ini():
-            self.defineDefaultSettings()
+            self.define_default_settings()
             config.read(self.ini_file)
             configSettings = list(config.items("Settings"))
             extensionApps = list(config.items("Extension apps"))
@@ -493,7 +506,7 @@ class Microscope(object):
             make_default_ini()
             read_ini()
 
-    def saveConfig(self):
+    def save_config(self):
         config = configparser.ConfigParser()
         config["Settings"] = {}
         config["Extension apps"] = {}
@@ -506,16 +519,3 @@ class Microscope(object):
             config['Extension apps'][str(key)] = str(value)
         with open(self.ini_file, 'w') as configfile:
             config.write(configfile)
-
-
-if __name__ == "__main__":
-    import time
-
-    s = MicroscopeShutter()
-    # s.Pump_shutter_open()
-    s.Stokes_shutter_open()
-    time.sleep(1)
-    # s.Pump_shutter_close()
-    s.Stokes_shutter_close()
-    # s.Microscope_shutter_close()
-# s.Stokes_shutter_open()

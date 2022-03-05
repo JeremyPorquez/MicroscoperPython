@@ -4,8 +4,11 @@ from mcculw import ul
 from mcculw.enums import ULRange, DigitalPortType
 from Devices.AnalogDigitalOut import Digital_output
 import ctypes
+from Devices.AnalogIn import AnalogInput
+from Devices.AnalogDigitalOut import Analog_output
 
 import numpy as np
+import math
 
 
 def getNumberOfChannels(channel='Dev1/ai0:2'):
@@ -153,11 +156,16 @@ class Spectrometer(NetworkDevice):
 
 
 class MCCDev:
-    def __init__(self):
+    def __init__(self, number_of_channels=2):
         self.board_num = 0
+        self.number_of_channels = number_of_channels
 
     def set_voltage(self, voltage=0, channel=0):
-        ul.a_out(self.board_num, channel, ULRange.BIP1VOLTS, voltage)
+        bits = 4095
+        if channel < self.number_of_channels:
+            bit_voltage = math.floor(voltage * bits)
+            bit_voltage = bit_voltage if bit_voltage < bits else bits if bit_voltage > 0 else 0
+            ul.a_out(self.board_num, channel, ULRange.BIP1VOLTS, bit_voltage)
 
     def set_digital_out(self, value, port):
         ul.d_bit_out(self.board_num, port_type=DigitalPortType.FIRSTPORTA, bit_num=port, bit_value=value)
@@ -172,8 +180,8 @@ class MicroscopeDetector(object):
         self.PMT = MCCDev()
         self.TPEF = 0
         self.SHG = 1
-        self.CARS = 2
-        self.Tr = 3
+        # self.CARS = 2
+        # self.Tr = 3
 
         # Define actions array
         self.setPMTsInitActions = []
@@ -192,7 +200,7 @@ class MicroscopeDetector(object):
     def test(self):
         self.PMT.set_voltage(1, self.TPEF)
         self.PMT.set_voltage(1, self.SHG)
-        self.PMT.set_voltage(1.0, self.CARS)
+        # self.PMT.set_voltage(1.0, self.CARS)
 
     def setPMTs(self):
         for action in self.setPMTsInitActions:
@@ -209,8 +217,8 @@ class MicroscopeDetector(object):
     def stop(self):
         self.PMT.set_voltage(0, self.TPEF)
         self.PMT.set_voltage(0, self.SHG)
-        self.PMT.set_voltage(0, self.CARS)
-        self.PMT.set_voltage(0, self.Tr)
+        # self.PMT.set_voltage(0, self.CARS)
+        # self.PMT.set_voltage(0, self.Tr)
 
     def __defValuePresetFunction(self, n, widget):
         value = widget.text()

@@ -11,7 +11,7 @@ class ClientObject(Responder):
     class ConnectionSignal(QtCore.QObject):
         connectionLost = QtCore.pyqtSignal()
 
-    def __init__(self,parent=None):
+    def __init__(self,parent=None, verbose=False):
         self.parent = parent
         self.connection = self                          # avoids ambiguity in parent, connection heirarchy
         self.isConnected = False

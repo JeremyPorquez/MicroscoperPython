@@ -6,10 +6,9 @@ try :
 except :
     print("PyDAQmx import failed. Simulating PyDAQmx.")
     import Devices.FakePyDAQmx as pdmx
-import MMath
 import time
 
-from Devices.Sync import sync_parameters
+from microscoper.Devices.Sync import sync_parameters
 
 
 class Analog_output(object):

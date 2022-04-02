@@ -4,6 +4,7 @@ import time
 import configparser
 import os
 from pathlib import Path
+import traceback
 
 from MNetwork.Connections import ClientObject
 from Dependencies.PyAPT import APTMotor
@@ -184,7 +185,8 @@ class ThorlabsStage(BaseDevice):
             self.motor.aptdll.EnableEventDlg(
                 False)  ## Added 2017-10-03 : Prevents appearing of APT event dialog which causes 64 bit systems to crash
             print("Stage %s loaded." % (self.settings["serial number"]))
-        except:
+        except Exception as e:
+            traceback.print_exc()
             self.motorLoaded = False
             self.currentPosition = 100
             print("Stage not loaded, simulating stage at position %.4f" % (self.currentPosition))

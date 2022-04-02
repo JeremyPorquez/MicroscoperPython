@@ -3,12 +3,15 @@ from ui.ThorlabsStage import Ui_Thorlabs
 import time
 import configparser
 import os
+from pathlib import Path
+
 from MNetwork.Connections import ClientObject
 from Dependencies.PyAPT import APTMotor
 from Dependencies.Device import BaseDevice
 
+
 class CustomWidget(QtWidgets.QWidget):
-    def __init__(self,parent=None):
+    def __init__(self, parent=None):
         self.parent = parent
         if parent is not None:
             super().__init__(self.parent)
@@ -20,8 +23,9 @@ class CustomWidget(QtWidgets.QWidget):
             self.parent.quit()
         event.accept()
 
+
 class CustomMainWindow(QtWidgets.QMainWindow):
-    def __init__(self,parent=None):
+    def __init__(self, parent=None):
         self.parent = parent
         super().__init__()
 
@@ -29,6 +33,7 @@ class CustomMainWindow(QtWidgets.QMainWindow):
         if hasattr(self.parent, "quit"):
             self.parent.quit()
         event.accept()
+
 
 class ThorlabsStage(BaseDevice):
     settings = None
@@ -45,9 +50,9 @@ class ThorlabsStage(BaseDevice):
         startScan = QtCore.pyqtSignal()
 
         def disconnectAll(self):
-            try :
+            try:
                 self.startScan.disconnect()
-            except :
+            except:
                 pass
 
         def connect(self, signal, function):
@@ -58,23 +63,22 @@ class ThorlabsStage(BaseDevice):
                 pass
             signal.connect(function)
 
-    def __init__(self,verbose=False,visible=True,ini=None,parent=None):
-        BaseDevice.__init__(self)
-        basepath = os.path.dirname(os.path.realpath(__file__))
+    def __init__(self, verbose=False, visible=True, ini=None, parent=None):
+        super().__init__()
 
         if ini is None:
-            self.ini_file = os.path.join(basepath, 'ThorlabsStage.ini')
+            self.ini_file = Path('ThorlabsStage.ini')
         else:
-            if os.path.exists(ini):
-                self.ini_file = ini
-            elif os.path.exists(basepath + ini):
-                self.ini_file = os.path.join(basepath,ini)
+            self.ini_file = Path(ini)
+            # if os.path.exists(ini):
+            #     self.ini_file = ini
+            # elif os.path.exists(basepath + ini):
+            #     self.ini_file = os.path.join(basepath, ini)
 
         if parent is None:
             self.parent = self
         else:
             self.parent = parent
-
 
         self.loadConfig()
 
@@ -94,18 +98,18 @@ class ThorlabsStage(BaseDevice):
 
     def defineDefaultSettings(self):
         self.settings = {
-            "title label" : "Thorlabs Stage",
-            "connection port" : "10124",
-            "serial number" : "94876470",
-            "hwtype" : "31",
-            "move preset1" : "0",
-            "move preset2" : "50",
-            "move preset3" : "100",
-            "move increments" : "0.1",
-            "scan speed" : "0.01",
-            "scan start position" : "50",
-            "scan end position" : "55",
-            "max velocity" : "10",
+            "title label": "Thorlabs Stage",
+            "connection port": "10124",
+            "serial number": "94876470",
+            "hwtype": "31",
+            "move preset1": "0",
+            "move preset2": "50",
+            "move preset3": "100",
+            "move increments": "0.1",
+            "scan speed": "0.01",
+            "scan start position": "50",
+            "scan end position": "55",
+            "max velocity": "10",
         }
 
     def updateUi(self):
@@ -132,6 +136,7 @@ class ThorlabsStage(BaseDevice):
 
     def loadConfig(self):
 
+        self.defineDefaultSettings()
         config = configparser.ConfigParser()
 
         def make_default_ini():
@@ -139,6 +144,9 @@ class ThorlabsStage(BaseDevice):
             config["Settings"] = {}
             for key, value in self.settings.items():
                 config['Settings'][str(key)] = str(value)
+
+            with open(self.ini_file, 'w') as configfile:
+                config.write(configfile)
 
         def read_ini():
             config.read(self.ini_file)
@@ -167,18 +175,19 @@ class ThorlabsStage(BaseDevice):
         with open(self.ini_file, 'w') as configfile:
             config.write(configfile)
 
-    def loadDevice(self,verbose=False):
-        try :
+    def loadDevice(self, verbose=False):
+        try:
             self.motor = APTMotor(int(self.settings["serial number"]),
                                   HWTYPE=int(self.settings["hwtype"]),
                                   verbose=verbose)
             self.motorLoaded = True
-            self.motor.aptdll.EnableEventDlg(False) ## Added 2017-10-03 : Prevents appearing of APT event dialog which causes 64 bit systems to crash
-            print("Stage %s loaded."%(self.settings["serial number"]))
-        except :
+            self.motor.aptdll.EnableEventDlg(
+                False)  ## Added 2017-10-03 : Prevents appearing of APT event dialog which causes 64 bit systems to crash
+            print("Stage %s loaded." % (self.settings["serial number"]))
+        except:
             self.motorLoaded = False
             self.currentPosition = 100
-            print("Stage not loaded, simulating stage at position %.4f"%(self.currentPosition))
+            print("Stage not loaded, simulating stage at position %.4f" % (self.currentPosition))
 
     def setupUi(self, visible=True):
         self.ui = Ui_Thorlabs()
@@ -212,8 +221,9 @@ class ThorlabsStage(BaseDevice):
 
     def setPorts(self):
         self.updateUiVariables()
+        self.saveConfig()
         self.connection.stopClientConnection()
-        self.connection.autoConnect(connectionPort = int(self.settings["connection port"]))
+        self.connection.autoConnect(connectionPort=int(self.settings["connection port"]))
         self.connection.connectionIsBusy = False
 
         self.clear()
@@ -222,16 +232,18 @@ class ThorlabsStage(BaseDevice):
 
     def establishConnection(self):
         self.updateUiVariables()
-        self.connection.autoConnect(connectionPort = int(self.settings["connection port"]))
+        self.connection.autoConnect(connectionPort=int(self.settings["connection port"]))
         self.connection.connectionIsBusy = False
 
     def moveHome(self):
         """
         Moves the stage to home position.
         """
+        self.saveConfig()
         if self.motorLoaded:
             def move():
                 self.motor.go_home()
+
             self.threadThis(move)
         else:
             self.currentPosition = 110
@@ -240,7 +252,7 @@ class ThorlabsStage(BaseDevice):
         """
         Returns the stage position and updates the ui display.
         """
-        if self.motorLoaded :
+        if self.motorLoaded:
             currentPosition = self.motor.getPos()
         else:
             currentPosition = self.currentPosition
@@ -259,7 +271,7 @@ class ThorlabsStage(BaseDevice):
         """
         return self.ui.endPositionSpinbox.value()
 
-    def moveAbs(self,absPosition = None, moveVel = None):
+    def moveAbs(self, absPosition=None, moveVel=None):
         """
         Moves stage to absolute position. When moveVel is not defined, moveVel is set to 10
         """
@@ -277,16 +289,17 @@ class ThorlabsStage(BaseDevice):
                 time.sleep(0.001)
             self.isMoving = False
 
-        if self.motorLoaded :
+        if self.motorLoaded:
             self.threadThis(move)
-        else :
+        else:
             self.currentPosition = absPosition
 
-    def moveRel(self, relativeDistance = None, moveVel = None):
+    def moveRel(self, relativeDistance=None, moveVel=None):
         if relativeDistance is None:
             relativeDistance = self.ui.incSpinbox.value()
         if moveVel is None:
             moveVel = 10
+
         def move():
             if self.isMoving:
                 self.softStop()
@@ -296,27 +309,28 @@ class ThorlabsStage(BaseDevice):
             #     time.sleep(0.001)
             self.isMoving = False
 
-        if self.motorLoaded :
+        if self.motorLoaded:
             self.threadThis(move)
-        else :
+        else:
             self.currentPosition += relativeDistance
 
     def moveToStartPosition(self):
         self.stop()
         time.sleep(0.1)
         if self.motorLoaded:
-            self.threadThis(self.moveAbs(float(self.ui.startPositionSpinbox.value()),float(self.settings["max velocity"])))
-        else :
-            self.moveAbs(float(self.ui.startPositionSpinbox.value()),float(self.settings["max velocity"]))
-
+            self.threadThis(
+                self.moveAbs(float(self.ui.startPositionSpinbox.value()), float(self.settings["max velocity"])))
+        else:
+            self.moveAbs(float(self.ui.startPositionSpinbox.value()), float(self.settings["max velocity"]))
 
     def moveToEndPosition(self):
         self.Stop()
         time.sleep(0.1)
         if self.motorLoaded:
-            self.threadThis(self.moveAbs(float(self.ui.endPositionSpinbox.value()),float(self.settings["max velocity"])))
-        else :
-            self.moveAbs(float(self.ui.endPositionSpinbox.value()),float(self.settings["max velocity"]))
+            self.threadThis(
+                self.moveAbs(float(self.ui.endPositionSpinbox.value()), float(self.settings["max velocity"])))
+        else:
+            self.moveAbs(float(self.ui.endPositionSpinbox.value()), float(self.settings["max velocity"]))
 
     def initScan(self, moveType="continuous", stepSize=0.1):
         """
@@ -328,37 +342,43 @@ class ThorlabsStage(BaseDevice):
 
         if self.motorLoaded:
             if 'continuous' in moveType.lower():
-                self.signal.connect(self.signal.startScan, lambda: self.moveAbs(self.ui.endPositionSpinbox.value(), self.ui.moveSpeedSpinbox.value()))
+                self.signal.connect(self.signal.startScan, lambda: self.moveAbs(self.ui.endPositionSpinbox.value(),
+                                                                                self.ui.moveSpeedSpinbox.value()))
             if 'discrete' in moveType.lower():
                 self.signal.connect(self.signal.startScan, lambda: self.moveRel(relativeDistance=stepSize))
-        else :
+        else:
             self.simulating = True
             self.threadThis(self.simulateStageMotion)
 
     def startScan(self):
         self.signal.startScan.emit()
 
-    def setSpeed(self,maxVel=10,minVel=0,acc=10):
-        if self.motorLoaded :
+    def setSpeed(self, maxVel=10, minVel=0, acc=10):
+        if self.motorLoaded:
             self.motor.setVelocityParameters(minVel, acc, maxVel)
 
     def status(self):
         return not self.isMoving
 
     def stop(self):
+        self.saveConfig()
         if self.motorLoaded:
-            try : self.motor.aptdll.MOT_StopImmediate(self.motor.SerialNum)
-            except : self.motor.aptdll.MOT_StopProfiled(self.motor.SerialNum)
-        else :
+            try:
+                self.motor.aptdll.MOT_StopImmediate(self.motor.SerialNum)
+            except:
+                self.motor.aptdll.MOT_StopProfiled(self.motor.SerialNum)
+        else:
             self.simulating = False
         time.sleep(0.5)
         self.isMoving = False
 
     def softStop(self):
         if self.motorLoaded:
-            try : self.motor.aptdll.MOT_StopImmediate(self.motor.SerialNum)
-            except : self.motor.aptdll.MOT_StopProfiled(self.motor.SerialNum)
-        else :
+            try:
+                self.motor.aptdll.MOT_StopImmediate(self.motor.SerialNum)
+            except:
+                self.motor.aptdll.MOT_StopProfiled(self.motor.SerialNum)
+        else:
             self.simulating = False
         time.sleep(0.5)
 
@@ -379,15 +399,14 @@ class ThorlabsStage(BaseDevice):
 
 
 class ThorlabsBBD203(object):
-
     settings = {}
     basepath = os.path.dirname(os.path.realpath(__file__))
     inifilename = "ThorlabsStage.ini"
-    ini_file = os.path.join(basepath,inifilename)
+    ini_file = os.path.join(basepath, inifilename)
 
     def __init__(self):
         self.loadConfig()
-        self.mainWindow = CustomMainWindow(parent=self)     ## generate mainwindow ui
+        self.mainWindow = CustomMainWindow(parent=self)  ## generate mainwindow ui
         self.centralWidget = QtWidgets.QWidget(self.mainWindow)
         self.centralWidget.resize(1200, 350)
         self.setupDevices()
@@ -396,6 +415,7 @@ class ThorlabsBBD203(object):
     def setupDevices(self):
         self.devices = []
         for device, iniFile in self.settings.items():
+
             self.devices.append(ThorlabsStage(visible=False,
                                               parent=self.centralWidget,
                                               ini=iniFile))
@@ -403,10 +423,10 @@ class ThorlabsBBD203(object):
     def setupUi(self):
         self.layout = QtWidgets.QGridLayout(self.centralWidget)
         for idx, device in enumerate(self.devices):
-            self.layout.addWidget(device.widget,0, idx, 1, 1)
+            self.layout.addWidget(device.widget, 0, idx, 1, 1)
         self.layout.setContentsMargins(0, 0, 0, 0)
         # self.mainWindow.setLayout(self.layout)
-        self.mainWindow.resize(len(self.devices)*400,350)
+        self.mainWindow.resize(len(self.devices) * 400, 350)
         self.mainWindow.setWindowIcon(QtGui.QIcon("ui/ThorlabsStage.png"))
         self.mainWindow.setWindowTitle("Thorlabs Stage Controller v.2019.9.20")
         self.mainWindow.show()
@@ -416,15 +436,14 @@ class ThorlabsBBD203(object):
         for device in self.devices:
             device.quit()
 
-
     ### Configuration section ###
     #############################
 
     def defineDefaultSettings(self):
         self.settings = {
-            "device1" : "ThorlabsStage1.ini",
-            "device2" : "ThorlabsStage2.ini",
-            "device3" : "ThorlabsStage3.ini",
+            "device1": "ThorlabsStage1.ini",
+            "device2": "ThorlabsStage2.ini",
+            "device3": "ThorlabsStage3.ini",
         }
 
     def loadConfig(self):
@@ -465,11 +484,11 @@ class ThorlabsBBD203(object):
     #################################
 
 
-
 if __name__ == "__main__":
     import ctypes
+
     qapp = QtWidgets.QApplication([])
-    #app = ThorlabsStage(visible=True)
+    # app = ThorlabsStage(visible=True)
     app = ThorlabsBBD203()
     myappid = u"ThorlabsStage BBD Series"  # arbitrary string
     if os.name == "nt":

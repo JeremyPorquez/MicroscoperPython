@@ -147,8 +147,8 @@ class Microscope(MicroscoperComponents.Microscope):
     def connectSignals(self):
         self.signal = self.Signal()
         self.signal.scanStartAcquire.connect(self.acquire)
-        self.signal.scanStopAcquire.connect(self.acquireStop)
-        self.connection.connectionSignal.connectionLost.connect(self.acquireStop)
+        self.signal.scanStopAcquire.connect(self.acquire_stop)
+        self.connection.connectionSignal.connectionLost.connect(self.acquire_stop)
 
     def setupDevices(self):
         self.pmtWidgets = [self.ui.PMTSlider0, self.ui.PMTLabel0, self.ui.PMTZero0, self.ui.PMTPreset0,
@@ -158,7 +158,8 @@ class Microscope(MicroscoperComponents.Microscope):
                            self.ui.PMTStatusText]
 
         self.pmtPolarityWidgets = [self.ui.pmtInvert1, self.ui.pmtInvert2, self.ui.pmtInvert3, self.ui.pmtInvert4]
-        self.detectors = MicroscoperComponents.MicroscopeDetector(widgets=self.pmtWidgets, model="1208")  # Setup components
+        self.detectors = MicroscoperComponents.MicroscopeDetector(widgets=self.pmtWidgets,
+                                                                  model="1208")  # Setup components
         if bool(int(self.settings["shutters enabled"])):
             self.shutterWidgets = [self.ui.pumpShutterButton, self.ui.stokesShutterButton]
             self.shutter = MicroscoperComponents.Shutters(widgets=self.shutterWidgets)
@@ -226,26 +227,31 @@ class Microscope(MicroscoperComponents.Microscope):
         # self.ui.pumpShutterButton.clicked.connect(self.shutter.flip_pump_shutter) # from class Shutters
         # self.ui.stokesShutterButton.clicked.connect(self.shutter.flip_stokes_shutter)
         self.ui.acquireButton.clicked.connect(self.acquireSet)
-        self.ui.browseButton.clicked.connect(lambda: self.ui.directoryText.setText(QtWidgets.QFileDialog.getExistingDirectory()))
+        self.ui.browseButton.clicked.connect(
+            lambda: self.ui.directoryText.setText(QtWidgets.QFileDialog.getExistingDirectory()))
 
         self.ui.browseCalibrationButton.clicked.connect(self.getCalibrationFile)
 
         self.ui.upButton.clicked.connect(lambda: self.changeRasterOffset("Up", self.ui.galvoOffsetRadio.isChecked()))
-        self.ui.upButton.clicked.connect(self.acquireSoftRestart)
-        self.ui.downButton.clicked.connect(lambda: self.changeRasterOffset("Down", self.ui.galvoOffsetRadio.isChecked()))
-        self.ui.downButton.clicked.connect(self.acquireSoftRestart)
-        self.ui.leftButton.clicked.connect(lambda: self.changeRasterOffset("Left", self.ui.galvoOffsetRadio.isChecked()))
-        self.ui.leftButton.clicked.connect(self.acquireSoftRestart)
-        self.ui.rightButton.clicked.connect(lambda: self.changeRasterOffset("Right", self.ui.galvoOffsetRadio.isChecked()))
-        self.ui.rightButton.clicked.connect(self.acquireSoftRestart)
-        self.ui.zeroOffsetButton.clicked.connect(lambda: self.changeRasterOffset("zero", self.ui.galvoOffsetRadio.isChecked()))
-        self.ui.zeroOffsetButton.clicked.connect(self.acquireSoftRestart)
+        self.ui.upButton.clicked.connect(self.acquire_soft_restart)
+        self.ui.downButton.clicked.connect(
+            lambda: self.changeRasterOffset("Down", self.ui.galvoOffsetRadio.isChecked()))
+        self.ui.downButton.clicked.connect(self.acquire_soft_restart)
+        self.ui.leftButton.clicked.connect(
+            lambda: self.changeRasterOffset("Left", self.ui.galvoOffsetRadio.isChecked()))
+        self.ui.leftButton.clicked.connect(self.acquire_soft_restart)
+        self.ui.rightButton.clicked.connect(
+            lambda: self.changeRasterOffset("Right", self.ui.galvoOffsetRadio.isChecked()))
+        self.ui.rightButton.clicked.connect(self.acquire_soft_restart)
+        self.ui.zeroOffsetButton.clicked.connect(
+            lambda: self.changeRasterOffset("zero", self.ui.galvoOffsetRadio.isChecked()))
+        self.ui.zeroOffsetButton.clicked.connect(self.acquire_soft_restart)
 
-        self.ui.zoomWidget.valueChanged.connect(self.acquireSoftRestart)
-        self.ui.dwellTime.valueChanged.connect(self.acquireSoftRestart)
-        self.ui.resolutionWidget.valueChanged.connect(self.acquireSoftRestart)
+        self.ui.zoomWidget.valueChanged.connect(self.acquire_soft_restart)
+        self.ui.dwellTime.valueChanged.connect(self.acquire_soft_restart)
+        self.ui.resolutionWidget.valueChanged.connect(self.acquire_soft_restart)
 
-        self.ui.fillFractionWidget.valueChanged.connect(self.acquireSoftRestart)
+        self.ui.fillFractionWidget.valueChanged.connect(self.acquire_soft_restart)
         self.ui.microcopeOffsetRadio.clicked.connect(self.changeDOffsetLabel)
         self.ui.galvoOffsetRadio.clicked.connect(self.changeDOffsetLabel)
 
@@ -262,7 +268,7 @@ class Microscope(MicroscoperComponents.Microscope):
         index = self.ui.scanTypeWidget.currentIndex()
         self.scanName = self.ui.scanTypeWidget.currentText()
         self.scanStage = self.scanList.loc[index]['Stage']
-        self.scanMove = self.scanList.loc[index]['Move Type']
+        self.scan_move_type = self.scanList.loc[index]['Move Type']
         self.scanDetector = self.scanList.loc[index]['Detector Type']
         self.scanFrames = self.scanList.loc[index]['Frames']
         self.scanUnits = self.scanList.loc[index]['Move Units']
@@ -281,22 +287,31 @@ class Microscope(MicroscoperComponents.Microscope):
         self.xyPointScanPosition = x, y
         return x, y
 
-    def initStage(self):
+    def acquire_init_stage(self):
+
         if ("linearstage" in self.scanStage.lower()):
-            if ("continuous" in self.scanMove.lower()):
+
+            if ("continuous" in self.scan_move_type.lower()):
+
                 self.devices["delaystage"].initScan("continuous")
-                while not self.devices["delaystage"].status():
-                    time.sleep(0.1)
-            elif ("discrete" in self.scanMove.lower()):
-                self.devices["delaystage"].initScan("discrete")
+
+                # wait while stage is moving
                 while not self.devices["delaystage"].status():
                     time.sleep(0.1)
 
-    def initSpectrometer(self):
+            elif ("discrete" in self.scan_move_type.lower()):
+
+                self.devices["delaystage"].initScan("discrete")
+
+                # wait while stage is moving
+                while not self.devices["delaystage"].status():
+                    time.sleep(0.1)
+
+    def acquire_init_spectrometer(self):
         if self.scanDetector == "Spectrometer":
             self.devices["spectrometer"].spectrometerInit()
 
-    def initAnalogOutput(self):
+    def init_analog_output(self):
         device = self.settings["input channels"][:4]
         self.ao = MicroscoperComponents.Analog_output(channels=self.settings["output channels"],
                                                       resolution=int(self.settings["resolution"]),
@@ -307,16 +322,18 @@ class Microscope(MicroscoperComponents.Microscope):
                                                       trigger=f"/{device}/ai/StartTrigger")
         self.generateAOScanPattern()
 
-    def initAnalogInput(self, imageMaximums=None, imageMinimums=None):
+    def init_analog_input(self, imageMaximums=None, imageMinimums=None):
         waitForLastFrame = False
         singleFrameScan = False
         if self.scanDetector == "PMT":
-            if self.scanMove in ['Continuous', 'Discrete']: waitForLastFrame = True
+            if self.scan_move_type in ['Continuous', 'Discrete']: waitForLastFrame = True
             if self.scanFrames in ['Discrete', 'Grab']: singleFrameScan = True
             if imageMaximums is None:
-                imageMaximums = [float(self.settings["image maximums %i" % i]) for i in range(0, MicroscoperComponents.getNumberOfChannels(self.settings["input channels"]))]
+                imageMaximums = [float(self.settings["image maximums %i" % i]) for i in
+                                 range(0, MicroscoperComponents.getNumberOfChannels(self.settings["input channels"]))]
             if imageMinimums is None:
-                imageMinimums = [float(self.settings["image minimums %i" % i]) for i in range(0, MicroscoperComponents.getNumberOfChannels(self.settings["input channels"]))]
+                imageMinimums = [float(self.settings["image minimums %i" % i]) for i in
+                                 range(0, MicroscoperComponents.getNumberOfChannels(self.settings["input channels"]))]
             self.ai.init(channel=self.settings["input channels"],
                          resolution=int(self.settings["resolution"]),
                          line_dwell_time=float(self.settings["dwell time"]),
@@ -335,7 +352,7 @@ class Microscope(MicroscoperComponents.Microscope):
                          dataMinimums=imageMinimums,
                          )
 
-    def initDisplay(self):
+    def init_display(self):
         if self.scanDetector == "PMT":
             if self.display is not None:
                 try:
@@ -359,7 +376,7 @@ class Microscope(MicroscoperComponents.Microscope):
                                                  app=self.app,
                                                  )
             self.display.fps = 15
-            self.display.signal.close.connect(self.acquireStop)
+            self.display.signal.close.connect(self.acquire_stop)
             self.display.signal.close.connect(self.displayClose)
 
     def initMetadata(self):
@@ -414,11 +431,11 @@ class Microscope(MicroscoperComponents.Microscope):
             self.saveFilename = ""
 
     def initSetupHorizontalAxis(self):
-        if self.scanMove == 'Continuous':
+        if self.scan_move_type == 'Continuous':
             self.xAxis = [self.devices["delaystage"].getPos]
             if self.displayingCalibration:
                 self.xAxis.append(self.toWavenumber)
-        elif self.scanMove in ["Discrete", "Grab"]:
+        elif self.scan_move_type in ["Discrete", "Grab"]:
             if self.scanStage == "LinearStage":
                 self.xAxis = [self.devices["delaystage"].getPos]
                 if self.displayingCalibration:
@@ -467,25 +484,30 @@ class Microscope(MicroscoperComponents.Microscope):
             data = np.array([data_x, data_y])
             self.ao.set_data(data)
         else:
-            self.ao.set_data(MMath.generateRasterScan(float(self.settings["max scan amplitude"]) / int(self.settings["zoom"]),
-                                                      self.ao.x_pixels,
-                                                      self.ao.y_pixels,
-                                                      self.ao.x_pixels_flyback,
-                                                      (float(self.settings["scan x offset"]),
-                                                       float(self.settings["scan y offset"]))
-                                                      ))
+            self.ao.set_data(
+                MMath.generateRasterScan(float(self.settings["max scan amplitude"]) / int(self.settings["zoom"]),
+                                         self.ao.x_pixels,
+                                         self.ao.y_pixels,
+                                         self.ao.x_pixels_flyback,
+                                         (float(self.settings["scan x offset"]),
+                                          float(self.settings["scan y offset"]))
+                                         ))
 
     def changeRasterOffset(self, direction='Up', execute=False):
         direction = direction.lower()
         if execute:
             if ('up' in direction):
-                self.settings["scan y offset"] = str(float(self.settings["scan y offset"]) + self.ui.deltaOffset.value())
+                self.settings["scan y offset"] = str(
+                    float(self.settings["scan y offset"]) + self.ui.deltaOffset.value())
             if ('right' in direction):
-                self.settings["scan x offset"] = str(float(self.settings["scan x offset"]) + self.ui.deltaOffset.value())
+                self.settings["scan x offset"] = str(
+                    float(self.settings["scan x offset"]) + self.ui.deltaOffset.value())
             if ('down' in direction):
-                self.settings["scan y offset"] = str(float(self.settings["scan y offset"]) - self.ui.deltaOffset.value())
+                self.settings["scan y offset"] = str(
+                    float(self.settings["scan y offset"]) - self.ui.deltaOffset.value())
             if ('left' in direction):
-                self.settings["scan x offset"] = str(float(self.settings["scan x offset"]) - self.ui.deltaOffset.value())
+                self.settings["scan x offset"] = str(
+                    float(self.settings["scan x offset"]) - self.ui.deltaOffset.value())
             elif ("zero" in direction):
                 self.settings["scan x offset"] = "0"
                 self.settings["scan y offset"] = "0"
@@ -494,8 +516,10 @@ class Microscope(MicroscoperComponents.Microscope):
     def displayCreateImageLevelsWindow(self):
         def createWindow():
             numberOfImages = MicroscoperComponents.getNumberOfChannels(self.settings["input channels"])
-            imageMaximums = [float(self.settings["image maximums %i" % i]) for i in range(0, MicroscoperComponents.getNumberOfChannels(self.settings["input channels"]))]
-            imageMinimums = [float(self.settings["image minimums %i" % i]) for i in range(0, MicroscoperComponents.getNumberOfChannels(self.settings["input channels"]))]
+            imageMaximums = [float(self.settings["image maximums %i" % i]) for i in
+                             range(0, MicroscoperComponents.getNumberOfChannels(self.settings["input channels"]))]
+            imageMinimums = [float(self.settings["image minimums %i" % i]) for i in
+                             range(0, MicroscoperComponents.getNumberOfChannels(self.settings["input channels"]))]
 
             self.imageLevels = Display.ImageLevelsWidget(parent=self,
                                                          numberOfImages=numberOfImages,
@@ -534,7 +558,7 @@ class Microscope(MicroscoperComponents.Microscope):
         if not self.acquiring:
             self.acquire()
         else:
-            self.acquireStop()
+            self.acquire_stop()
 
     def acquire(self):
         # self.devices["spectrometer"].spectrometerSendQuery()
@@ -545,7 +569,7 @@ class Microscope(MicroscoperComponents.Microscope):
         # self.devices["spectrometer"].spectrometerScan()
         # self.devices["delaystage"].status()
         self.acquireInit()
-        self.acquireStart()
+        self.acquire_start()
 
     def acquireInit(self):
 
@@ -558,8 +582,8 @@ class Microscope(MicroscoperComponents.Microscope):
         self.initGetXYScanPosition()
         self.initGetScanAttributes()
 
-        self.initStage()
-        self.initSpectrometer()
+        self.acquire_init_stage()
+        self.acquire_init_spectrometer()
         self.initMetadata()
         self.initSavefile()
 
@@ -572,14 +596,14 @@ class Microscope(MicroscoperComponents.Microscope):
         #############################################################
 
         ## Create analog channels -----------------------------
-        self.initAnalogOutput()
-        self.initAnalogInput()
+        self.init_analog_output()
+        self.init_analog_input()
 
         ## Initialize display ----------------------------------
-        self.initDisplay()
+        self.init_display()
         #############################################################
 
-    def acquireStart(self):
+    def acquire_start(self):
         self.signal.scanStartSignal.emit()
         self.ao.start()
         if self.scanDetector == "PMT":
@@ -595,15 +619,15 @@ class Microscope(MicroscoperComponents.Microscope):
         self.detectScanStatusThread = Thread(target=self.detectScanStatus)
         self.detectScanStatusThread.start()
 
-    def acquireSoftStart(self):
+    def acquire_soft_start(self):
         self.signal.scanStartSignal.emit()
         self.update_ui_variables()
         time.sleep(0.1)
-        self.initAnalogOutput()
+        self.init_analog_output()
 
         if self.scanDetector == "PMT":
-            self.initAnalogInput(imageMaximums=self.ai.dataMaximums,
-                                 imageMinimums=self.ai.dataMinimums)
+            self.init_analog_input(imageMaximums=self.ai.dataMaximums,
+                                   imageMinimums=self.ai.dataMinimums)
             self.display.set(imageInput=self.ai.imageData,
                              intensityPlot=self.ai.intensities,
                              intensityIndex=self.ai.intensitiesIndex,
@@ -623,7 +647,7 @@ class Microscope(MicroscoperComponents.Microscope):
                     xAxis = self.xAxis
                 self.devices["spectrometer"].spectrometerSave(fileName, xAxis)
 
-    def acquireSoftStop(self):
+    def acquire_soft_stop(self):
         self.ao.clear()
         while self.ai.reading:
             time.sleep(0.1)
@@ -632,14 +656,14 @@ class Microscope(MicroscoperComponents.Microscope):
         # self.shutter.Microscope_shutter_close()
         self.signal.scanSoftDoneSignal.emit()
 
-    def acquireSoftRestart(self):
+    def acquire_soft_restart(self):
         if self.acquiring:
             if self.scanDetector == "PMT":
                 self.ao.clear()
                 self.ai.clear()
-            self.acquireSoftStart()
+            self.acquire_soft_start()
 
-    def acquireStop(self):
+    def acquire_stop(self):
         try:
             self.devices["delaystage"].stop()
             self.ai.clear()
@@ -648,7 +672,7 @@ class Microscope(MicroscoperComponents.Microscope):
             if self.ao is not None:
                 if self.ao.running: self.ao.clear()
             # self.getxyScanPosition()
-            self.scanStatusThreadInterrupt = True
+            self.scan_thread_interrupt = True
             # self.shutter.Microscope_shutter_close()
             self.detectors.setPMTsZero()
             self.ui.acquireButton.setText("Acquire")
@@ -657,14 +681,14 @@ class Microscope(MicroscoperComponents.Microscope):
             print(e)
         self.signal.scanDoneSignal.emit()
 
-    def setConnectionNotBusy(self):
+    def set_connection_not_busy(self):
         self.connection.connectionIsBusy = False
 
-    def setConnectionIsBusy(self):
+    def set_connection_is_busy(self):
         self.connection.connectionIsBusy = True
 
     def detectScanStatus(self):
-        self.scanStatusThreadInterrupt = False
+        self.scan_thread_interrupt = False
 
         def stageContinuousUntilEnds():
             if self.scanStage == "LinearStage":
@@ -675,66 +699,67 @@ class Microscope(MicroscoperComponents.Microscope):
                 self.devices["focusController"].startScan()
                 while not self.devices["focusController"].status():
                     time.sleep(0.1)
-            self.acquireStop()
-            self.initStage()
+            self.acquire_stop()
+            self.acquire_init_stage()
 
         def stageDiscreteUntilEnds():
             self.devices["delaystage"].sendQuery("ui.endPositionSpinbox.value()", "endPos")
-            while (self.devices["delaystage"].getPos() < self.devices["delaystage"].endPos) and (not self.scanStatusThreadInterrupt):
+            while (self.devices["delaystage"].getPos() < self.devices["delaystage"].endPos) and (
+            not self.scan_thread_interrupt):
                 if not self.ai.reading:
-                    self.acquireSoftStop()
+                    self.acquire_soft_stop()
                     self.devices["delaystage"].sendCommand("moveRel()")
                     while not self.devices["delaystage"].status():
                         time.sleep(0.1)
                     time.sleep(1)
-                    self.acquireSoftStart()
+                    self.acquire_soft_start()
                 time.sleep(0.1)
-            self.acquireStop()
-            self.initStage()
-            self.setConnectionNotBusy()
+            self.acquire_stop()
+            self.acquire_init_stage()
+            self.set_connection_not_busy()
 
         def zDiscreteUntilEnds():
-            while (self.zStage.currentPosition < self.zStage.endScanPosition) and (not self.scanStatusThreadInterrupt):
+            while (self.zStage.currentPosition < self.zStage.endScanPosition) and (not self.scan_thread_interrupt):
                 if not self.ai.reading:
-                    self.acquireSoftStop()
+                    self.acquire_soft_stop()
                     targetPosition = self.ui.ZStageStart.value() + self.stageMoveIndex * self.zStage.MoveDef.value()
                     self.stageMoveIndex += 1
                     self.zStage.MoveAbs(targetPosition)
                     while self.zStage.moving:
                         time.sleep(0.1)
                     time.sleep(1)
-                    self.acquireSoftStart()
+                    self.acquire_soft_start()
                 time.sleep(0.1)
             else:
-                self.acquireStop()
-                self.setConnectionNotBusy()
+                self.acquire_stop()
+                self.set_connection_not_busy()
 
         def grab():
             while True:
                 time.sleep(0.1)
                 if not self.ai.reading:
-                    self.acquireStop()
-                    self.setConnectionNotBusy()
+                    self.acquire_stop()
+                    self.set_connection_not_busy()
                     break
 
         def stageDefault():
             self.connection.connectionIsBusy = False
 
-        if self.scanMove == "None": stageDefault()
-        if self.scanMove == "Continuous": stageContinuousUntilEnds()
-        if self.scanMove == "Discrete":
+        if self.scan_move_type == "None": stageDefault()
+        if self.scan_move_type == "Continuous": stageContinuousUntilEnds()
+        if self.scan_move_type == "Discrete":
             # self.stageStartPosition = self.ui.LStageStart.value()
             # self.stageMoveIndex = 1
             if self.scanStage == "LinearStage": stageDiscreteUntilEnds()
             if self.scanStage == "zStage": zDiscreteUntilEnds()
-        if self.scanMove == "Grab":
+        if self.scan_move_type == "Grab":
             grab()
 
     def close(self, event):
         if self.mainWindow.isEnabled():
             self.listening = False
             if self.acquiring:
-                self.acquireStop()
+                self.acquire_stop()
             if self.display is not None:
                 self.display.close()
             if self.imageLevels is not None:

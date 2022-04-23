@@ -28,7 +28,7 @@ class SpectrometerExtension:
 
     def endScan(self):
         if self.parent is not None :
-            if self.parent.scanDetector == "Spectrometer":
+            if self.parent.scan_detector == "Spectrometer":
                 self.parent.connection.sendConnectionMessage('spectrometer.fileLoaded = False')
         else :
             raise ValueError('self.parent must be set')

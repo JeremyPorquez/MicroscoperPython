@@ -4,6 +4,9 @@ from threading import Thread
 import numpy as np
 import pandas as pd
 from PyQt5 import QtWidgets, QtGui, QtCore
+from pathlib import Path
+
+from Devices.TTL_delay_stage import TTL_Delay_Stage
 from ui.microscoper import Ui_Microscoper
 from Devices import Display
 from MNetwork.Connections import ClientObject
@@ -22,25 +25,27 @@ class Microscope(MicroscoperComponents.Microscope):
     pmtWidgets: list
     pmtPolarityWidgets: list
     shutter: MicroscoperComponents.Shutters
+    scan_thread_interrupt: bool = False
+    _scan_thread: Thread
 
-    def toWavenumber(self):
+    def stage_to_wavenumber(self):
         try:
             wavenumber = float(self.ui.WavenumberText.text()[:-5])
         except:
             wavenumber = 0
         return wavenumber
 
-    def displayCalibration(self):
-        self.displayingCalibration = False
+    def display_calibration(self):
+        self.is_displaying_calibration = False
 
         def calculate():
             while True:
                 try:
-                    self.calibrationFile = self.ui.calibrationFilenameText.text()
-                    calibrationFile = open(self.calibrationFile, "r")
+                    self.calibration_file = self.ui.calibrationFilenameText.text()
+                    calibrationFile = open(self.calibration_file, "r")
                     self.stageCalibrationFormulaString = calibrationFile.read()
-                    self.displayingCalibration = True
-                    while self.displayingCalibration:
+                    self.is_displaying_calibration = True
+                    while self.is_displaying_calibration:
                         pos = self.devices["delaystage"].getPos()
                         if not type(self.devices["delaystage"].delayStagePosition) == type("a"):
                             pos = str(pos)
@@ -50,23 +55,23 @@ class Microscope(MicroscoperComponents.Microscope):
                         time.sleep(0.01)
                 except:
                     self.ui.WavenumberText.setText("Invalid calibration file.")
-                    self.displayingCalibration = False
+                    self.is_displaying_calibration = False
                     time.sleep(0.5)
                     # self.displayCalibration() ## try reconnecting
 
-        self.calcThread = Thread(target=calculate)
-        self.calcThread.daemon = True
-        self.calcThread.start()
+        self.calc_thread = Thread(target=calculate)
+        self.calc_thread.daemon = True
+        self.calc_thread.start()
 
         # except:
         #     self.displayingCalibration = False
         #     # self.ui.WavenumberText.setText("Invalid calibration file.")
         #     # self.displayingCalibration = False
 
-    def getCalibrationFile(self):
-        self.calibrationFile = QtWidgets.QFileDialog.getOpenFileName()[0]
-        self.ui.calibrationFilenameText.setText(self.calibrationFile)
-        self.displayCalibration()
+    def get_calibration_file(self):
+        self.calibration_file = QtWidgets.QFileDialog.getOpenFileName()[0]
+        self.ui.calibrationFilenameText.setText(self.calibration_file)
+        self.display_calibration()
 
     def getSaveFile(self):
         self.ui.directoryText.setText(QtWidgets.QFileDialog.getExistingDirectory())
@@ -81,7 +86,7 @@ class Microscope(MicroscoperComponents.Microscope):
         imageAcquireStartSignal = QtCore.pyqtSignal()
         imageAcquireFinishedSignal = QtCore.pyqtSignal()
 
-    cwd = os.path.dirname(os.path.realpath(__file__))
+    cwd = Path().absolute()
 
     def __init__(self, app=None, name="microscoper"):
 
@@ -90,7 +95,7 @@ class Microscope(MicroscoperComponents.Microscope):
 
         self.connection = ClientObject(parent=self, verbose=self.verbose)
         self.setupUi()
-        self.setupDevices()
+        self.setup_devices()
 
         self.update_ui()
         self.connectUi()
@@ -109,15 +114,15 @@ class Microscope(MicroscoperComponents.Microscope):
 
         # # Preloads analog input multiprocessing
         self.ai = MicroscoperComponents.AnalogInput(parent=self,
-                                                    inputChannels=self.settings["input channels"],
-                                                    polarityWidgets=self.pmtPolarityWidgets)
+                                                    input_channels=self.settings["input channels"],
+                                                    polarity_widgets=self.pmtPolarityWidgets)
 
         self.connection.autoConnect(self.settings["connection port"])
         self.init_stage()
 
     def setupScanList(self):
-        scanFilePath = os.path.join(self.cwd, "Microscoper_app_scanList.csv")
-        self.scanList = pd.read_csv(scanFilePath, delimiter='\t')
+        scanFilePath = Path(self.cwd, "Microscoper_app_scanList.csv")
+        self.scanList = pd.read_csv(scanFilePath)
         scanList = self.scanList['Scan Name'].values
         self.ui.scanTypeWidget.clear()
         self.ui.scanTypeWidget.addItems(scanList)
@@ -150,7 +155,7 @@ class Microscope(MicroscoperComponents.Microscope):
         self.signal.scanStopAcquire.connect(self.acquire_stop)
         self.connection.connectionSignal.connectionLost.connect(self.acquire_stop)
 
-    def setupDevices(self):
+    def setup_devices(self):
         self.pmtWidgets = [self.ui.PMTSlider0, self.ui.PMTLabel0, self.ui.PMTZero0, self.ui.PMTPreset0,
                            self.ui.PMTSlider1, self.ui.PMTLabel1, self.ui.PMTZero1, self.ui.PMTPreset1,
                            self.ui.PMTSlider2, self.ui.PMTLabel2, self.ui.PMTZero2, self.ui.PMTPreset2,
@@ -164,6 +169,9 @@ class Microscope(MicroscoperComponents.Microscope):
             self.shutterWidgets = [self.ui.pumpShutterButton, self.ui.stokesShutterButton]
             self.shutter = MicroscoperComponents.Shutters(widgets=self.shutterWidgets)
 
+    def setup_delay_stage(self):
+        self.delay_stage = TTL_Delay_Stage()
+
     def init_stage(self):
         self.devices = {}
         for key, value in self.deviceList.items():
@@ -172,12 +180,13 @@ class Microscope(MicroscoperComponents.Microscope):
                                                                          varName="devices['%s']" % key,
                                                                          timeout=1,
                                                                          verbose=False)
+        self.setup_delay_stage()
         self.init_calibration()
 
     def init_calibration(self):
         if "delaystage" in self.devices:
             self.devices["delaystage"].getPos()
-            self.displayCalibration()
+            self.display_calibration()
 
     def update_ui(self):
         self.ui.zoomWidget.setValue(int(self.settings["zoom"]))
@@ -198,6 +207,7 @@ class Microscope(MicroscoperComponents.Microscope):
         self.settings["directory"] = self.ui.directoryText.text()
         self.settings["frames to average"] = str(int(self.ui.scansToAverage.value()))
         self.settings["calibration file"] = self.ui.calibrationFilenameText.text()
+        self.settings["delay_stage_steps"] = str(self.ui.doubleSpinBoxSteps.value())
 
     def save_config(self):
         self.update_ui_variables()
@@ -230,7 +240,7 @@ class Microscope(MicroscoperComponents.Microscope):
         self.ui.browseButton.clicked.connect(
             lambda: self.ui.directoryText.setText(QtWidgets.QFileDialog.getExistingDirectory()))
 
-        self.ui.browseCalibrationButton.clicked.connect(self.getCalibrationFile)
+        self.ui.browseCalibrationButton.clicked.connect(self.get_calibration_file)
 
         self.ui.upButton.clicked.connect(lambda: self.changeRasterOffset("Up", self.ui.galvoOffsetRadio.isChecked()))
         self.ui.upButton.clicked.connect(self.acquire_soft_restart)
@@ -263,15 +273,16 @@ class Microscope(MicroscoperComponents.Microscope):
         self.ui.zoomWidget.valueChanged.connect(self.save_config)
         self.ui.fillFractionWidget.valueChanged.connect(self.save_config)
         self.ui.dwellTime.valueChanged.connect(self.save_config)
+        self.ui.doubleSpinBoxSteps.valueChanged.connect(self.save_config)
 
     def initGetScanAttributes(self):
         index = self.ui.scanTypeWidget.currentIndex()
-        self.scanName = self.ui.scanTypeWidget.currentText()
-        self.scanStage = self.scanList.loc[index]['Stage']
+        self.scan_name = self.ui.scanTypeWidget.currentText()
+        self.scan_stage = self.scanList.loc[index]['Stage']
         self.scan_move_type = self.scanList.loc[index]['Move Type']
-        self.scanDetector = self.scanList.loc[index]['Detector Type']
-        self.scanFrames = self.scanList.loc[index]['Frames']
-        self.scanUnits = self.scanList.loc[index]['Move Units']
+        self.scan_frames = self.scanList.loc[index]['Frames']
+        self.scan_detector = self.scanList.loc[index]['Detector Type']
+        self.scan_units = self.scanList.loc[index]['Move Units']
 
     def initGetXYScanPosition(self):
         if (self.display is not None) & (hasattr(self.display, "clickPositionRatio")):
@@ -288,10 +299,10 @@ class Microscope(MicroscoperComponents.Microscope):
         return x, y
 
     def acquire_init_stage(self):
+        """Home the stage."""
+        if ("linearstage" in self.scan_stage.lower()):
 
-        if ("linearstage" in self.scanStage.lower()):
-
-            if ("continuous" in self.scan_move_type.lower()):
+            if "continuous" in self.scan_move_type.lower():
 
                 self.devices["delaystage"].initScan("continuous")
 
@@ -299,16 +310,18 @@ class Microscope(MicroscoperComponents.Microscope):
                 while not self.devices["delaystage"].status():
                     time.sleep(0.1)
 
-            elif ("discrete" in self.scan_move_type.lower()):
+            elif "discrete" in self.scan_move_type.lower():
 
-                self.devices["delaystage"].initScan("discrete")
+                pass
 
-                # wait while stage is moving
-                while not self.devices["delaystage"].status():
-                    time.sleep(0.1)
+                # self.devices["delaystage"].initScan("discrete")
+                #
+                # # wait while stage is moving
+                # while not self.devices["delaystage"].status():
+                #     time.sleep(0.1)
 
     def acquire_init_spectrometer(self):
-        if self.scanDetector == "Spectrometer":
+        if self.scan_detector == "Spectrometer":
             self.devices["spectrometer"].spectrometerInit()
 
     def init_analog_output(self):
@@ -322,18 +335,21 @@ class Microscope(MicroscoperComponents.Microscope):
                                                       trigger=f"/{device}/ai/StartTrigger")
         self.generateAOScanPattern()
 
-    def init_analog_input(self, imageMaximums=None, imageMinimums=None):
-        waitForLastFrame = False
-        singleFrameScan = False
-        if self.scanDetector == "PMT":
-            if self.scan_move_type in ['Continuous', 'Discrete']: waitForLastFrame = True
-            if self.scanFrames in ['Discrete', 'Grab']: singleFrameScan = True
-            if imageMaximums is None:
-                imageMaximums = [float(self.settings["image maximums %i" % i]) for i in
-                                 range(0, MicroscoperComponents.getNumberOfChannels(self.settings["input channels"]))]
-            if imageMinimums is None:
-                imageMinimums = [float(self.settings["image minimums %i" % i]) for i in
-                                 range(0, MicroscoperComponents.getNumberOfChannels(self.settings["input channels"]))]
+    def init_analog_input(self, image_maxima=None, image_minima=None):
+        wait_for_last_frame = False
+        single_frame_scan = False
+        if self.scan_detector == "PMT":
+            if self.scan_move_type == 'Continuous':
+                # somehow grab discrete does not need to wait for the last frame
+                wait_for_last_frame = True
+            if self.scan_frames == "Discrete":
+                single_frame_scan = True
+            if image_maxima is None:
+                image_maxima = [float(self.settings["image maximums %i" % i]) for i in
+                                range(0, MicroscoperComponents.getNumberOfChannels(self.settings["input channels"]))]
+            if image_minima is None:
+                image_minima = [float(self.settings["image minimums %i" % i]) for i in
+                                range(0, MicroscoperComponents.getNumberOfChannels(self.settings["input channels"]))]
             self.ai.init(channel=self.settings["input channels"],
                          resolution=int(self.settings["resolution"]),
                          line_dwell_time=float(self.settings["dwell time"]),
@@ -343,17 +359,17 @@ class Microscope(MicroscoperComponents.Microscope):
                          save=self.ui.saveCheckBox.isChecked(),
                          saveFilename=self.saveFilename,
                          saveFileIndex=self.saveFileIndex,
-                         xAxis=self.xAxis,
+                         xAxis=self.x_axis,
                          metadata=self.metadata,
-                         waitForLastFrame=waitForLastFrame,
-                         singleFrameScan=singleFrameScan,
+                         waitForLastFrame=wait_for_last_frame,
+                         singleFrameScan=single_frame_scan,
                          framesToAverage=int(self.settings["frames to average"]),
-                         dataMaximums=imageMaximums,
-                         dataMinimums=imageMinimums,
+                         dataMaximums=image_maxima,
+                         dataMinimums=image_minima,
                          )
 
     def init_display(self):
-        if self.scanDetector == "PMT":
+        if self.scan_detector == "PMT":
             if self.display is not None:
                 try:
                     self.display.signal.close.disconnect()
@@ -432,16 +448,16 @@ class Microscope(MicroscoperComponents.Microscope):
 
     def initSetupHorizontalAxis(self):
         if self.scan_move_type == 'Continuous':
-            self.xAxis = [self.devices["delaystage"].getPos]
-            if self.displayingCalibration:
-                self.xAxis.append(self.toWavenumber)
+            self.x_axis = [self.devices["delaystage"].getPos]
+            if self.is_displaying_calibration:
+                self.x_axis.append(self.stage_to_wavenumber)
         elif self.scan_move_type in ["Discrete", "Grab"]:
-            if self.scanStage == "LinearStage":
-                self.xAxis = [self.devices["delaystage"].getPos]
-                if self.displayingCalibration:
-                    self.xAxis.append(self.toWavenumber)
+            if self.scan_stage == "LinearStage":
+                self.x_axis = [self.devices["delaystage"].getPos]
+                if self.is_displaying_calibration:
+                    self.x_axis.append(self.stage_to_wavenumber)
         else:
-            self.xAxis = 'Default'
+            self.x_axis = 'Default'
 
     def changeDOffsetLabel(self):
         if self.ui.microcopeOffsetRadio.isChecked():
@@ -478,7 +494,7 @@ class Microscope(MicroscoperComponents.Microscope):
         #         self.imageLevels = None
 
     def generateAOScanPattern(self):
-        if 'point' in self.scanName.lower():
+        if 'point' in self.scan_name.lower():
             data_x = np.tile(float(self.settings["scan x offset"]), self.ao.x_pixels_total * self.ao.y_pixels)
             data_y = np.tile(float(self.settings["scan y offset"]), self.ao.x_pixels_total * self.ao.y_pixels)
             data = np.array([data_x, data_y])
@@ -568,10 +584,10 @@ class Microscope(MicroscoperComponents.Microscope):
         # print(self.connection.connectionIsWaitingForResponse)
         # self.devices["spectrometer"].spectrometerScan()
         # self.devices["delaystage"].status()
-        self.acquireInit()
-        self.acquire_start()
+        self.initialize_acquire_settings()
+        self.start_acquire()
 
-    def acquireInit(self):
+    def initialize_acquire_settings(self):
 
         self.signal.scanInitSignal.emit()
         self.acquiring = True
@@ -588,7 +604,10 @@ class Microscope(MicroscoperComponents.Microscope):
         self.initSavefile()
 
         self.detectors.setPMTs()
+
+        # wait for PMTs to stabilize
         time.sleep(1)
+
         # self.shutter.microscope_shutter_open()
 
         ## Determine x axis display plot  -------------------------------------
@@ -603,21 +622,38 @@ class Microscope(MicroscoperComponents.Microscope):
         self.init_display()
         #############################################################
 
-    def acquire_start(self):
+    def start_acquire(self):
+        # emit scan start signal
         self.signal.scanStartSignal.emit()
+
+        # start the galvos
         self.ao.start()
-        if self.scanDetector == "PMT":
+
+        # start PMT acquisition
+        # if the detector is PMT
+        if self.scan_detector == "PMT":
+
             self.ai.start()
             self.display.start()
-        elif self.scanDetector == "Spectrometer":
+
+        # acquire spectrum
+        # if the detector is the spectrometer
+        elif self.scan_detector == "Spectrometer":
+
             self.devices["spectrometer"].spectrometerScan()
+
             if self.ui.saveCheckBox.isChecked():
-                if self.settings["directory"] is not '':
+
+                if self.settings["directory"] != '':
                     fileName = os.path.join(self.settings["directory"], self.settings["filename"])
-                    xAxis = self.xAxis
+                    xAxis = self.x_axis
+
                 self.devices["spectrometer"].spectrometerSave(fileName, xAxis)
-        self.detectScanStatusThread = Thread(target=self.detectScanStatus)
-        self.detectScanStatusThread.start()
+
+        # run the scan thread
+        self._scan_thread = Thread(target=self.scan_thread)
+
+        self._scan_thread.start()
 
     def acquire_soft_start(self):
         self.signal.scanStartSignal.emit()
@@ -625,9 +661,9 @@ class Microscope(MicroscoperComponents.Microscope):
         time.sleep(0.1)
         self.init_analog_output()
 
-        if self.scanDetector == "PMT":
-            self.init_analog_input(imageMaximums=self.ai.dataMaximums,
-                                   imageMinimums=self.ai.dataMinimums)
+        if self.scan_detector == "PMT":
+            self.init_analog_input(image_maxima=self.ai.dataMaximums,
+                                   image_minima=self.ai.dataMinimums)
             self.display.set(imageInput=self.ai.imageData,
                              intensityPlot=self.ai.intensities,
                              intensityIndex=self.ai.intensitiesIndex,
@@ -637,28 +673,32 @@ class Microscope(MicroscoperComponents.Microscope):
                              )
         self.ao.start()
 
-        if self.scanDetector == "PMT":
-            self.ai.start()
-        elif self.scanDetector == "Spectrometer":
+        if self.scan_detector == "Spectrometer":
             self.devices["spectrometer"].spectrometerScan()
             if self.ui.saveCheckBox.isChecked():
-                if self.settings["directory"] is not '':
+                if self.settings["directory"] != '':
                     fileName = os.path.join(self.settings["directory"], self.settings["filename"])
-                    xAxis = self.xAxis
+                    xAxis = self.x_axis
                 self.devices["spectrometer"].spectrometerSave(fileName, xAxis)
+        else:  # PMT
+            self.ai.start()
 
     def acquire_soft_stop(self):
+        """
+        Stops the galvos, clears analog input memory after screen grab,
+         and emit scan done signal.
+         """
         self.ao.clear()
         while self.ai.reading:
             time.sleep(0.1)
-        if self.scanDetector == "PMT":
+        if self.scan_detector == "PMT":
             self.ai.clear()
         # self.shutter.Microscope_shutter_close()
         self.signal.scanSoftDoneSignal.emit()
 
     def acquire_soft_restart(self):
         if self.acquiring:
-            if self.scanDetector == "PMT":
+            if self.scan_detector == "PMT":
                 self.ao.clear()
                 self.ai.clear()
             self.acquire_soft_start()
@@ -687,33 +727,59 @@ class Microscope(MicroscoperComponents.Microscope):
     def set_connection_is_busy(self):
         self.connection.connectionIsBusy = True
 
-    def detectScanStatus(self):
+    def scan_thread(self):
+        """ Controls the scan thread."""
+
+        # set scan flag to false
         self.scan_thread_interrupt = False
 
-        def stageContinuousUntilEnds():
-            if self.scanStage == "LinearStage":
+        def move_stage_continuously_until_scan_ends():
+            if self.scan_stage == "LinearStage":
                 self.devices["delaystage"].startScan()
                 while not self.devices["delaystage"].status():
                     time.sleep(0.1)
-            elif self.scanStage == "zStage":
+            elif self.scan_stage == "zStage":
                 self.devices["focusController"].startScan()
                 while not self.devices["focusController"].status():
                     time.sleep(0.1)
             self.acquire_stop()
             self.acquire_init_stage()
 
-        def stageDiscreteUntilEnds():
-            self.devices["delaystage"].sendQuery("ui.endPositionSpinbox.value()", "endPos")
-            while (self.devices["delaystage"].getPos() < self.devices["delaystage"].endPos) and (
-            not self.scan_thread_interrupt):
+        def wait_until_not_reading():
+            while True:
+                time.sleep(0.1)
                 if not self.ai.reading:
                     self.acquire_soft_stop()
-                    self.devices["delaystage"].sendCommand("moveRel()")
-                    while not self.devices["delaystage"].status():
-                        time.sleep(0.1)
-                    time.sleep(1)
-                    self.acquire_soft_start()
-                time.sleep(0.1)
+                    break
+
+        def wait_for_first_frame_to_finish():
+            wait_until_not_reading()
+            self.acquire_stop()
+            self.set_connection_not_busy()
+
+        def grab_one_frame():
+            self.acquire_soft_start()
+            wait_until_not_reading()
+
+        # todo test scan_and_move_stage_in_discrete_steps
+        def scan_and_move_stage_in_discrete_steps(number_of_steps=200):
+
+            # grab first frame
+            wait_until_not_reading()
+
+            # grab subsequent frames
+            for i in range(number_of_steps):
+                # initiate move
+                self.delay_stage.toggle_move()
+
+                # waif for stage to stabilize
+                time.sleep(1)
+
+                grab_one_frame()
+
+                if self.scan_thread_interrupt:
+                    break
+
             self.acquire_stop()
             self.acquire_init_stage()
             self.set_connection_not_busy()
@@ -734,26 +800,26 @@ class Microscope(MicroscoperComponents.Microscope):
                 self.acquire_stop()
                 self.set_connection_not_busy()
 
-        def grab():
-            while True:
-                time.sleep(0.1)
-                if not self.ai.reading:
-                    self.acquire_stop()
-                    self.set_connection_not_busy()
-                    break
-
         def stageDefault():
             self.connection.connectionIsBusy = False
 
-        if self.scan_move_type == "None": stageDefault()
-        if self.scan_move_type == "Continuous": stageContinuousUntilEnds()
+        if self.scan_move_type == "None":
+            if self.scan_frames == "Discrete":
+                wait_for_first_frame_to_finish()
+            else:
+                stageDefault()
+        if self.scan_move_type == "Continuous":
+            move_stage_continuously_until_scan_ends()
         if self.scan_move_type == "Discrete":
             # self.stageStartPosition = self.ui.LStageStart.value()
             # self.stageMoveIndex = 1
-            if self.scanStage == "LinearStage": stageDiscreteUntilEnds()
-            if self.scanStage == "zStage": zDiscreteUntilEnds()
-        if self.scan_move_type == "Grab":
-            grab()
+            if self.scan_stage == "LinearStage":
+                try:
+                    scan_and_move_stage_in_discrete_steps(int(float(self.settings["delay_stage_steps"])))
+                except Exception as e:
+                    print(e)
+            if self.scan_stage == "zStage":
+                zDiscreteUntilEnds()
 
     def close(self, event):
         if self.mainWindow.isEnabled():

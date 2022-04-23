@@ -4,9 +4,9 @@ def detectScanStatus(currentPosition, endPosition, scanInterrupt=False):
     scanInterrupt = False
 
     def stageContinuousUntilEnds():
-        if self.scanStage == "LinearStage":
+        if self.scan_stage == "LinearStage":
             self.LinearStage.SetStartScan()
-        elif self.scanStage == "zStage":
+        elif self.scan_stage == "zStage":
             self.zStage.SetStartScan()
         while ((abs(self.LinearStage.currentPosition - self.LinearStage.endScanPosition) > 1e-4) and (
         not scanInterrupt)) \
@@ -63,7 +63,7 @@ def detectScanStatus(currentPosition, endPosition, scanInterrupt=False):
     if self.scan_move_type == "Discrete":
         self.stageStartPosition = self.ui.LStageStart.value()
         self.stageMoveIndex = 1
-        if self.scanStage == "LinearStage": stageDiscreteUntilEnds()
-        if self.scanStage == "zStage": zDiscreteUntilEnds()
+        if self.scan_stage == "LinearStage": stageDiscreteUntilEnds()
+        if self.scan_stage == "zStage": zDiscreteUntilEnds()
     if self.scan_move_type == "Grab":
         grab()

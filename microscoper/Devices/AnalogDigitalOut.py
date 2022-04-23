@@ -1,9 +1,10 @@
 import ctypes
 import os, sys
 import numpy as np
-try :
+
+try:
     import PyDAQmx as pdmx
-except :
+except:
     print("PyDAQmx import failed. Simulating PyDAQmx.")
     import Devices.FakePyDAQmx as pdmx
 import time
@@ -26,10 +27,10 @@ class Analog_output(object):
     samples_written = ctypes.c_int32()
     writing = False
 
-    def __init__(self, channels="Dev1/ao0:1", resolution=50,line_dwell_time=2,fill_fraction=0.5,hwbuffer=8192,
-                 verbose=False,trigger="/Dev1/ai/StartTrigger"):
+    def __init__(self, channels="Dev1/ao0:1", resolution=50, line_dwell_time=2, fill_fraction=0.5, hwbuffer=8192,
+                 verbose=False, trigger="/Dev1/ai/StartTrigger"):
         self.channels = channels
-        self.x_pixels,self.y_pixels = resolution, resolution
+        self.x_pixels, self.y_pixels = resolution, resolution
         self.msline = line_dwell_time
         self.fill_fraction = fill_fraction
         self.trigger = trigger
@@ -40,7 +41,6 @@ class Analog_output(object):
         self.get_number_of_channels()
         if self.verbose: print("Initializing analog output channel/s : %s" % self.channels)
         self.__calculate_sync()
-
 
         self.analog_output = pdmx.Task()
 
@@ -61,7 +61,7 @@ class Analog_output(object):
         if self.verbose: print("%s initialized." % self.channels)
 
     def __calculate_sync(self):
-        parameters = sync_parameters(resolution=(self.x_pixels,self.y_pixels),
+        parameters = sync_parameters(resolution=(self.x_pixels, self.y_pixels),
                                      line_dwell_time=self.msline,
                                      fill_fraction=self.fill_fraction,
                                      max_timebase_frequency=self.max_timebase_frequency,
@@ -87,15 +87,15 @@ class Analog_output(object):
             self.number_of_channels = 1
         else:
             lower = int(self.channels[i:j])
-            upper = int(self.channels[j+1])
-            self.number_of_channels = upper-lower+1
+            upper = int(self.channels[j + 1])
+            self.number_of_channels = upper - lower + 1
         return self.number_of_channels
 
-    def set_data(self,data):
+    def set_data(self, data):
         self.data = np.array(data)
 
     def start(self):
-        if self.data is None :
+        if self.data is None:
             print("No numpy array in the form of np.array([data_x,data_y]) given.\n"
                   " Data can be set using ao.set_data(np.array([data_x,data_y])). \n"
                   " Creating default sawtooth waveform instead.")
@@ -153,19 +153,20 @@ class Analog_output(object):
         print('Y xcanning from %.2f to %.2f' % (np.min(data_y), np.max(data_y)))
         return np.array([data_x, data_y])
 
+
 class Digital_output(object):
-    def __init__(self,channel = "Dev1/port0/line7"):
+    def __init__(self, channel="Dev1/port0/line7"):
         self.channel = channel
         self.digital_output = pdmx.Task()
-        try :
+        try:
             self.digital_output.CreateDOChan(channel, "", pdmx.DAQmx_Val_ChanForAllLines)
             self.digital_output.StartTask()
             self.deviceLoaded = True
-        except :
+        except:
             print("NI digital output cannot be created")
             self.deviceLoaded = False
 
-    def write(self,data=np.array([255],dtype=np.uint8),samples_per_channel=1,timeout=10,auto_start=1):
+    def write(self, data=np.array([255], dtype=np.uint8), samples_per_channel=1, timeout=10, auto_start=1):
         if self.deviceLoaded:
             self.digital_output.WriteDigitalU8(samples_per_channel,
                                                auto_start,
@@ -174,7 +175,13 @@ class Digital_output(object):
                                                data,
                                                None,
                                                None)
+
+    def high(self):
+        self.write(np.array([255], dtype=np.uint8))
+
+    def low(self):
+        self.write(np.array([0], dtype=np.uint8))
+
     def close(self):
         if self.deviceLoaded:
             self.digital_output.StopTask()
-

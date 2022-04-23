@@ -1,80 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="15c4e7d9-b31c-4432-aa3a-0bb75332dca6" name="Default" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/dbnavigator.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/serialmonitor_settings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/microscoper/MMath/Math.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/microscoper/MMath/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/microscoper/MNetwork/Connections.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/microscoper/MNetwork/Response.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/microscoper/calibration/Gui/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/microscoper/calibration/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/microscoper/focusController/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/microscoper/focusController/ui/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/microscoper/server/ServerScripts/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/microscoper/server/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/microscoper/stellarNet/Gui/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/microscoper/stellarNet/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/microscoper/thorlabsStage/Dependencies/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/microscoper/thorlabsStage/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/microscoper/thorlabsStage/ui/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/microscoper/zaber/Gui/__init__.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/microscoper/zaber/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/microscoperPython.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/microscoperPython.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+    <list default="true" id="2d8aa3cf-15e6-49de-a68e-d6985ca0e130" name="thorlabs stage" comment="refactorings">
+      <change afterPath="$PROJECT_DIR$/microscoper/Devices/TTL_delay_stage/__init__.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/microscoper/Devices/TTL_delay_stage/ttl_delay_stage.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/microscoper/tests/ttl_delay_stage_test.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/calibration/Gui/SSCalibExtract.py" beforeDir="false" afterPath="$PROJECT_DIR$/microscoper/calibration/Gui/SSCalibExtract.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/calibration/Gui/SSCalibExtract.ui" beforeDir="false" afterPath="$PROJECT_DIR$/microscoper/calibration/Gui/SSCalibExtract.ui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/calibration/Gui/StageCalibration.py" beforeDir="false" afterPath="$PROJECT_DIR$/microscoper/calibration/Gui/StageCalibration.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/calibration/Gui/StageCalibration.ui" beforeDir="false" afterPath="$PROJECT_DIR$/microscoper/calibration/Gui/StageCalibration.ui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/calibration/SpectralSurfingGenerator.py" beforeDir="false" afterPath="$PROJECT_DIR$/microscoper/calibration/SpectralSurfingGenerator.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/calibration/StageCalibrationGenerator.py" beforeDir="false" afterPath="$PROJECT_DIR$/microscoper/calibration/StageCalibrationGenerator.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/focusController/focusController.py" beforeDir="false" afterPath="$PROJECT_DIR$/microscoper/focusController/focusController.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/focusController/prior.ini" beforeDir="false" afterPath="$PROJECT_DIR$/microscoper/focusController/prior.ini" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/focusController/ui/focusController.py" beforeDir="false" afterPath="$PROJECT_DIR$/microscoper/focusController/ui/focusController.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/focusController/ui/focusController.ui" beforeDir="false" afterPath="$PROJECT_DIR$/microscoper/focusController/ui/focusController.ui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/microscoper/Devices/AnalogDigitalOut.py" beforeDir="false" afterPath="$PROJECT_DIR$/microscoper/Devices/AnalogDigitalOut.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/microscoper/Devices/AnalogIn.py" beforeDir="false" afterPath="$PROJECT_DIR$/microscoper/Devices/AnalogIn.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/microscoper/Extensions/SpectrometerExtension.py" beforeDir="false" afterPath="$PROJECT_DIR$/microscoper/Extensions/SpectrometerExtension.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/microscoper/MicroscoperComponents.py" beforeDir="false" afterPath="$PROJECT_DIR$/microscoper/MicroscoperComponents.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/Server.ini" beforeDir="false" afterPath="$PROJECT_DIR$/microscoper/server/Server.ini" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/Server.py" beforeDir="false" afterPath="$PROJECT_DIR$/microscoper/server/Server.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/ServerScripts/Script.py" beforeDir="false" afterPath="$PROJECT_DIR$/microscoper/server/ServerScripts/Script.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/ServerScripts/ZaberStageSync.py" beforeDir="false" afterPath="$PROJECT_DIR$/microscoper/server/ServerScripts/ZaberStageSync.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/ServerScripts/ZaberStellarNetScan500mdeg.py" beforeDir="false" afterPath="$PROJECT_DIR$/microscoper/server/ServerScripts/ZaberStellarNetScan500mdeg.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/ServerScripts/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/microscoper/MNetwork/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/ServerScripts/pcars.py" beforeDir="false" afterPath="$PROJECT_DIR$/microscoper/server/ServerScripts/pcars.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/ServerScripts/stage_spectrometer_discreet.py" beforeDir="false" afterPath="$PROJECT_DIR$/microscoper/server/ServerScripts/stage_spectrometer_discreet.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/ui/server.ico" beforeDir="false" afterPath="$PROJECT_DIR$/microscoper/server/ui/server.ico" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/ui/server.png" beforeDir="false" afterPath="$PROJECT_DIR$/microscoper/server/ui/server.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/ui/server.py" beforeDir="false" afterPath="$PROJECT_DIR$/microscoper/server/ui/server.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/server/ui/server.ui" beforeDir="false" afterPath="$PROJECT_DIR$/microscoper/server/ui/server.ui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/stellarNet/Gui/Spectrometer_gui.py" beforeDir="false" afterPath="$PROJECT_DIR$/microscoper/stellarNet/Gui/Spectrometer_gui.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/stellarNet/Gui/spectrometer.ico" beforeDir="false" afterPath="$PROJECT_DIR$/microscoper/stellarNet/Gui/spectrometer.ico" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/stellarNet/Gui/spectrometer_gui.ui" beforeDir="false" afterPath="$PROJECT_DIR$/microscoper/stellarNet/Gui/spectrometer_gui.ui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/stellarNet/Spectrometer.ini" beforeDir="false" afterPath="$PROJECT_DIR$/microscoper/stellarNet/Spectrometer.ini" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/stellarNet/SpectrometerExtension.py" beforeDir="false" afterPath="$PROJECT_DIR$/microscoper/stellarNet/SpectrometerExtension.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/stellarNet/StellarN.py" beforeDir="false" afterPath="$PROJECT_DIR$/microscoper/stellarNet/StellarN.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/thorlabsStage/Dependencies/Device.py" beforeDir="false" afterPath="$PROJECT_DIR$/microscoper/thorlabsStage/Dependencies/Device.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/thorlabsStage/Dependencies/PyAPT.py" beforeDir="false" afterPath="$PROJECT_DIR$/microscoper/thorlabsStage/Dependencies/PyAPT.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/thorlabsStage/Dependencies/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/microscoper/__init__.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/thorlabsStage/Dependencies/dlls/APT32.dll" beforeDir="false" afterPath="$PROJECT_DIR$/microscoper/thorlabsStage/Dependencies/dlls/APT32.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/thorlabsStage/Dependencies/dlls/APT64.dll" beforeDir="false" afterPath="$PROJECT_DIR$/microscoper/thorlabsStage/Dependencies/dlls/APT64.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/thorlabsStage/ThorlabsStage.ini" beforeDir="false" afterPath="$PROJECT_DIR$/microscoper/thorlabsStage/ThorlabsStage.ini" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/thorlabsStage/ThorlabsStage.py" beforeDir="false" afterPath="$PROJECT_DIR$/microscoper/thorlabsStage/ThorlabsStage.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/thorlabsStage/ui/ThorlabsStage.ico" beforeDir="false" afterPath="$PROJECT_DIR$/microscoper/thorlabsStage/ui/ThorlabsStage.ico" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/thorlabsStage/ui/ThorlabsStage.png" beforeDir="false" afterPath="$PROJECT_DIR$/microscoper/thorlabsStage/ui/ThorlabsStage.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/thorlabsStage/ui/ThorlabsStage.pxm" beforeDir="false" afterPath="$PROJECT_DIR$/microscoper/thorlabsStage/ui/ThorlabsStage.pxm" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/thorlabsStage/ui/ThorlabsStage.py" beforeDir="false" afterPath="$PROJECT_DIR$/microscoper/thorlabsStage/ui/ThorlabsStage.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/thorlabsStage/ui/ThorlabsStage.ui" beforeDir="false" afterPath="$PROJECT_DIR$/microscoper/thorlabsStage/ui/ThorlabsStage.ui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/thorlabsStage/ui/ThorlabsStage_old.ui" beforeDir="false" afterPath="$PROJECT_DIR$/microscoper/thorlabsStage/ui/ThorlabsStage_old.ui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/zaber/Gui/ZaberStage_gui.py" beforeDir="false" afterPath="$PROJECT_DIR$/microscoper/zaber/Gui/ZaberStage_gui.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/zaber/Gui/ZaberStage_gui.ui" beforeDir="false" afterPath="$PROJECT_DIR$/microscoper/zaber/Gui/ZaberStage_gui.ui" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/zaber/Gui/zaber.ico" beforeDir="false" afterPath="$PROJECT_DIR$/microscoper/zaber/Gui/zaber.ico" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/zaber/ZStepperSettings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/microscoper/zaber/ZStepperSettings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/zaber/Zaber.ini" beforeDir="false" afterPath="$PROJECT_DIR$/microscoper/zaber/Zaber.ini" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/zaber/Zaber.py" beforeDir="false" afterPath="$PROJECT_DIR$/microscoper/zaber/Zaber.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/microscoper/Microscoper_app.ini" beforeDir="false" afterPath="$PROJECT_DIR$/microscoper/Microscoper_app.ini" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/microscoper/Microscoper_app.py" beforeDir="false" afterPath="$PROJECT_DIR$/microscoper/Microscoper_app.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/microscoper/Microscoper_app_scanList.csv" beforeDir="false" afterPath="$PROJECT_DIR$/microscoper/Microscoper_app_scanList.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/microscoper/ScanSettings/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/microscoper/ScanSettings/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/microscoper/stellarNet/SpectrometerExtension.py" beforeDir="false" afterPath="$PROJECT_DIR$/microscoper/stellarNet/SpectrometerExtension.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/microscoper/ui/Microscoper.ui" beforeDir="false" afterPath="$PROJECT_DIR$/microscoper/ui/Microscoper.ui" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/microscoper/ui/microscoper.py" beforeDir="false" afterPath="$PROJECT_DIR$/microscoper/ui/microscoper.py" afterDir="false" />
+    </list>
+    <list id="15c4e7d9-b31c-4432-aa3a-0bb75332dca6" name="Default" comment="fix config loading">
+      <change beforePath="$PROJECT_DIR$/.idea/microscoperPython.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/microscoperPython.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/microscoper/Microscoper_app.ini" beforeDir="false" afterPath="$PROJECT_DIR$/microscoper/Microscoper_app.ini" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -85,6 +31,7 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Python Script" />
+        <option value="Python Unit Test" />
       </list>
     </option>
   </component>
@@ -141,6 +88,14 @@
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
+  </component>
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
@@ -160,7 +115,7 @@
         <option value="$PROJECT_DIR$/Network/Reponse.py" />
         <option value="$PROJECT_DIR$/Devices/Sync.py" />
         <option value="$PROJECT_DIR$/SSCalibExtract.py" />
-        <option value="C:/Python36-32/Lib/multiprocessing/connection.py" />
+        <option value="$PROJECT_DIR$/../../../../../Python36-32/Lib/multiprocessing/connection.py" />
         <option value="$PROJECT_DIR$/zaber.bat" />
         <option value="$PROJECT_DIR$/Microscoper_app_scanList.txt" />
         <option value="$PROJECT_DIR$/Devices/AnalogDigitalOut.py" />
@@ -197,6 +152,21 @@
         <option value="$PROJECT_DIR$/AdditionalPackages/PyMCC/PyMCC/__init__.py" />
       </list>
     </option>
+  </component>
+  <component name="LineStatusTrackerManager">
+    <file path="$PROJECT_DIR$/microscoper/Microscoper_app.ini">
+      <ranges>
+        <range start1="1" end1="3" start2="1" end2="3" changelist="2d8aa3cf-15e6-49de-a68e-d6985ca0e130" />
+        <range start1="7" end1="8" start2="7" end2="8" changelist="2d8aa3cf-15e6-49de-a68e-d6985ca0e130" />
+        <range start1="9" end1="10" start2="9" end2="10" changelist="2d8aa3cf-15e6-49de-a68e-d6985ca0e130" />
+        <range start1="33" end1="33" start2="33" end2="35" changelist="2d8aa3cf-15e6-49de-a68e-d6985ca0e130" />
+        <range start1="34" end1="36" start2="36" end2="38" changelist="15c4e7d9-b31c-4432-aa3a-0bb75332dca6" />
+        <range start1="37" end1="39" start2="39" end2="41" changelist="15c4e7d9-b31c-4432-aa3a-0bb75332dca6" />
+      </ranges>
+    </file>
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
   </component>
   <component name="ProjectFrameBounds" fullScreen="true">
     <option name="width" value="1920" />
@@ -284,13 +254,17 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="true" />
     <property name="com.intellij.ide.scratch.LRUPopupBuilder$2/Languages" value="Python" />
+    <property name="database.data.extractors.current.export.id" value="Comma-separated (CSV)_id" />
+    <property name="database.data.extractors.current.id" value="Comma-separated (CSV)_id" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/microscoper/MMath" />
     <property name="node.js.detected.package.eslint" value="true" />
     <property name="node.js.selected.package.eslint" value="(autodetect)" />
-    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
+    <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PythonContentEntriesConfigurable" />
   </component>
   <component name="PyConsoleOptionsProvider">
     <option name="myPythonConsoleState">
@@ -315,7 +289,7 @@
       <recent name="$PROJECT_DIR$" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Python.Microscoper_app">
     <configuration name="Microscoper_app" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="microscoperPython" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -330,6 +304,28 @@
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/microscoper/Microscoper_app.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="ThorlabsStage" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="microscoperPython" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/microscoper/thorlabsStage" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/microscoper/thorlabsStage/ThorlabsStage.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -360,6 +356,21 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="Python tests for ttl_delay_stage_test.MyTestCase.test_move" type="tests" factoryName="Autodetect" temporary="true" nameIsGenerated="true">
+      <module name="microscoperPython" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/microscoper/tests" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="_new_additionalArguments" value="&quot;&quot;" />
+      <option name="_new_target" value="&quot;ttl_delay_stage_test.MyTestCase.test_move&quot;" />
+      <option name="_new_targetType" value="&quot;PYTHON&quot;" />
+      <method v="2" />
+    </configuration>
     <configuration default="true" type="tests" factoryName="Unittests">
       <module name="microscoperPython" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -378,6 +389,8 @@
     <recent_temporary>
       <list>
         <item itemvalue="Python.Microscoper_app" />
+        <item itemvalue="Python tests.Python tests for ttl_delay_stage_test.MyTestCase.test_move" />
+        <item itemvalue="Python.ThorlabsStage" />
       </list>
     </recent_temporary>
   </component>
@@ -391,12 +404,48 @@
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="15c4e7d9-b31c-4432-aa3a-0bb75332dca6" name="Default" comment="" />
+      <changelist id="2d8aa3cf-15e6-49de-a68e-d6985ca0e130" name="thorlabs stage" comment="" />
       <created>1496807431121</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1496807431121</updated>
       <workItem from="1644074030846" duration="2840000" />
+      <workItem from="1646494627330" duration="1433000" />
+      <workItem from="1646496623090" duration="3087000" />
+      <workItem from="1648936532448" duration="2110000" />
+      <workItem from="1648940399814" duration="1682000" />
+      <workItem from="1649972626193" duration="4458000" />
+      <workItem from="1650678589140" duration="6887000" />
     </task>
+    <task id="LOCAL-00001" summary="bug fixes">
+      <created>1646497326901</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1646497326901</updated>
+    </task>
+    <task id="LOCAL-00002" summary="fix config loading">
+      <created>1648939939102</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1648939939102</updated>
+    </task>
+    <task id="LOCAL-00003" summary="updated print exception">
+      <created>1648940981019</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1648940981019</updated>
+    </task>
+    <task id="LOCAL-00004" summary="refactorings">
+      <created>1649973423909</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1649973423909</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TestHistory">
@@ -480,9 +529,17 @@
       <path value="$PROJECT_DIR$/AdditionalPackages/MMath" />
       <path value="$PROJECT_DIR$/AdditionalPackages/MNetwork" />
     </ignored-roots>
+    <MESSAGE value="bug fixes" />
+    <MESSAGE value="fix config loading" />
+    <MESSAGE value="updated print exception" />
+    <MESSAGE value="refactorings" />
+    <option name="LAST_COMMIT_MESSAGE" value="refactorings" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
+      <breakpoints-defaults>
+        <breakpoint type="python-line" />
+      </breakpoints-defaults>
       <default-breakpoints>
         <breakpoint enabled="true" log-message="true" type="python-exception">
           <properties notifyOnTerminate="true" exception="BaseException">
@@ -491,16 +548,31 @@
         </breakpoint>
       </default-breakpoints>
     </breakpoint-manager>
+    <watches-manager>
+      <configuration name="PythonConfigurationType">
+        <watch expression="self.settings[&quot;input channels&quot;]" language="Python" />
+        <watch expression="int(self.settings[&quot;resolution&quot;])" language="Python" />
+        <watch expression="float(self.settings[&quot;dwell time&quot;])," language="Python" />
+        <watch expression="float(self.settings[&quot;fill fraction&quot;])" language="Python" />
+        <watch expression="int(self.settings[&quot;device buffer&quot;])" language="Python" />
+        <watch expression="self.x_axis" language="Python" />
+        <watch expression="waitForLastFrame" language="Python" />
+        <watch expression="single_frame_scan" language="Python" />
+        <watch expression="int(self.settings[&quot;frames to average&quot;])" language="Python" />
+      </configuration>
+    </watches-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/MicroscoperPython$__init____1_.coverage" NAME="__init__ (1) Coverage Results" MODIFIED="1644075183417" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/microscoper/focusController" />
-    <SUITE FILE_PATH="coverage/MicroscoperPython$Microscoper_app.coverage" NAME="Microscoper_app Coverage Results" MODIFIED="1644075542001" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/microscoper" />
-    <SUITE FILE_PATH="coverage/MicroscoperPython$__init__.coverage" NAME="__init__ Coverage Results" MODIFIED="1644075209143" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/microscoper/server" />
+    <SUITE FILE_PATH="coverage/MicroscoperPython$ThorlabsStage.coverage" NAME="ThorlabsStage Coverage Results" MODIFIED="1649972669463" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/microscoper/thorlabsStage" />
+    <SUITE FILE_PATH="coverage/MicroscoperPython$.coverage" NAME=" Coverage Results" MODIFIED="1649976020496" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/microscoper/tests" />
+    <SUITE FILE_PATH="coverage/MicroscoperPython$Microscoper_app.coverage" NAME="Microscoper_app Coverage Results" MODIFIED="1650685383571" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/microscoper" />
     <SUITE FILE_PATH="coverage/MicroscoperPython$Server.coverage" NAME="Server Coverage Results" MODIFIED="1644074055922" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/server" />
+    <SUITE FILE_PATH="coverage/MicroscoperPython$__init__.coverage" NAME="__init__ Coverage Results" MODIFIED="1644075209143" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/microscoper/server" />
+    <SUITE FILE_PATH="coverage/MicroscoperPython$__init____1_.coverage" NAME="__init__ (1) Coverage Results" MODIFIED="1644075183417" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/microscoper/focusController" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://C:/Python36-64/Lib/site-packages/pyqtgraph/graphicsItems/PlotCurveItem.py" />
-    <entry file="file://C:/Python36-32/Lib/site-packages/matplotlib/lines.py" />
+    <entry file="file://$PROJECT_DIR$/../../../../../Python36-64/Lib/site-packages/pyqtgraph/graphicsItems/PlotCurveItem.py" />
+    <entry file="file://$PROJECT_DIR$/../../../../../Python36-32/Lib/site-packages/matplotlib/lines.py" />
     <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/_pydev_imps/_pydev_execfile.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="289">
@@ -518,15 +590,15 @@
     <entry file="file://$PROJECT_DIR$/SpectralSurfingGenerator.py" />
     <entry file="file://$PROJECT_DIR$/StageCalibrationGenerator.py" />
     <entry file="file://$PROJECT_DIR$/Gui/ZaberStage.py" />
-    <entry file="file://C:/Python36-64/Lib/configparser.py" />
+    <entry file="file://$PROJECT_DIR$/../../../../../Python36-64/Lib/configparser.py" />
     <entry file="file://$PROJECT_DIR$/ServerScripts/stage_spectrometer_discreet.py" />
     <entry file="file://$PROJECT_DIR$/Gui/Spectrometer_gui.py" />
     <entry file="file://$PROJECT_DIR$/Gui/Microscoper_gui.py" />
     <entry file="file://$PROJECT_DIR$/Devices/Stage/zstepper.py" />
     <entry file="file://$PROJECT_DIR$/StellarN.py" />
     <entry file="file://$PROJECT_DIR$/Devices/AnalogIn.py" />
-    <entry file="file://C:/Python36-64/Lib/site-packages/PyDAQmx/DAQmxFunctions.py" />
-    <entry file="file://C:/Python36-64/Lib/site-packages/numpy/core/_methods.py" />
+    <entry file="file://$PROJECT_DIR$/../../../../../Python36-64/Lib/site-packages/PyDAQmx/DAQmxFunctions.py" />
+    <entry file="file://$PROJECT_DIR$/../../../../../Python36-64/Lib/site-packages/numpy/core/_methods.py" />
     <entry file="file://$PROJECT_DIR$/microscoper.bat" />
     <entry file="file://$PROJECT_DIR$/ServerScripts/ZaberStellarNetScan500mdeg.py" />
     <entry file="file://$PROJECT_DIR$/ServerScripts/Script.py" />
@@ -537,9 +609,9 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://C:/Python36-64/Lib/multiprocessing/connection.py" />
+    <entry file="file://$PROJECT_DIR$/../../../../../Python36-64/Lib/multiprocessing/connection.py" />
     <entry file="file://$PROJECT_DIR$/Network/Response.py" />
-    <entry file="file://C:/Python36-64/Lib/multiprocessing/reduction.py" />
+    <entry file="file://$PROJECT_DIR$/../../../../../Python36-64/Lib/multiprocessing/reduction.py" />
     <entry file="file://$PROJECT_DIR$/Network/Connections.py" />
     <entry file="file://$PROJECT_DIR$/Server.py" />
     <entry file="file://$PROJECT_DIR$/Microscoper.py" />

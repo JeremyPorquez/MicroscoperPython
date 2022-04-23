@@ -2,11 +2,11 @@ import ctypes
 import time
 import os
 import numpy as np
-import types
+from typing import Callable
 
-try :
+try:
     import PyDAQmx as pdmx
-except :
+except:
     print("PyDAQmx import failed. Simulating PyDAQmx.")
     import Devices.FakePyDAQmx as pdmx
 
@@ -17,51 +17,54 @@ import microscoper.Devices.TiffWriter as tf
 from microscoper.MMath.Math import updateArray, cupdateArray, nupdateArray, nmeanArray
 from microscoper.Devices.Sync import sync_parameters
 
+
 def get_number_of_channels(channel='Dev1/ai0:2'):
-    if 'ai' in channel : chType = 'ai'
-    else : chType = 'ao'
-    try :
+    if 'ai' in channel:
+        chType = 'ai'
+    else:
+        chType = 'ao'
+    try:
         upper = int(channel[channel.find(":") + 1:])
-        lower = int(channel[channel.find(chType)+2:channel.find(":")])
+        lower = int(channel[channel.find(chType) + 2:channel.find(":")])
         number_of_channels = upper - lower + 1
-    except :
+    except:
         number_of_channels = 1
     return number_of_channels
 
 
 class readProcess(multiprocessing.Process):
-    def __init__(self,q=None,connection=None):
+    def __init__(self, q=None, connection=None):
         super().__init__()
         self.q = q
         self.connection = connection
 
     def detectConnection(self):
         self.detectingConnection = True
-        while self.detectingConnection :
-            try : connection = self.connection.recv() #automatically waits for event
-            except EOFError :
+        while self.detectingConnection:
+            try:
+                connection = self.connection.recv()  # automatically waits for event
+            except EOFError:
                 self.detectingConnection = False
                 break
             if type(connection) == type({}):
-                if connection.get('channel') is not None : self.channel = connection.get('channel')
-                if connection.get('voltage_min') is not None : self.voltage_min = connection.get('voltage_min')
-                if connection.get('voltage_max') is not None : self.voltage_max = connection.get('voltage_max')
-                if connection.get('clock_rate') is not None : self.clock_rate = connection.get('clock_rate')
+                if connection.get('channel') is not None: self.channel = connection.get('channel')
+                if connection.get('voltage_min') is not None: self.voltage_min = connection.get('voltage_min')
+                if connection.get('voltage_max') is not None: self.voltage_max = connection.get('voltage_max')
+                if connection.get('clock_rate') is not None: self.clock_rate = connection.get('clock_rate')
                 if connection.get('multiplier') is not None: self.multiplier = connection.get('multiplier')
-                if connection.get('samples_to_read_per_channel') is not None :
+                if connection.get('samples_to_read_per_channel') is not None:
                     self.samples_to_read_per_channel = connection.get('samples_to_read_per_channel')
-                if connection.get('data_line_length') is not None :
+                if connection.get('data_line_length') is not None:
                     self.data_line_length = connection.get('data_line_length')
                     self.data_line = np.zeros(self.data_line_length)
-                if connection.get('number_of_channels') is not None :
+                if connection.get('number_of_channels') is not None:
                     self.number_of_channels = connection.get('number_of_channels')
-                if connection.get('reading') is not None :
+                if connection.get('reading') is not None:
                     self.reading = connection.get('reading')
-                if connection.get('detect connection') is not None :
+                if connection.get('detect connection') is not None:
                     self.detectingConnection = connection.get('detect connection')
 
-
-            if self.reading :
+            if self.reading:
                 self.analog_input = pdmx.Task()
                 self.analog_input.CreateAIVoltageChan(physicalChannel=self.channel,
                                                       nameToAssignToChannel="",
@@ -86,7 +89,7 @@ class readProcess(multiprocessing.Process):
 
     def read(self):
         while self.reading:
-            try :
+            try:
                 self.analog_input.ReadAnalogF64(
                     numSampsPerChan=self.samples_to_read_per_channel,
                     timeout=10,
@@ -95,9 +98,9 @@ class readProcess(multiprocessing.Process):
                     arraySizeInSamps=self.number_of_channels * self.samples_to_read_per_channel,
                     sampsPerChanRead=None,
                     reserved=None)
-                self.q.put_nowait(self.data_line*self.multiplier)
+                self.q.put_nowait(self.data_line * self.multiplier)
                 if self.q.qsize() > 20000:
-                #     raise Exception('queue size greater than 50')
+                    #     raise Exception('queue size greater than 50')
                     self.reading = False
                 # time.sleep(0)
             except Exception as e:
@@ -134,24 +137,28 @@ class AnalogInput(object):
     verbose = False
     waitForLastFrame = False
 
-    def __init__(self, parent=None, inputChannels = "Dev1/ai0:3", polarityWidgets = None):
+    y_pixel_location: int = 0
+    saveFilename: str = ""
+
+
+    def __init__(self, parent=None, input_channels="Dev1/ai0:3", polarity_widgets=None):
         self.cwd = os.path.basename(os.path.realpath(__file__))
         self.parent = parent
         os.chdir("Devices")
 
         self.polarityWidgets = None
-        if polarityWidgets is not None:
-            self.polarityWidgets = polarityWidgets
+        if polarity_widgets is not None:
+            self.polarityWidgets = polarity_widgets
 
         self.dataQ = multiprocessing.Manager().Queue()
 
         self.parentConnectionReader, self.childConnectionReader = multiprocessing.Pipe()
         self.readProcess = readProcess(q=self.dataQ,
-                                     connection=self.childConnectionReader)
+                                       connection=self.childConnectionReader)
         self.readProcess.daemon = True
         self.readProcess.start()
 
-        self.numberOfChannels = get_number_of_channels(inputChannels)
+        self.numberOfChannels = get_number_of_channels(input_channels)
         # self.initializeProcessors(self.numberOfChannels)
 
         self.x_pixels = None
@@ -170,14 +177,15 @@ class AnalogInput(object):
     def get_image(self):
         if (self.y_pixels is not None) and (self.x_pixels is not None):
             self.imageData = np.zeros((self.numberOfChannels, self.y_pixels, self.x_pixels))
-        else :
-            self.y_pixels, self.x_pixels = 50,50
+        else:
+            self.y_pixels, self.x_pixels = 50, 50
             self.imageData = np.zeros((self.numberOfChannels, self.y_pixels, self.x_pixels))
         return self.imageData
 
-    def init(self,channel="Dev1/ai0",resolution=50,line_dwell_time=2.,fill_fraction=0.5,hwbuffer=8192,
-             verbose=False,save=False,saveFilename='',saveFileIndex='',xAxis='',metadata='',waitForLastFrame=False,
-             singleFrameScan=False,framesToAverage=1,dataMaximums=None,dataMinimums=None):
+    def init(self, channel="Dev1/ai0", resolution=50, line_dwell_time=2., fill_fraction=0.5, hwbuffer=8192,
+             verbose=False, save=False, saveFilename='', saveFileIndex='', xAxis='', metadata='',
+             waitForLastFrame=False,
+             singleFrameScan=False, framesToAverage=1, dataMaximums=None, dataMinimums=None):
 
         self.channel = channel
         self.numberOfChannels = get_number_of_channels(channel)
@@ -202,18 +210,17 @@ class AnalogInput(object):
         self.atTheLastFrame = False
         # self.atTheLastFrame = [False for i in range(self.numberOfChannels)]
 
-        if dataMaximums is None :
-            self.dataMaximums = [1]*self.numberOfChannels
-        else :
+        if dataMaximums is None:
+            self.dataMaximums = [1] * self.numberOfChannels
+        else:
             self.dataMaximums = dataMaximums
 
-        if dataMinimums is None :
-            self.dataMinimums = [1]*self.numberOfChannels
-        else :
+        if dataMinimums is None:
+            self.dataMinimums = [1] * self.numberOfChannels
+        else:
             self.dataMinimums = dataMinimums
 
-        if self.saveFilename is not '':
-            self.saveFilename = self.saveFilename.replace('tiff', '')
+        if self.saveFilename != '':
             self.saveFilename = self.saveFilename.replace('tif', '')
 
         if self.verbose: print("Initializing analog input channel : %s" % self.channel)
@@ -222,7 +229,7 @@ class AnalogInput(object):
 
         self.imageData = np.zeros((self.numberOfChannels, self.y_pixels, self.x_pixels))
 
-        self.imageArrays = np.zeros((self.framesToAverage,self.numberOfChannels,self.y_pixels,self.x_pixels))
+        self.imageArrays = np.zeros((self.framesToAverage, self.numberOfChannels, self.y_pixels, self.x_pixels))
 
         self.intensities = [[] for i in range(0, self.numberOfChannels)]
         self.intensitiesIndex = [[] for i in range(0, self.numberOfChannels)]
@@ -233,17 +240,16 @@ class AnalogInput(object):
         self.y_pixel_location = 0
         self.framesGrabbed = 0
         self.framesSkipped = 0
-        self.parentConnectionReader.send({'channel':self.channel,
-                                          'voltage_min':self.voltage_min,
-                                          'voltage_max':self.voltage_max,
-                                          'clock_rate':self.clock_rate,
-                                          'samples_to_read_per_channel':self.samples_to_read_per_channel,
-                                          'data_line_length':self.data_line_length,
-                                          'number_of_channels':self.numberOfChannels,
-                                          'multiplier':10000})
+        self.parentConnectionReader.send({'channel': self.channel,
+                                          'voltage_min': self.voltage_min,
+                                          'voltage_max': self.voltage_max,
+                                          'clock_rate': self.clock_rate,
+                                          'samples_to_read_per_channel': self.samples_to_read_per_channel,
+                                          'data_line_length': self.data_line_length,
+                                          'number_of_channels': self.numberOfChannels,
+                                          'multiplier': 10000})
 
         # self.initializeProcessorsParameters()
-
 
     def start(self):
         if self.verbose:
@@ -255,45 +261,44 @@ class AnalogInput(object):
             print("\tRead rate :\t\t\t%f" % self.clock_rate)
             print("\tDetector timebase divisor :\t\t%i" % self.divisor)
 
-        self.startTime = time.time()
+        self.start_time = time.time()
         self.reading = True
 
-        self.parentConnectionReader.send({'reading' : True})
+        self.parentConnectionReader.send({'reading': True})
 
-        Thread(target=self.calculateDisplay).start()
-        Thread(target=self.displayData).start()
+        Thread(target=self.process_display).start()
+        Thread(target=self.display_data).start()
 
     def stop(self):
         self.forcedStop = True
         if self.verbose: print("Stopping analog input.")
         if not self.waitForLastFrame:
             self.reading = False
-            self.parentConnectionReader.send({'reading' : False})
-        else :
+            self.parentConnectionReader.send({'reading': False})
+        else:
             self.lastFrameScan = True
 
     def clear(self):
         self.stop()
         if self.verbose: print('Clearing analog input task.')
         if self.waitForLastFrame:
-            while self.reading : #soft stops
+            while self.reading:  # soft stops
                 time.sleep(0.1)
                 pass
         self.reading = False
         # self.stopProcessors()
-        self.parentConnectionReader.send({'reading' : False})
+        self.parentConnectionReader.send({'reading': False})
 
     def terminate(self):
-        self.parentConnectionReader.send({'detect connection' : False})
+        self.parentConnectionReader.send({'detect connection': False})
         # self.readProcess.join()
 
-
-    def calculateDisplay(self):
-        while self.reading :
+    def process_display(self):
+        while self.reading:
             for frame in range(0, self.framesToAverage):
                 data_line = self.dataQ.get()
 
-            ## from here is inserted code
+                ## from here is inserted code
 
                 for channel in range(self.numberOfChannels):
                     channel_offset = channel * self.samples_to_read_per_channel_per_line
@@ -303,26 +308,26 @@ class AnalogInput(object):
                     if self.polarityWidgets[channel].isChecked():
                         trimmedDataLine = -trimmedDataLine
 
-                    nupdateArray(self.imageArrays[frame,channel], trimmedDataLine, self.samples_per_pixel, self.x_pixels,
+                    nupdateArray(self.imageArrays[frame, channel], trimmedDataLine, self.samples_per_pixel,
+                                 self.x_pixels,
                                  self.y_pixel_location)
 
-                    self.imageData[channel] = nmeanArray(self.imageArrays[:,channel,...])
+                    self.imageData[channel] = nmeanArray(self.imageArrays[:, channel, ...])
 
                     # self.imageData[channel] = np.mean(self.imageArrays[:,channel,...],axis=0)
 
                 self.y_pixel_location += 1
 
-                if (self.y_pixel_location >= self.y_pixels):
+                if self.y_pixel_location >= self.y_pixels:
                     self.y_pixel_location = 0
-                    if (frame == self.framesToAverage - 1):
+                    if frame == self.framesToAverage - 1:
                         self.framesGrabbed += 1
                         self.atTheLastFrame = True
 
-
-    def setNumberOfChannels(self,channel):
+    def setNumberOfChannels(self, channel):
         self.numberOfChannels = get_number_of_channels(channel)
 
-    def displayData(self):
+    def display_data(self):
         while self.reading:
             if self.atTheLastFrame:
                 for channel in range(self.numberOfChannels):
@@ -332,16 +337,16 @@ class AnalogInput(object):
                     self.intensities[channel].append(intensity)
 
                     # Calculate the intensity x-axis
-                    if isinstance(self.xAxis[-1], types.FunctionType) or isinstance(self.xAxis[-1], types.MethodType):
-                        index = self.xAxis[-1]()  # index 0 is time index by default, -1 is last index eg. Raman from [Time, Stage, Raman]
+                    if isinstance(self.xAxis[-1], Callable):
+                        # index 0 is time index by default, -1 is last index eg. Raman from [Time, Stage, Raman]
+                        index = self.xAxis[-1]()
                     else:
                         index = self.xAxis[-1]
                     self.intensitiesIndex[channel].append(index)
                     if self.save:
                         self.saveImage(channel)
 
-
-                if self.save :
+                if self.save:
                     self.saveCSV()
                 if self.singleFrameScan:
                     self.reading = False
@@ -351,10 +356,9 @@ class AnalogInput(object):
             else:
                 time.sleep(0.001)
 
-
     def __calculate_sync(self):
 
-        parameters = sync_parameters(resolution=(self.x_pixels,self.y_pixels),
+        parameters = sync_parameters(resolution=(self.x_pixels, self.y_pixels),
                                      line_dwell_time=self.msline,
                                      fill_fraction=self.fill_fraction,
                                      max_timebase_frequency=self.max_timebase_frequency,
@@ -372,7 +376,7 @@ class AnalogInput(object):
         self.data_line_length = len(self.data_line)
 
     def __getElapsedTime(self):
-        return (time.time() - self.startTime)
+        return (time.time() - self.start_time)
 
     def __saveFileHeader(self):
         fileName = "{}/intensity.csv".format(self.saveFilename)
@@ -380,11 +384,11 @@ class AnalogInput(object):
             with open(fileName, 'a') as f:
                 if not self.waitForLastFrame:
                     f.write('Time,X,')
-                else :
+                else:
                     f.write('Time,X,Raman,')
                 channelHeaderString = ''
                 for i in range(self.numberOfChannels):
-                    channelHeaderString += 'Channel%i,'%i
+                    channelHeaderString += 'Channel%i,' % i
                 f.write(channelHeaderString)
                 f.write('\n')
 
@@ -395,19 +399,19 @@ class AnalogInput(object):
         '''
         # if self.saveFilename is not '':
         ## if 'default' in self.scanType.lower():
-        if not self.waitForLastFrame: ## todo : temporary measure
+        if not self.waitForLastFrame:  ## todo : temporary measure
             self.xAxis = [self.__getElapsedTime]
-        else :
+        else:
             saveIndices = []
             saveIndices.append(self.__getElapsedTime)
-            try :
-                for xAxis in self.xAxis :
+            try:
+                for xAxis in self.xAxis:
                     saveIndices.append(xAxis)
-            except :
+            except:
                 saveIndices.append(self.xAxis)
             self.xAxis = saveIndices
 
-    def saveImage(self,channel):
+    def saveImage(self, channel):
         # Recalibrated image intensities to maximimze dynamic range
         recalibratedImage = self.imageData[channel].copy()
         # if 'point' not in self.scanType.lower():
@@ -435,14 +439,15 @@ class AnalogInput(object):
                     #           saveImage, append=True, metadata=self.metadata)
                     # continue
                 break
+
         save_image()
         # Thread(target=save_image).start()
 
     def saveCSV(self):
         for channel in range(self.numberOfChannels):
-        # Save CSV
+            # Save CSV
             def save_csv():
-                if self.saveFilename is not '':
+                if self.saveFilename != '':
                     # if all(len(i) == len(self.intensities[0]) for i in self.intensities):
                     with open("{}/intensity.csv".format(self.saveFilename), 'a') as f:
                         for xAxis in self.xAxis:
@@ -458,41 +463,45 @@ class AnalogInput(object):
 
         Thread(target=save_csv).start()
 
-def xtest(array,newdata,samples,x,yloc):
+
+def xtest(array, newdata, samples, x, yloc):
     timeNow = time.time()
     for i in range(x):
-        updateArray(array,newdata,samples,x,yloc)
+        updateArray(array, newdata, samples, x, yloc)
     now = time.time() - timeNow
     print('xtest ', now)
     return now
 
-def xtestc(array,newdata,samples,x,yloc):
+
+def xtestc(array, newdata, samples, x, yloc):
     timeNow = time.time()
     for i in range(x):
-        cupdateArray(array,newdata,samples,x,yloc)
+        cupdateArray(array, newdata, samples, x, yloc)
     now = time.time() - timeNow
     print('xtestc ', now)
     return now
 
-def xtestnc(array,newdata,samples,x,yloc):
+
+def xtestnc(array, newdata, samples, x, yloc):
     timeNow = time.time()
 
-    #array[yloc] = np.mean(newdata.reshape(-1, samples), 1)
-    nupdateArray(array,newdata,samples,x,yloc)
+    # array[yloc] = np.mean(newdata.reshape(-1, samples), 1)
+    nupdateArray(array, newdata, samples, x, yloc)
 
     now = time.time() - timeNow
     print('xtestn ', now)
     return now
 
+
 if __name__ == "__main__":
-    xys = [(50,50,25),(500,500,10)]
-    for (x,y,samples) in xys :
-        array = np.random.random((x,y))
+    xys = [(50, 50, 25), (500, 500, 10)]
+    for (x, y, samples) in xys:
+        array = np.random.random((x, y))
         arrayx = array.copy()
-        newdata = np.random.random(x*samples)
+        newdata = np.random.random(x * samples)
         yloc = 0
 
-        xtestc(array,newdata,samples,x,yloc)
+        xtestc(array, newdata, samples, x, yloc)
         xtest(array, newdata, samples, x, yloc)
         xtestnc(array, newdata, samples, x, yloc)
 

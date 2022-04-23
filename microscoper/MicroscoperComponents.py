@@ -4,6 +4,8 @@ from mcculw import ul
 from mcculw.enums import ULRange, DigitalPortType
 from Devices.AnalogDigitalOut import Digital_output
 import ctypes
+from Devices.TTL_delay_stage import TTL_Delay_Stage
+import time
 from Devices.AnalogIn import AnalogInput
 from Devices.AnalogDigitalOut import Analog_output
 
@@ -62,7 +64,7 @@ class NetworkDevice(object):
                                                          verbose=self.verbose,
                                                          timeout=self.timeout,
                                                          )
-        if response is 1:  ## has timedout
+        if response == 1:  # has timed out
             return None
         else:
 
@@ -110,7 +112,7 @@ class NetworkDevice(object):
         if xAxis is None:
             xAxis = lambda: None
         xAxis = xAxis[0]
-        if fileName is not '':
+        if fileName != '':
             self.sendCommand("save(filename=r'%s',label='%.3f',append=True)"
                              % (fileName, xAxis()))
         time.sleep(0.1)
@@ -139,7 +141,7 @@ class Spectrometer(NetworkDevice):
         if xAxis is None:
             xAxis = lambda: None
         xAxis = xAxis[0]
-        if fileName is not '':
+        if fileName != '':
             self.sendCommand("save(filename=r'%s',label='%.3f',append=True)"
                              % (fileName, xAxis()))
         time.sleep(0.1)
@@ -334,7 +336,8 @@ class Shutters(object):
         self.pump_shutter = MCCDev()
         # self.stokes_shutter = MCCDev.Device(model="3101", name='Stokes shutter')
         # self.pump_shutter = MCCDev.Device(model="3101", name='Pump shutter')
-        self.microscope_shutter = Digital_output("Dev1/port0/line7")
+        # self.sf_tru_stage = Digital_output('Dev1/port0/line0')
+        self.microscope_shutter = Digital_output("Dev1/port0/line0")
         self.microscope_shutter_close()
         self.pump_shutter_close()
         self.stokes_shutter_close()
@@ -397,6 +400,7 @@ class Microscope(object):
     extensionApps = None
     devices = None
     verbose = True
+    delay_stage: TTL_Delay_Stage
 
     def __init__(self):
         self.define_default_settings()
@@ -450,7 +454,10 @@ class Microscope(object):
             "calibration file": "",
             "verbose": "0",
             "shutters enabled": "0",
+            "delay_stage": "/dev1/port0/line0",
+            "delay_stage_steps": 200,
         }
+        # todo ui to control delay_stage_steps
 
         for i in range(0, getNumberOfChannels(self.settings["input channels"])):
             self.settings["PMT %i" % i] = "0"

@@ -133,7 +133,7 @@ class Microscope(MicroscoperComponents.Microscope):
         self.ui.setupUi(self.mainWindow)
         self.setupScanList()
         self.mainWindow.setWindowIcon((QtGui.QIcon('ui/plopperPig.ico')))
-        self.mainWindow.setWindowTitle("Microscoper 2019")
+        self.mainWindow.setWindowTitle("Microscoper SF-TRU")
 
         # screen = QtGui.QDesktopWidget().screenGeometry()
         screen = QtGui.QGuiApplication.primaryScreen().geometry()

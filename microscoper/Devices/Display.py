@@ -242,7 +242,7 @@ class Display2D(pg.GraphicsWindow):
     def display(self):
         for i in range(0, self.imageData.__len__()):
             # Update display
-            self.img_handle[i].display(self.imageData[i].T, levels=[self.imageMinimums[i], self.imageMaximums[i]])
+            self.img_handle[i].display(self.imageData[i], levels=[self.imageMinimums[i], self.imageMaximums[i]])
             # self.img_handle[i].display(self.imageData[i].T,
             #                            levels=[self.imageMinimums[i], np.mean(self.imageData[i]*1.2)])
             averageIntensity = np.mean(self.imageData[i])

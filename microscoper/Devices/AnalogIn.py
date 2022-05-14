@@ -312,7 +312,7 @@ class AnalogInput(object):
                                  self.x_pixels,
                                  self.y_pixel_location)
 
-                    self.imageData[channel] = nmeanArray(self.imageArrays[:, channel, ...])
+                    self.imageData[channel] = np.mean(self.imageArrays[:, channel, ...], axis=0)
 
                     # self.imageData[channel] = np.mean(self.imageArrays[:,channel,...],axis=0)
 
